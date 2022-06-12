@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileTermPlanner_JSarad.Views.EditTermsPage"
+             xmlns:viewmodel="clr-namespace:MobileTermPlanner_JSarad.ViewModels">
+    
+    <!--Binding Context-->
+    <!--<ContentPage.BindingContext>
+        <viewmodel:EditTermViewModel/>
+    </ContentPage.BindingContext>-->
+
+    <!-- toolbar-->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" x:Name="SaveTerm" Command ="{Binding SaveTermCommand}"/>
+        <ToolbarItem Text="Cancel" x:Name="Cancel" Command ="{Binding CancelTermCommand}"/>
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid Padding="5" RowSpacing="1" ColumnSpacing="22" BackgroundColor="WhiteSmoke">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold">Name</Label>
+                <Entry x:Name="TermName" Placeholder="Term Name" Grid.Row="0" Grid.Column="1" VerticalTextAlignment="Center" Text="{Binding ModifiedTerm.Name}"/>
+
+                <Label Grid.Row="1" Grid.Column="0" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold">Start Date</Label>
+                <DatePicker x:Name="dpTermStart" 
+                             MinimumDate="2020/01/01" 
+                             MaximumDate="2025/01/01" Grid.Row="1" Grid.Column="1"  Date="{Binding ModifiedTerm.StartDate, Mode=TwoWay}"/>
+
+                <Label Grid.Row="2" Grid.Column="0"  FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" 
+                       x:Name="lbNotifyStart">Turn on Notification</Label>
+                <!--<Switch Grid.Row="2" Grid.Column="1" HorizontalOptions="Center" x:Name="swNotifyStart" Toggled="swNotifyStart_Toggled"/>-->
+
+                <Label Grid.Row="3" Grid.Column="0" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold">End Date</Label>
+                <DatePicker x:Name="dpTermEnd" 
+                            MinimumDate="2020/01/01" 
+                            MaximumDate="2025/01/01" Grid.Row="3" Grid.Column="1" Date="{Binding ModifiedTerm.EndDate, Mode=TwoWay}"/>
+                <Label Grid.Row="4" Grid.Column="0"  FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" 
+                       x:Name="lbNotifyEnd">Turn on Notification</Label>
+                <!--<Switch Grid.Row="4" Grid.Column="1" HorizontalOptions="Center" x:Name="swNotifyEnd" Toggled="swNotifyEnd_Toggled"/>-->
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

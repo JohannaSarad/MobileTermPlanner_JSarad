@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:MobileTermPlanner_JSarad.ViewModels"
+             x:Class="MobileTermPlanner_JSarad.Views.AddTermsPage">
+    
+    <!--Binding Context-->
+    <ContentPage.BindingContext>
+        <viewmodel:AddTermViewModel />
+    </ContentPage.BindingContext>
+    
+    <!-- toolbar-->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" x:Name="SaveTerm" Command="{Binding SaveTermCommand}"/>
+        <ToolbarItem Text="Cancel" x:Name="Cancel" Command ="{Binding CancelTermCommand}"/>
+    </ContentPage.ToolbarItems>
+    
+    <!--layout-->
+    <ContentPage.Content>
+        <StackLayout >
+            <Grid Padding="30" RowSpacing="1" ColumnSpacing="22" BackgroundColor="WhiteSmoke">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition Width=".3*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold">Term Name :</Label>
+                <Entry x:Name="TermName" Placeholder="Term Name" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" VerticalTextAlignment="Center" Text="{Binding TermToAdd.Name}"/>
+
+                <Label x:Name ="ValidName"  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" FontSize="Small" VerticalTextAlignment="Center" 
+                       FontAttributes="Bold" TextColor="Red" Text="{Binding InvalidNameMessage}"/>
+
+
+                <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"  FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold">Start Date :</Label>
+                <DatePicker x:Name="dpTermStart" 
+                             MinimumDate="2020/01/01" 
+                             MaximumDate="2025/01/01" 
+                            Grid.Row="4" Grid.Column="0"  Grid.ColumnSpan="3" Date="{Binding TermToAdd.StartDate, Mode=TwoWay}"/>
+                
+                <Label Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
+                       x:Name="lbNotifyStart">Turn on Notification</Label>
+                <Switch Grid.Row="5" Grid.Column="2" HorizontalOptions="Center" x:Name="swNotifyStart"/>
+                <!-- Toggled="swNotifyStart_Toggled"-->
+
+                <Label x:Name ="ValidStartDate" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
+                       Text="{Binding InvalidDateMessage}"/>
+          
+
+                <Label Grid.Row="7" Grid.Column="0" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold">End Date :</Label>
+                <DatePicker x:Name="dpTermEnd" 
+                            MinimumDate="2020/01/01" 
+                            MaximumDate="2025/01/01" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" 
+                            Date="{Binding TermToAdd.EndDate, Mode=TwoWay}"/>
+
+                <Label Grid.Row="9" Grid.Column="1"  FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
+                       x:Name="lbNotifyEnd">Turn on Notification</Label>
+                <!--<Switch Grid.Row="9" Grid.Column="2" HorizontalOptions="Center" x:Name="swNotifyEnd" Toggled="swNotifyEnd_Toggled"/>-->
+                
+                <Label x:Name ="ValidEndDate" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
+                       TextColor="Red" Text="{Binding InvalidDateMessage}"/>
+               
+                <Label x:Name ="Overlap"  Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="3" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
+                       Text="{Binding OverlapMessage}"/>
+
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

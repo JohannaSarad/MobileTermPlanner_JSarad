@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32228.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileTermPlanner_JSarad.Android", "MobileTermPlanner_JSarad.Android\MobileTermPlanner_JSarad.Android.csproj", "{1B5EBC75-A440-484B-BC14-B749FED560C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileTermPlanner_JSarad", "MobileTermPlanner_JSarad\MobileTermPlanner_JSarad.csproj", "{8448052C-E221-4055-A43F-6A5B67F0FC00}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1B5EBC75-A440-484B-BC14-B749FED560C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B5EBC75-A440-484B-BC14-B749FED560C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B5EBC75-A440-484B-BC14-B749FED560C3}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{1B5EBC75-A440-484B-BC14-B749FED560C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B5EBC75-A440-484B-BC14-B749FED560C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B5EBC75-A440-484B-BC14-B749FED560C3}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{8448052C-E221-4055-A43F-6A5B67F0FC00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8448052C-E221-4055-A43F-6A5B67F0FC00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8448052C-E221-4055-A43F-6A5B67F0FC00}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{8448052C-E221-4055-A43F-6A5B67F0FC00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8448052C-E221-4055-A43F-6A5B67F0FC00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8448052C-E221-4055-A43F-6A5B67F0FC00}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1AFD6CD8-EE04-44EB-88D0-E377F21829C6}
+	EndGlobalSection
+EndGlobal
