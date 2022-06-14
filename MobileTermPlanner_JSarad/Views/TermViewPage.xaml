@@ -12,7 +12,7 @@
 
     <!--Toolbar-->
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" x:Name="AddTerm" Command="{Binding AddTermCommand}"/>
+        <ToolbarItem Text="Add" x:Name="AddTerm" Command="{Binding NavToAddCommand}"/>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
@@ -56,7 +56,7 @@
                                          Command ="{Binding Path=Binding.Context.ViewTermCommand, Source={x:Reference Terms}}"
                                          CommandParameter="{Binding .}"/>-->
                             <ImageButton Source="editIcon31.png" Grid.Column="3" VerticalOptions="Center"
-                                         Command="{Binding Path=BindingContext.EditTermCommand, Source={x:Reference cvTerms}}"
+                                         Command="{Binding Path=BindingContext.NavToEditCommand, Source={x:Reference cvTerms}}"
                                          CommandParameter="{Binding .}"/>
                             <ImageButton Source="deleteIcon31.png" Grid.Column="4" VerticalOptions="Center"
                                          Command="{Binding Path=BindingContext.DeleteTermCommand, Source={x:Reference cvTerms}}"

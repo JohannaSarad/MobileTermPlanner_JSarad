@@ -15,7 +15,7 @@ using MobileTermPlanner_JSarad.Views;
 
 namespace MobileTermPlanner_JSarad.ViewModels
 {
-    public class TermViewModel : INotifyPropertyChanged
+    public class TermViewModel : BaseViewModel
     {
         //properties
         private bool _isBusy;
@@ -60,39 +60,49 @@ namespace MobileTermPlanner_JSarad.ViewModels
         }
 
         //commands
-        public ICommand AddTermCommand { get; set; }
-        public ICommand EditTermCommand { get; set; }
+        public ICommand NavToAddCommand { get; set; }
+        public ICommand NavToEditCommand { get; set; }
         public ICommand ViewTermCommand { get; set; }
         public ICommand DeleteTermCommand { get; set; }
-        
-        public event PropertyChangedEventHandler PropertyChanged;
-       
 
         public TermViewModel()
         {
-            //Terms = new ObservableCollection<Term>();
-            //Refresh();
-            LoadSampleData();
-            AddTermCommand = new Command(async () => await AddTerm());
-            EditTermCommand = new Command(async (o) => await EditTerm(o));
+            //LoadTerms();
+            //Changed 6/14 untested
+            Task.Run(async () =>
+           {
+               Terms = new ObservableCollection<Term>(await DatabaseService.GetTerm());
+           });
+            
+            NavToAddCommand = new Command(async () => await NavToAddTerm());
+            NavToEditCommand = new Command(async (o) => await NavToEditTerm(o));
             //ViewTermCommand = new Command(async (o) => await ViewTerm(o));
             DeleteTermCommand = new Command(async (o) => await DeleteTerm(o));
-        }
 
-        
+            //added 6/14 untested
+            MessagingCenter.Subscribe<ModifyTermViewModel, Term>(this, "AddTerm", (sender, obj) =>
+            {
+                AddTerm(obj);
+            });
+
+            MessagingCenter.Subscribe<ModifyTermViewModel, Term>(this, "EditTerm", (sender, obj) =>
+            {
+                UpdateTerm(obj);
+            });
+        }
 
         //methods
-        private async Task AddTerm()
+        private async Task NavToAddTerm()
         {
-            await Application.Current.MainPage.Navigation.PushAsync(new AddTermsPage());
-            //Refresh();
+            DatabaseService.IsAdd = true;
+            await Application.Current.MainPage.Navigation.PushAsync(new ModifyTermsPage());
         }
 
-        private async Task EditTerm(object o)
+        private async Task NavToEditTerm(object o)
         {
-            SelectedTerm = o as Term;
-
-            await Application.Current.MainPage.Navigation.PushAsync(new EditTermsPage(SelectedTerm));
+            DatabaseService.IsAdd = false;
+            DatabaseService.SelectedTerm = o as Term;
+            await Application.Current.MainPage.Navigation.PushAsync(new ModifyTermsPage());
         }
 
         //private async Task ViewTerm(object o)
@@ -100,19 +110,29 @@ namespace MobileTermPlanner_JSarad.ViewModels
         //    throw new NotImplementedException();
         //}
 
+        private async void AddTerm(Term term)
+        {
+            //SelectedTerm = term;
+            await DatabaseService.AddTerm(term);
+            Refresh();
+        }
+
+        private async void UpdateTerm(Term term)
+        {
+            //SelectedTerm = term;
+            await DatabaseService.UpdateTerm(term);
+            Refresh();
+        }
         private async Task DeleteTerm(object o)
         {
-
             SelectedTerm = o as Term;
-            //int id = SelectedTerm.Id;
             await DatabaseService.DeleteTerm(SelectedTerm.Id);
             Refresh();
         }
 
-        private async void LoadSampleData()
+        private async void LoadTerms()
         {
             IsBusy = true;
-            //await Task.Delay(500);
             Terms = new ObservableCollection<Term>(await DatabaseService.GetTerm());
             IsBusy = false;
         }
@@ -120,31 +140,9 @@ namespace MobileTermPlanner_JSarad.ViewModels
         public async void Refresh()
         {
             IsBusy = true;
-            //await Task.Delay(500);
             Terms.Clear();
-            
-            List<Term> TermList = await DatabaseService.GetTerm();
-
-            foreach (Term term in TermList)
-            {
-                Terms.Add(term);
-            }
-            TermList.Clear();
+            Terms = new ObservableCollection<Term>(await DatabaseService.GetTerm());
             IsBusy = false;
-
-            //List<Term> TermList = new List<Term>();
-
-            //Task.Run(async () =>
-            //{
-
-            //TermList = await DatabaseService.GetTerm();
-            //});
-        }
-
-        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this,
-            new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using System.Text;
@@ -13,9 +14,9 @@ namespace MobileTermPlanner_JSarad.Services
     public static class DatabaseService
     {
         public static SQLiteAsyncConnection db;
-        //public static Term CurrentTerm { get; set; }
+        public static Term SelectedTerm { get; set; }
         //public static Course CurrentCourse { get; set; }
-        //public static bool IsAdd { get; set; }
+        public static bool IsAdd { get; set; }
 
 
         public static async Task Init()
@@ -74,10 +75,8 @@ namespace MobileTermPlanner_JSarad.Services
             await Init();
             List<Term> terms = await db.Table<Term>().ToListAsync();
             return terms;
-          
-            //return await db.Table<Term>().ToListAsync();
         }
-
+        
         public static async Task UpdateTerm(Term term)
         {
             await Init();
@@ -217,28 +216,7 @@ namespace MobileTermPlanner_JSarad.Services
         //    }
         //}
 
-        //public static async Task<bool> TableEmpty(string tableName)
-        //{
-        //    try
-        //    {
-        //        var tableInfo = await db.GetTableInfoAsync($"{tableName}");
-        //        int count = tableInfo.Count;
-        //        if (tableInfo.Count > 0)
-        //        {
-        //            return true;
-        //        }
-        //        else
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //    catch
-        //    {
-        //        return false;
-        //    }
-        //}
-
-       public static async Task FillSampleTerm()
+        public static async Task FillSampleTerm()
         {
             List<Term> terms = await db.Table<Term>().ToListAsync();
             if (terms.Count == 0)

@@ -11,19 +11,21 @@ using MobileTermPlanner_JSarad.Services;
 
 namespace MobileTermPlanner_JSarad.ViewModels
 {
-    public class AddTermViewModel : TermViewModel
+    public class ModifyTermViewModel : BaseViewModel
     {
         //properties
-        private Term _termToAdd;
-        public Term TermToAdd
+        public List<Term> TermList { get; set; }
+        
+        private Term _modifyTerm;
+        public Term ModifyTerm
         {
             get
             {
-                return _termToAdd;
+                return _modifyTerm;
             }
             set
             {
-                _termToAdd = value;
+                _modifyTerm = value;
                 OnPropertyChanged();
             }
         }
@@ -71,63 +73,85 @@ namespace MobileTermPlanner_JSarad.ViewModels
         }
 
         public bool IsValidInput;
-
-
+        //public bool IsAdd;
+        
         //commands
         public ICommand SaveTermCommand { get; set; }
         public ICommand CancelTermCommand { get; set; }
         
-        public AddTermViewModel()
+        public ModifyTermViewModel()
         {
-            _termToAdd = new Term();
+            
+            if (DatabaseService.IsAdd) 
+            {
+                _modifyTerm = new Term();
+            }
+            else
+            {
+                _modifyTerm = DatabaseService.SelectedTerm;
+            }
+            
             SaveTermCommand = new Command(async () => await SaveTerm());
             CancelTermCommand = new Command(async () => await CancelTerm());
         }
-        
+
         //methods
         private async Task SaveTerm()
         {
-            //Term term = new Term
-            //{
-            //    Name = o.Name,
-            //    StartDate = o.StartDate,
-            //    EndDate = o.EndDate
-            //};
+            TermList = await DatabaseService.GetTerm();
             IsValidInput = true;
-            if (TermToAdd.Name == null)
+            if (ModifyTerm.Name == null)
             {
                 IsValidInput = false;
                 InvalidNameMessage = "* Name is Required";
             }
-            if (TermToAdd.StartDate > TermToAdd.EndDate || TermToAdd.StartDate.Date == TermToAdd.EndDate.Date)
+            else
+            {
+                InvalidNameMessage = "";
+            }
+            if (ModifyTerm.StartDate > ModifyTerm.EndDate || ModifyTerm.StartDate.Date == ModifyTerm.EndDate.Date)
             {
                 IsValidInput = false;
                 InvalidDateMessage = "* Term start date must be before term end date";
             }
-            if (Terms.Count > 0 )
+            else
             {
+                InvalidDateMessage = "";
+            }
+
+            if (TermList.Count > 0)
+            {
+                //FIX ME!!! This statement also needs to check if the term being checked is the term currently being worked on. 
                 int i;
-                for (i = 0; i < Terms.Count; i++) {
-                    if ((Terms[i].StartDate <= TermToAdd.EndDate && Terms[i].StartDate >= TermToAdd.StartDate) || 
-                        (Terms[i].EndDate <= TermToAdd.EndDate && Terms[i].EndDate >= TermToAdd.StartDate))
+                for (i = 0; i < TermList.Count; i++)
+                {
+                    if ((TermList[i].StartDate <= ModifyTerm.EndDate && TermList[i].StartDate >= ModifyTerm.StartDate) ||
+                        (TermList[i].EndDate <= ModifyTerm.EndDate && TermList[i].EndDate >= ModifyTerm.StartDate))
                     {
                         IsValidInput = false;
-                        OverlapMessage = ($"* There is an overlapping term for these dates for Term {Terms[i].Name} from {Terms[i].StartDate.Date} to " +
-                            $"{Terms[i].EndDate.Date}");
+                        OverlapMessage = $"* There is an overlapping term for these dates for Term {TermList[i].Name} from {TermList[i].StartDate.Date} to " +
+                            $"{TermList[i].EndDate.Date}";
+                    }
+                    else
+                    {
+                        OverlapMessage = "";
                     }
                 }
             }
             if (IsValidInput == true)
             {
-                await DatabaseService.AddTerm(TermToAdd);
-                Refresh();
-                await Application.Current.MainPage.Navigation.PopAsync();
+                if (DatabaseService.IsAdd)
+                {
+                    MessagingCenter.Send(this, "AddTerm", ModifyTerm);
+                    await Application.Current.MainPage.Navigation.PopAsync();
+                }
+                else
+                {
+                    MessagingCenter.Send(this, "EditTerm", ModifyTerm);
+                    await Application.Current.MainPage.Navigation.PopAsync();
+                }
             }
-            else
-            {
-                Refresh();
-            }
-         }
+        }
 
         private async Task CancelTerm()
         {

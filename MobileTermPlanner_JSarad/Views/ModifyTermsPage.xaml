@@ -2,11 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:MobileTermPlanner_JSarad.ViewModels"
-             x:Class="MobileTermPlanner_JSarad.Views.AddTermsPage">
+             x:Class="MobileTermPlanner_JSarad.Views.ModifyTermsPage">
     
     <!--Binding Context-->
     <ContentPage.BindingContext>
-        <viewmodel:AddTermViewModel />
+        <viewmodel:ModifyTermViewModel />
     </ContentPage.BindingContext>
     
     <!-- toolbar-->
@@ -36,10 +36,10 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="1.5*"/>
-                    <ColumnDefinition Width=".3*"/>
+                    <ColumnDefinition Width="0.3*"/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold">Term Name :</Label>
-                <Entry x:Name="TermName" Placeholder="Term Name" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" VerticalTextAlignment="Center" Text="{Binding TermToAdd.Name}"/>
+                <Entry x:Name="TermName" Placeholder="Term Name" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" VerticalTextAlignment="Center" Text="{Binding ModifyTerm.Name, Mode=TwoWay}"/>
 
                 <Label x:Name ="ValidName"  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" FontSize="Small" VerticalTextAlignment="Center" 
                        FontAttributes="Bold" TextColor="Red" Text="{Binding InvalidNameMessage}"/>
@@ -49,7 +49,7 @@
                 <DatePicker x:Name="dpTermStart" 
                              MinimumDate="2020/01/01" 
                              MaximumDate="2025/01/01" 
-                            Grid.Row="4" Grid.Column="0"  Grid.ColumnSpan="3" Date="{Binding TermToAdd.StartDate, Mode=TwoWay}"/>
+                            Grid.Row="4" Grid.Column="0"  Grid.ColumnSpan="3" Date="{Binding ModifyTerm.StartDate, Mode=TwoWay}"/>
                 
                 <Label Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
                        x:Name="lbNotifyStart">Turn on Notification</Label>
@@ -64,10 +64,9 @@
                 <DatePicker x:Name="dpTermEnd" 
                             MinimumDate="2020/01/01" 
                             MaximumDate="2025/01/01" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" 
-                            Date="{Binding TermToAdd.EndDate, Mode=TwoWay}"/>
+                            Date="{Binding ModifyTerm.EndDate, Mode=TwoWay}"/>
 
-                <Label Grid.Row="9" Grid.Column="1"  FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
-                       x:Name="lbNotifyEnd">Turn on Notification</Label>
+                <Label Grid.Row="9" Grid.Column="1"  FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" x:Name="lbNotifyEnd">Turn on Notification</Label>
                 <!--<Switch Grid.Row="9" Grid.Column="2" HorizontalOptions="Center" x:Name="swNotifyEnd" Toggled="swNotifyEnd_Toggled"/>-->
                 
                 <Label x:Name ="ValidEndDate" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
