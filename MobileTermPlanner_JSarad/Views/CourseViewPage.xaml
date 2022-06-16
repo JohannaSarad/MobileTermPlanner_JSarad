@@ -1,27 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MobileTermPlanner_JSarad.Views.TermViewPage" 
+             x:Class="MobileTermPlanner_JSarad.Views.CourseViewPage"
              xmlns:viewmodel ="clr-namespace:MobileTermPlanner_JSarad.ViewModels" 
-             Title="View Terms">
+             Title="View Courses">
 
     <!--Binding Context-->
     <ContentPage.BindingContext>
-        <viewmodel:TermViewModel/>
+        <viewmodel:CourseViewModel/>
     </ContentPage.BindingContext>
 
     <!--Toolbar-->
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" x:Name="AddTerm" Command="{Binding NavToAddCommand}"/>
+        <ToolbarItem Text="Add" x:Name="AddCourse" Command="{Binding NavToAddCommand}"/>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
         <StackLayout>
-            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
+            <Grid Padding="10" RowSpacing="1" ColumnSpacing="10" BackgroundColor="WhiteSmoke" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions> 
+                <Label x:Name="Name" Text="{Binding SelectedTerm.Name}" TextColor="Black" FontSize="Title" FontAttributes="Bold"
+                       Grid.Row="0" Grid.ColumnSpan="2"/>
+                <Label x:Name="TermStart" Text="Start Date : " TextColor="Black" FontSize="Small"
+                       Grid.Row="1" Grid.Column="0"/>
+                <Label x:Name="Start" Text="{Binding SelectedTerm.StartDate, StringFormat='{0:MMMM dd, yyyy}'}" FontSize="Small"
+                       Grid.Row="1" Grid.Column="1"/>
+                <Label x:Name="TermEnd" Text="End Date : " TextColor="Black" FontSize="Small"
+                       Grid.Row="2" Grid.Column="0"/>
+                <Label x:Name="End" Text="{Binding SelectedTerm.EndDate, StringFormat='{0:MMMM dd, yyyy}'}" FontSize="Small"
+                       Grid.Row="2" Grid.Column="1"/>
+            </Grid>
+            <!--<ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>-->
 
-                <!--CollectionView-->
-            <CollectionView x:Name="cvTerms" 
-                            ItemsSource="{Binding Terms}" 
+            <!--CollectionView-->
+            <CollectionView x:Name="cvCourses" 
+                            ItemsSource="{Binding Courses}" 
                             EmptyView="No Terms to Display" 
                             SelectionMode="Single" Margin="10">
                 <!--SelectionChanged="cvTerm_SelectionChanged"-->
@@ -43,7 +64,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Text="{Binding Id}" Grid.Row="0" Grid.Column="0" FontSize="Large" VerticalTextAlignment="Center" FontAttributes="Bold"/> 
+                            <Label Text="{Binding Id}" Grid.Row="0" Grid.Column="0" FontSize="Large" VerticalTextAlignment="Center" FontAttributes="Bold"/>
                             <Label Text="{Binding Name}" TextColor="Black" Grid.ColumnSpan="2"
                                     FontSize="Large" Grid.Row="0" Grid.Column="1" VerticalTextAlignment="Center" FontAttributes="Bold"/>
                             <Label Text="Start Date : " TextColor="Black"  Grid.Row="1" Grid.Column="0" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold"/>
@@ -53,13 +74,13 @@
                             <Label Text="{Binding EndDate, StringFormat='{0:MMMM dd, yyyy}'}"
                                     FontSize="Small" Grid.Row="2" Grid.Column="1" VerticalTextAlignment="Center"/>
                             <ImageButton Source="viewIcon31.png" Grid.Column="2" VerticalOptions="Center"
-                                         Command ="{Binding Path=BindingContext.ViewTermCommand, Source={x:Reference cvTerms}}"
+                                         Command ="{Binding Path=Binding.Context.ViewCourseCommand, Source={x:Reference cvCourses}}"
                                          CommandParameter="{Binding .}"/>
                             <ImageButton Source="editIcon31.png" Grid.Column="3" VerticalOptions="Center"
-                                         Command="{Binding Path=BindingContext.NavToEditCommand, Source={x:Reference cvTerms}}"
+                                         Command="{Binding Path=BindingContext.NavToEditCommand, Source={x:Reference cvCourses}}"
                                          CommandParameter="{Binding .}"/>
                             <ImageButton Source="deleteIcon31.png" Grid.Column="4" VerticalOptions="Center"
-                                         Command="{Binding Path=BindingContext.DeleteTermCommand, Source={x:Reference cvTerms}}"
+                                         Command="{Binding Path=BindingContext.DeleteCourseCommand, Source={x:Reference cvCourses}}"
                                          CommandParameter="{Binding .}"/>
                         </Grid>
                     </DataTemplate>

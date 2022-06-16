@@ -67,16 +67,11 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
         public TermViewModel()
         {
-            //LoadTerms();
-            //Changed 6/14 untested
-            Task.Run(async () =>
-           {
-               Terms = new ObservableCollection<Term>(await DatabaseService.GetTerm());
-           });
+            LoadTerms();
             
             NavToAddCommand = new Command(async () => await NavToAddTerm());
             NavToEditCommand = new Command(async (o) => await NavToEditTerm(o));
-            //ViewTermCommand = new Command(async (o) => await ViewTerm(o));
+            ViewTermCommand = new Command(async (o) => await ViewTerm(o));
             DeleteTermCommand = new Command(async (o) => await DeleteTerm(o));
 
             //added 6/14 untested
@@ -105,10 +100,11 @@ namespace MobileTermPlanner_JSarad.ViewModels
             await Application.Current.MainPage.Navigation.PushAsync(new ModifyTermsPage());
         }
 
-        //private async Task ViewTerm(object o)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        private async Task ViewTerm(object o)
+        {
+            DatabaseService.SelectedTerm = o as Term;
+            await Application.Current.MainPage.Navigation.PushAsync(new CourseViewPage());
+        }
 
         private async void AddTerm(Term term)
         {
@@ -137,11 +133,12 @@ namespace MobileTermPlanner_JSarad.ViewModels
             IsBusy = false;
         }
 
-        public async void Refresh()
+        public void Refresh()
         {
             IsBusy = true;
             Terms.Clear();
-            Terms = new ObservableCollection<Term>(await DatabaseService.GetTerm());
+            //Terms = new ObservableCollection<Term>(await DatabaseService.GetTerm());
+            LoadTerms();
             IsBusy = false;
         }
     }
