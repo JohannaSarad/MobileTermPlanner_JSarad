@@ -38,14 +38,16 @@
                     <ColumnDefinition Width="1.5*"/>
                     <ColumnDefinition Width="0.3*"/>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold">Term Name :</Label>
-                <Entry x:Name="TermName" Placeholder="Term Name" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" VerticalTextAlignment="Center" Text="{Binding Name, Mode=TwoWay}"/>
+                <Label  Text="Term Name" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold"
+                        Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+                <Entry Text="{Binding Name, Mode=TwoWay}" Placeholder="Term Name"  Grid.ColumnSpan="3" VerticalTextAlignment="Center" 
+                       Grid.Row="1" Grid.Column="0"/>
+                <Label Text="{Binding EmptyErrorMessageOne}"  FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
+                       Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"/>
 
-                <Label x:Name ="ValidName"  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" FontSize="Small" VerticalTextAlignment="Center" 
-                       FontAttributes="Bold" TextColor="Red" Text="{Binding StringValidationMessage, Mode=TwoWay}"/>
 
-
-                <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"  FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold">Start Date :</Label>
+                <Label Text="Start Date" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" 
+                         Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
                 <DatePicker Date="{Binding StartDate, Mode=TwoWay}" MinimumDate="2020/01/01" MaximumDate="2025/01/01" 
                             Grid.Row="4" Grid.Column="0"  Grid.ColumnSpan="3" />
 
@@ -55,7 +57,7 @@
                         Grid.Row="5" Grid.Column="2"  />
                 <!-- Toggled="swNotifyStart_Toggled"-->
 
-                <Label Text="{Binding DateValidationMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
+                <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
                        Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" />
                 
                 <Label Grid.Row="7" Grid.Column="0" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold">End Date :</Label>
@@ -66,7 +68,7 @@
                        Grid.Row="9" Grid.Column="1" />
                 <!--<Switch Grid.Row="9" Grid.Column="2" HorizontalOptions="Center" x:Name="swNotifyEnd" Toggled="swNotifyEnd_Toggled"/>-->
 
-                <Label Text="{Binding DateValidationMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
+                <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
                        Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3"/>
 
                 <Label Text="{Binding OverlapMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"

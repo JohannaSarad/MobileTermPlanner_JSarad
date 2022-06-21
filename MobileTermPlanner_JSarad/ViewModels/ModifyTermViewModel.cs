@@ -40,7 +40,10 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 _modifyTerm.Name = value;
                 OnPropertyChanged();
-                ValidateString(Name, "Name");
+                ValidString(Name);
+                EmptyErrorMessageOne = ValidationMessage;
+                
+                //ValidateString(Name, "Name");
             }
         }
 
@@ -54,7 +57,9 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 _modifyTerm.StartDate = value;
                 OnPropertyChanged();
-                ValidateDates(_modifyTerm.StartDate, _modifyTerm.EndDate);
+                ValidDates(StartDate, EndDate);
+                DatesErrorMessageOne = ValidationMessage;
+                //ValidateDates(_modifyTerm.StartDate, _modifyTerm.EndDate);
             }
         }
 
@@ -68,7 +73,9 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 _modifyTerm.EndDate = value;
                 OnPropertyChanged();
-                ValidateDates(_modifyTerm.StartDate, _modifyTerm.EndDate);
+                ValidDates(StartDate, EndDate);
+                DatesErrorMessageOne = ValidationMessage;
+                //ValidateDates(_modifyTerm.StartDate, _modifyTerm.EndDate);
             }
         }
 
@@ -133,7 +140,8 @@ namespace MobileTermPlanner_JSarad.ViewModels
                     }
                 }
             }
-            if (IsValidInput && ValidateString(Name, "Name") && ValidateDates(StartDate, EndDate))
+            //if (IsValidInput && ValidateString(Name, "Name") && ValidateDates(StartDate, EndDate))
+            if (IsValidInput && ValidString(Name) && ValidDates(StartDate, EndDate))
             {
                 if (DatabaseService.IsAdd)
                 {

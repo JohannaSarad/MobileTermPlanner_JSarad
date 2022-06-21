@@ -38,7 +38,9 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 _modifyCourse.Name = value;
                 OnPropertyChanged();
-                ValidateString(CourseName, "Name");
+                ValidString(CourseName);
+                EmptyErrorMessageOne = ValidationMessage;
+                //ValidateString(CourseName, "Name");
 
             }
         }
@@ -53,7 +55,9 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 _modifyCourse.StartDate = value;
                 OnPropertyChanged();
-                ValidateDates(_modifyCourse.StartDate, _modifyCourse.EndDate);
+                ValidDates(CourseStartDate, CourseEndDate);
+                DatesErrorMessageOne = ValidationMessage;
+                //ValidateDates(_modifyCourse.StartDate, _modifyCourse.EndDate);
             }
         }
 
@@ -67,7 +71,9 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 _modifyCourse.EndDate = value;
                 OnPropertyChanged();
-                ValidateDates(_modifyCourse.StartDate, _modifyCourse.EndDate);
+                ValidDates(CourseStartDate, CourseEndDate);
+                DatesErrorMessageOne = ValidationMessage;
+                //ValidateDates(_modifyCourse.StartDate, _modifyCourse.EndDate);
             }
         }
 
@@ -96,7 +102,9 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 _modifyInstructor.Name = value;
                 OnPropertyChanged();
-                ValidateString(InstructorName, "Name");
+                ValidString(InstructorName);
+                EmptyErrorMessageTwo = ValidationMessage;
+                //ValidateString(InstructorName, "Name");
             }
         }
 
@@ -110,7 +118,9 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 _modifyInstructor.Email = value;
                 OnPropertyChanged();
-                ValidateEmail(Email);
+                ValidEmail(Email);
+                EmailErrorMessage = ValidationMessage;
+                //ValidateEmail(Email);
             }
         }
 
@@ -124,24 +134,13 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 _modifyInstructor.Phone = value;
                 OnPropertyChanged();
-                ValidatePhone(Phone);
+                ValidPhone(Phone);
+                PhoneErrorMessage = ValidationMessage;
+                //ValidatePhone(Phone);
             }
         }
 
-        //private string _invalidNameMessage;
-        //public string InvalidNameMessage
-        //{
-        //    get
-        //    {
-        //        return _invalidNameMessage;
-        //    }
-        //    set
-        //    {
-        //        _invalidNameMessage = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
+        
         private string _overlapMesssage;
         public string OverlapMessage
         {
@@ -156,23 +155,8 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
-        //private string _invalidDateMessage;
-        //public string InvalidDateMessage
-        //{
-        //    get
-        //    {
-        //        return _invalidDateMessage;
-        //    }
-        //    set
-        //    {
-        //        _invalidDateMessage = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
         //public string AddEdit { get; set; }
         public bool IsValidInput;
-        //public bool IsAdd;
 
         //commands
         public ICommand SaveCommand { get; set; }
@@ -231,8 +215,10 @@ namespace MobileTermPlanner_JSarad.ViewModels
                     }
                 }
             }
-            if (IsValidInput && ValidateDates(CourseStartDate, CourseEndDate) && ValidateString(CourseName, "Course Name") && 
-                ValidateString(InstructorName, "Instructor Name") && ValidateEmail(Email) && ValidatePhone(Phone))
+            //if (IsValidInput && ValidateDates(CourseStartDate, CourseEndDate) && ValidateString(CourseName, "Course Name") && 
+            //    ValidateString(InstructorName, "Instructor Name") && ValidateEmail(Email) && ValidatePhone(Phone))
+            if (IsValidInput && ValidString(CourseName) && ValidDates(CourseStartDate, CourseEndDate) && ValidString(InstructorName)
+                && ValidEmail(Email) && ValidPhone(Phone))
             {
                 if (DatabaseService.IsAdd)
                 {

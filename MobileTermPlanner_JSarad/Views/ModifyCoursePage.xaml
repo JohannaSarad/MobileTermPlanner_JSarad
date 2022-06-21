@@ -60,7 +60,7 @@
                        Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
                 <Entry Text="{Binding CourseName, Mode=TwoWay}" Placeholder="Course Name" VerticalTextAlignment="Center" 
                        Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"/>
-                <Label Text="{Binding StringValidationMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
+                <Label Text="{Binding EmptyErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
                        Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"/>
 
                 <Label Text="Start Date" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold"
@@ -70,7 +70,7 @@
                 <Label x:Name="lbNotifyStart" Text="Turn On Notification" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
                         Grid.Row="5" Grid.Column="1"/>
                 <Switch Grid.Row="5" Grid.Column="2" HorizontalOptions="Center" x:Name="swNotifyStart"/>
-                <Label Text="{Binding DateValidationMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
+                <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
                        Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" />
                 <!-- Toggled="swNotifyStart_Toggled"-->
 
@@ -81,7 +81,7 @@
                 <Label  x:Name="lbNotifyEnd" Text="Turn On Notification" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
                         Grid.Row="9" Grid.Column="1" />
                 <!--<Switch Grid.Row="9" Grid.Column="2" HorizontalOptions="Center" x:Name="swNotifyEnd" Toggled="swNotifyEnd_Toggled"/>-->
-                <Label Text="{Binding DateValidationMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
+                <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
                        Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3"/>
 
                 <Label Text="{Binding OverlapMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
@@ -91,21 +91,21 @@
                        Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="3"/>
                 <Entry Text="{Binding InstructorName}" Placeholder="Instructor Name" VerticalTextAlignment="Center"
                        Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="3"/>
-                <Label Text="{Binding StringValidationMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
+                <Label Text="{Binding EmptyErrorMessageTwo}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
                        Grid.Row="14" Grid.Column="0" Grid.ColumnSpan="3"/>
                 
                 <Label Text="Instructor Phone" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold"
                        Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="3"/>
                 <Entry x:Name="Phone" Text="{Binding Phone, Mode=TwoWay}" Placeholder="Instuctor Phone" VerticalTextAlignment="Center" 
                        Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="3"/>
-                <Label Text="{Binding PhoneValidationMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
+                <Label Text="{Binding PhoneErrorMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
                        Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="3"/>
 
                 <Label Text="Instructor Email" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold"
                        Grid.Row="18" Grid.Column="0" Grid.ColumnSpan="3"/>
                 <Entry x:Name="Email" Text="{Binding Email}" Placeholder="Instructor Email" VerticalTextAlignment="Center" 
                        Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="3"/>
-                <Label Text="{Binding EmailValidationMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
+                <Label Text="{Binding EmailErrorMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
                        Grid.Row="20" Grid.Column="0" Grid.ColumnSpan="3"/>
             </Grid>
         </StackLayout>

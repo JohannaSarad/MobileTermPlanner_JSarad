@@ -18,19 +18,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
     public class TermViewModel : BaseViewModel
     {
         //properties
-        private bool _isBusy;
-        public bool IsBusy
-        {
-            get
-            {
-                return _isBusy;
-            }
-            set
-            {
-                _isBusy = value;
-                OnPropertyChanged();
-            }
-        }
+        
         private ObservableCollection<Term> _terms;
         public ObservableCollection<Term> Terms
         {
