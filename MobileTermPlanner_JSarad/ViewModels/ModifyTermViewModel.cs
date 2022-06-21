@@ -29,18 +29,46 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        private string _invalidNameMessage;
-        public string InvalidNameMessage
+        
+        public string Name
         {
             get
             {
-                return _invalidNameMessage;
+                return _modifyTerm.Name;
             }
             set
             {
-                _invalidNameMessage = value;
+                _modifyTerm.Name = value;
                 OnPropertyChanged();
+                ValidateString(Name, "Name");
+            }
+        }
+
+        public DateTime StartDate
+        {
+            get
+            {
+                return _modifyTerm.StartDate;
+            }
+            set
+            {
+                _modifyTerm.StartDate = value;
+                OnPropertyChanged();
+                ValidateDates(_modifyTerm.StartDate, _modifyTerm.EndDate);
+            }
+        }
+
+        public DateTime EndDate
+        {
+            get
+            {
+                return _modifyTerm.EndDate;
+            }
+            set
+            {
+                _modifyTerm.EndDate = value;
+                OnPropertyChanged();
+                ValidateDates(_modifyTerm.StartDate, _modifyTerm.EndDate);
             }
         }
 
@@ -58,41 +86,28 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
-        private string _invalidDateMessage;
-        public string InvalidDateMessage
-        {
-            get
-            {
-                return _invalidDateMessage;
-            }
-            set
-            {
-                _invalidDateMessage = value;
-                OnPropertyChanged();
-            }
-        }
-
         public bool IsValidInput;
         //public bool IsAdd;
         
         //commands
-        public ICommand SaveTermCommand { get; set; }
-        public ICommand CancelTermCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
+        public ICommand CancelCommand { get; set; }
         
         public ModifyTermViewModel()
         {
-            
             if (DatabaseService.IsAdd) 
             {
                 _modifyTerm = new Term();
+                StartDate = DateTime.Now;
+                EndDate = StartDate.AddDays(180);
             }
             else
             {
                 _modifyTerm = DatabaseService.SelectedTerm;
             }
             
-            SaveTermCommand = new Command(async () => await SaveTerm());
-            CancelTermCommand = new Command(async () => await CancelTerm());
+            SaveCommand = new Command(async () => await SaveTerm());
+            CancelCommand = new Command(async () => await CancelTerm());
         }
 
         //methods
@@ -100,30 +115,10 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             TermList = await DatabaseService.GetTerm();
             IsValidInput = true;
-            if (ModifyTerm.Name == null)
-            {
-                IsValidInput = false;
-                InvalidNameMessage = "* Name is Required";
-            }
-            else
-            {
-                InvalidNameMessage = "";
-            }
-            if (ModifyTerm.StartDate > ModifyTerm.EndDate || ModifyTerm.StartDate.Date == ModifyTerm.EndDate.Date)
-            {
-                IsValidInput = false;
-                InvalidDateMessage = "* Term start date must be before term end date";
-            }
-            else
-            {
-                InvalidDateMessage = "";
-            }
 
             if (TermList.Count > 0)
             {
-                //FIX ME!!! This statement also needs to check if the term being checked is the term currently being worked on. 
-                int i;
-                for (i = 0; i < TermList.Count; i++)
+                for (int i = 0; i < TermList.Count; i++)
                 {
                     if (((TermList[i].StartDate <= ModifyTerm.EndDate && TermList[i].StartDate >= ModifyTerm.StartDate) ||
                         (TermList[i].EndDate <= ModifyTerm.EndDate && TermList[i].EndDate >= ModifyTerm.StartDate)) && (TermList[i].Id != ModifyTerm.Id))
@@ -138,7 +133,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
                     }
                 }
             }
-            if (IsValidInput == true)
+            if (IsValidInput && ValidateString(Name, "Name") && ValidateDates(StartDate, EndDate))
             {
                 if (DatabaseService.IsAdd)
                 {

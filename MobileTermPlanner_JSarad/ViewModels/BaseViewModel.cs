@@ -6,14 +6,14 @@ using System.Text;
 
 namespace MobileTermPlanner_JSarad.ViewModels
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public class BaseViewModel : Services.ValidationService
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        //public event PropertyChangedEventHandler PropertyChanged;
 
-        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this,
-            new PropertyChangedEventArgs(propertyName));
-        }
+        //public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        //{
+        //    PropertyChanged?.Invoke(this,
+        //    new PropertyChangedEventArgs(propertyName));
+        //}
     }
 }

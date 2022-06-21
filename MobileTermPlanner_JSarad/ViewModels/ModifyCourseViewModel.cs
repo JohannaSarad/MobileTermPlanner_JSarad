@@ -9,10 +9,11 @@ using Xamarin.Forms;
 
 namespace MobileTermPlanner_JSarad.ViewModels
 {
-    class ModifyCourseViewModel : BaseViewModel
+    public class ModifyCourseViewModel : BaseViewModel
     {
         public List<Course> CourseList { get; set; }
 
+        //course properties
         private Course _modifyCourse;
         public Course ModifyCourse
         {
@@ -27,6 +28,50 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
+        public string CourseName
+        {
+            get
+            {
+                return _modifyCourse.Name;
+            }
+            set
+            {
+                _modifyCourse.Name = value;
+                OnPropertyChanged();
+                ValidateString(CourseName, "Name");
+
+            }
+        }
+
+        public DateTime CourseStartDate
+        {
+            get
+            {
+                return _modifyCourse.StartDate;
+            }
+            set
+            {
+                _modifyCourse.StartDate = value;
+                OnPropertyChanged();
+                ValidateDates(_modifyCourse.StartDate, _modifyCourse.EndDate);
+            }
+        }
+
+        public DateTime CourseEndDate
+        {
+            get
+            {
+                return _modifyCourse.EndDate;
+            }
+            set
+            {
+                _modifyCourse.EndDate = value;
+                OnPropertyChanged();
+                ValidateDates(_modifyCourse.StartDate, _modifyCourse.EndDate);
+            }
+        }
+
+        //instructor properties
         private Instructor _modifyInstructor;
         public Instructor ModifyInstructor
         {
@@ -41,19 +86,61 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
-        private string _invalidNameMessage;
-        public string InvalidNameMessage
+        public string InstructorName
         {
             get
             {
-                return _invalidNameMessage;
+                return _modifyInstructor.Name;
             }
             set
             {
-                _invalidNameMessage = value;
+                _modifyInstructor.Name = value;
                 OnPropertyChanged();
+                ValidateString(InstructorName, "Name");
             }
         }
+
+        public string Email
+        {
+            get
+            {
+                return _modifyInstructor.Email;
+            }
+            set
+            {
+                _modifyInstructor.Email = value;
+                OnPropertyChanged();
+                ValidateEmail(Email);
+            }
+        }
+
+        public string Phone
+        {
+            get
+            {
+                return _modifyInstructor.Phone;
+            }
+            set
+            {
+                _modifyInstructor.Phone = value;
+                OnPropertyChanged();
+                ValidatePhone(Phone);
+            }
+        }
+
+        //private string _invalidNameMessage;
+        //public string InvalidNameMessage
+        //{
+        //    get
+        //    {
+        //        return _invalidNameMessage;
+        //    }
+        //    set
+        //    {
+        //        _invalidNameMessage = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
         private string _overlapMesssage;
         public string OverlapMessage
@@ -69,84 +156,65 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
-        private string _invalidDateMessage;
-        public string InvalidDateMessage
-        {
-            get
-            {
-                return _invalidDateMessage;
-            }
-            set
-            {
-                _invalidDateMessage = value;
-                OnPropertyChanged();
-            }
-        }
+        //private string _invalidDateMessage;
+        //public string InvalidDateMessage
+        //{
+        //    get
+        //    {
+        //        return _invalidDateMessage;
+        //    }
+        //    set
+        //    {
+        //        _invalidDateMessage = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
+        //public string AddEdit { get; set; }
         public bool IsValidInput;
         //public bool IsAdd;
 
         //commands
-        public ICommand SaveCourseCommand { get; set; }
-        public ICommand CancelCourseCommand { get; set; }
-        public ICommand NavToModifyAssessmentsCommand { get; set; }
-        public ICommand NavToModifyNotesCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
+        public ICommand CancelCommand { get; set; }
+        //public ICommand NavToModifyAssessmentsCommand { get; set; }
+        //public ICommand NavToModifyNotesCommand { get; set; }
 
         public ModifyCourseViewModel()
         {
-
             if (DatabaseService.IsAdd)
             {
+                //AddEdit = "Add Course";
                 _modifyCourse = new Course();
+                CourseStartDate = DatabaseService.SelectedTerm.StartDate;
+                CourseEndDate = CourseStartDate.AddDays(30);
                 _modifyInstructor = new Instructor();
-                
             }
             else
             {
+                //AddEdit = "Edit Course";
                 _modifyCourse = DatabaseService.SelectedCourse;
+                //GetInstructor(ModifyCourse.Id);
+                _modifyInstructor = DatabaseService.SelectedInstructor;
             }
 
-            SaveCourseCommand = new Command(async () => await SaveCourse());
-            CancelCourseCommand = new Command(async () => await CancelCourse());
+            SaveCommand = new Command(async () => await SaveCourse());
+            CancelCommand = new Command(async () => await CancelCourse());
         }
 
         //methods
+        
+        //private async void GetInstructor(int id)
+        //{
+        //    _modifyInstructor = await DatabaseService.GetInstuctorByCourse(id);
+        //}
         private async Task SaveCourse()
         {
             CourseList = await DatabaseService.GetCourseByTerm(DatabaseService.SelectedTerm.Id);
-
             IsValidInput = true;
-            if (ModifyCourse.Name == null)
-            {
-                IsValidInput = false;
-                InvalidNameMessage = "* Name is Required";
-            }
-            else
-            {
-                InvalidNameMessage = "";
-            }
-            if (ModifyInstructor.Name == null)
-            {
-                IsValidInput = false;
-                InvalidNameMessage = "* Name is Required";
-            }
-            else
-            {
-                InvalidNameMessage = "";
-            }
-            if (ModifyCourse.StartDate.Date >= ModifyCourse.EndDate.Date)
-            {
-                IsValidInput = false;
-                InvalidDateMessage = "* Course start date must be before term end date";
-            }
-            else
-            {
-                InvalidDateMessage = "";
-            }
-
+           
             if (CourseList.Count > 0)
             {
-                //FIX ME!!! This statement also needs to check if the term being checked is the term currently being worked on. 
                 int i;
                 for (i = 0; i < CourseList.Count; i++)
                 {
@@ -163,11 +231,13 @@ namespace MobileTermPlanner_JSarad.ViewModels
                     }
                 }
             }
-            if (IsValidInput == true)
+            if (IsValidInput && ValidateDates(CourseStartDate, CourseEndDate) && ValidateString(CourseName, "Course Name") && 
+                ValidateString(InstructorName, "Instructor Name") && ValidateEmail(Email) && ValidatePhone(Phone))
             {
                 if (DatabaseService.IsAdd)
                 {
                     MessagingCenter.Send(this, "AddCourse", ModifyCourse);
+                    await DatabaseService.AddInstructor(ModifyInstructor, ModifyCourse.Id);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
                 else

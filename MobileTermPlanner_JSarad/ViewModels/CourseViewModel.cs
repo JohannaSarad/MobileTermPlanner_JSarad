@@ -54,8 +54,8 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
         public ICommand NavToAddCommand { get; set; }
         public ICommand NavToEditCommand { get; set; }
-        public ICommand ViewCourseCommand { get; set; }
-        public ICommand DeleteCourseCommand { get; set; }
+        public ICommand ViewCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
 
         public CourseViewModel()
         {
@@ -63,10 +63,9 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
             NavToAddCommand = new Command(async () => await NavToAddCourse());
             NavToEditCommand = new Command(async (o) => await NavToEditCourse(o));
-            ViewCourseCommand = new Command(async (o) => await ViewCourse(o));
-            DeleteCourseCommand = new Command(async (o) => await DeleteCourse(o));
+            ViewCommand = new Command(async (o) => await ViewCourse(o));
+            DeleteCommand = new Command(async (o) => await DeleteCourse(o));
 
-            //added 6/14 untested
             MessagingCenter.Subscribe<ModifyCourseViewModel, Course>(this, "AddCourse", (sender, obj) =>
             {
                 AddCourse(obj);
@@ -89,6 +88,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             DatabaseService.IsAdd = false;
             DatabaseService.SelectedCourse = o as Course;
+            DatabaseService.SelectedInstructor = await DatabaseService.GetInstuctorByCourse(DatabaseService.SelectedCourse.Id);
             await Application.Current.MainPage.Navigation.PushAsync(new ModifyCoursePage());
         }
 

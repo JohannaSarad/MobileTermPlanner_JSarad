@@ -74,7 +74,6 @@ namespace MobileTermPlanner_JSarad.ViewModels
             ViewTermCommand = new Command(async (o) => await ViewTerm(o));
             DeleteTermCommand = new Command(async (o) => await DeleteTerm(o));
 
-            //added 6/14 untested
             MessagingCenter.Subscribe<ModifyTermViewModel, Term>(this, "AddTerm", (sender, obj) =>
             {
                 AddTerm(obj);
@@ -108,14 +107,13 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
         private async void AddTerm(Term term)
         {
-            //SelectedTerm = term;
+            //DatabaseService.SelectedTerm = term;
             await DatabaseService.AddTerm(term);
             Refresh();
         }
 
         private async void UpdateTerm(Term term)
         {
-            //SelectedTerm = term;
             await DatabaseService.UpdateTerm(term);
             Refresh();
         }

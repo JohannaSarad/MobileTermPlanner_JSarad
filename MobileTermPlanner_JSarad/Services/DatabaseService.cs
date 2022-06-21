@@ -15,12 +15,13 @@ namespace MobileTermPlanner_JSarad.Services
     {
         public static SQLiteAsyncConnection db;
         public static Term SelectedTerm { get; set; }
-        public static int TargetTermId { get; set; }
+        //public static int TargetTermId { get; set; }
         public static Course SelectedCourse { get; set; }
         public static int TargetCourseId { get; set; }
+        public static Instructor SelectedInstructor { get; set; }
         public static bool IsAdd { get; set; }
 
-
+        
         public static async Task Init()
         {
             if (db != null)
@@ -46,13 +47,31 @@ namespace MobileTermPlanner_JSarad.Services
                 //StartDateNotification = startDateNotification,
                 //EndDateNotification = endDateNotification
             };
-            TargetTermId = await db.InsertAsync(termToAdd);
+            var id = await db.InsertAsync(termToAdd);
         }
 
         public static async Task DeleteTerm(int id)
         {
             await Init();
             await db.DeleteAsync<Term>(id);
+            List<Course> associatedCourses = await GetCourseByTerm(id);
+
+            if (associatedCourses.Count > 0)
+            {
+                foreach (Course course in associatedCourses)
+                {
+                    await db.DeleteAsync<Course>(course.Id);
+                    Instructor associatedInstructor = await GetInstuctorByCourse(course.Id);
+                    await db.DeleteAsync<Instructor>(associatedInstructor.Id);
+
+                    //List<Assessment> associatedAssessments = await GetAssessmentByCourse(course.Id);
+                    //foreach (Assessment assessment in associatedAssessments)
+                    //{
+                    //    await db.DeleteAsync<Assessment>(assessment.Id)
+                    //}
+
+                }
+            }
         }
 
         public static async Task<List<Term>> GetTerm()
@@ -104,24 +123,24 @@ namespace MobileTermPlanner_JSarad.Services
         public static async Task DeleteCourse(int id)
         {
             await Init();
-            await db.DeleteAsync(id);
+            await db.DeleteAsync<Course>(id);
         }
 
         public static async Task<List<Course>> GetCourseByTerm(int id)
         {
             await Init();
             var coursesByTerm = await db.Table<Course>()
-                .Where(i => i.TermId == SelectedTerm.Id)
+                .Where(i => i.TermId == id)
                 .ToListAsync();
             return coursesByTerm;
 
         }
-        public static async Task<List<Course>> GetCourse()
-        {
-            await Init();
-            var courses = await db.Table<Course>().ToListAsync();
-            return courses;
-        }
+        //public static async Task<List<Course>> GetCourse()
+        //{
+        //    await Init();
+        //    var courses = await db.Table<Course>().ToListAsync();
+        //    return courses;
+        //}
 
         public static async Task UpdateCourse(Course course)
         {
@@ -164,19 +183,21 @@ namespace MobileTermPlanner_JSarad.Services
             await Init();
         }
 
-        //public static async Task AddInstructor(string name, string phone, string email, int courseId)
-        //{
-        //    await Init();
-        //    Instructor instructor = new Instructor
-        //    {
-        //        Name = name,
-        //        Phone = phone,
-        //        Email = email,
-        //        CourseId = courseId
-        //    };
+        public static async Task AddInstructor(Instructor instructor, int courseId)
+        {
+            await Init();
+          
 
-        //    var id = await db.InsertAsync(instructor);
-        //}
+            Instructor instructorToAdd = new Instructor
+            {
+                Name = instructor.Name,
+                Email = instructor.Email,
+                Phone = instructor.Phone,
+                CourseId = SelectedCourse.Id
+            };
+
+            var id = await db.InsertAsync(instructorToAdd);
+        }
 
         public static async Task DeleteInstructor(int id)
         {
@@ -188,6 +209,14 @@ namespace MobileTermPlanner_JSarad.Services
         //{
         //    await Init();
 
+        public static async Task<Instructor> GetInstuctorByCourse(int id)
+        {
+            await Init();
+            Instructor instructor = await db.Table<Instructor>()
+                .Where(i => i.CourseId == id)
+                .FirstOrDefaultAsync();
+            return instructor;
+        }
 
         //    var instructors = await db.Table<Instructor>().ToListAsync();
         //    return instructors;
@@ -214,8 +243,9 @@ namespace MobileTermPlanner_JSarad.Services
 
         public static async Task FillSampleData()
         {
+            
             List<Term> terms = await db.Table<Term>().ToListAsync();
-            //var id = 0;
+            //int lastId = 0;
             if (terms.Count == 0)
             {
                 Term sampleTerm = new Term
@@ -226,16 +256,9 @@ namespace MobileTermPlanner_JSarad.Services
                     //StartDateNotification = true,
                     //EndDateNotification = false
                 };
-
                 await db.InsertAsync(sampleTerm);
-                terms = await db.Table<Term>().ToListAsync();
+                int termId = sampleTerm.Id;
                 
-                for (int i = 0; i < 1; i++)
-                {
-                    //SelectedTerm = terms[i];
-                    TargetTermId = terms[i].Id;
-                }
-
                 Course sampleCourse = new Course
                 {
                     Name = "Course 1",
@@ -243,23 +266,17 @@ namespace MobileTermPlanner_JSarad.Services
                     EndDate = new DateTime(2022, 01, 31),
                     //StartDateNotification = true,
                     //EndDateNotification = false,
-                    TermId = TargetTermId
+                    TermId = termId
                 };
-                //id = 
                 await db.InsertAsync(sampleCourse);
+                int courseId = sampleCourse.Id;
                 
-                List<Course> courses = await db.Table<Course>().ToListAsync();
-                for (int i = 0; i < 1; i++)
-                {
-                    TargetCourseId = courses[i].Id;
-                }
-
                 Instructor sampleInstructor = new Instructor
                 {
                     Name = "Johanna Sarad",
                     Phone = "6614444763",
                     Email = "jsarad2@wgu.edu",
-                    CourseId = TargetCourseId
+                    CourseId = courseId
                 };
                 await db.InsertAsync(sampleInstructor);
             }
