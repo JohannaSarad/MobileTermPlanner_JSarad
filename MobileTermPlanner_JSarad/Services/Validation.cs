@@ -51,15 +51,21 @@ namespace MobileTermPlanner_JSarad.Services
 
         public bool ValidPhone(string str)
         {
-            //int phone = Convert.ToInt32(str);
+            string phone = str.Replace("-", String.Empty).Replace("(", String.Empty).Replace(")", String.Empty);
+            
             if (str == null)
             {
                 ValidationMessage = "* Phone number is required";
                 return false;
             }
-            else if (str.Length > 10 || str.Length < 7)
+            else if (phone.Length > 10 || phone.Length < 7 || (!long.TryParse(phone, out long i)))
             {
                 ValidationMessage = "* Phone number must be between 7 and 10 digits";
+                return false;
+            }
+            else if (phone.Trim().StartsWith("0"))
+            {
+                ValidationMessage = "* Phone number cannot start with zero";
                 return false;
             }
             else

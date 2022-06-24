@@ -13,14 +13,22 @@ namespace MobileTermPlanner_JSarad.ViewModels
 {
     public class CourseViewModel : BaseViewModel
     {
-        public Term SelectedTerm 
+        //properties
+        private Term _term;
+        public Term Term
         {
             get
             {
-               return DatabaseService.SelectedTerm;
+                return _term;
+            }
+            set
+            {
+                _term = value;
+                OnPropertyChanged();
             }
         }
-        //properties
+        
+        
         private ObservableCollection<Course> _courses;
         public ObservableCollection<Course> Courses
         {
@@ -35,16 +43,16 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
-        private Course _selectedCourse;
-        public Course SelectedCourse
+        private Course _course;
+        public Course Course
         {
             get
             {
-                return _selectedCourse;
+                return _course;
             }
             set
             {
-                _selectedCourse = value;
+                _course = value;
                 OnPropertyChanged();
                     
             }
@@ -59,22 +67,13 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
         public CourseViewModel()
         {
+            Term = DatabaseService.CurrentTerm;
             LoadCourses();
 
             NavToAddCommand = new Command(async () => await NavToAddCourse());
             NavToEditCommand = new Command(async (o) => await NavToEditCourse(o));
             ViewCommand = new Command(async (o) => await ViewCourse(o));
             DeleteCommand = new Command(async (o) => await DeleteCourse(o));
-
-            MessagingCenter.Subscribe<ModifyCourseViewModel, Course>(this, "AddCourse", (sender, obj) =>
-            {
-                AddCourse(obj);
-            });
-
-            MessagingCenter.Subscribe<ModifyCourseViewModel, Course>(this, "EditCourse", (sender, obj) =>
-            {
-                UpdateCourse(obj);
-            });
         }
 
         //methods
@@ -87,50 +86,50 @@ namespace MobileTermPlanner_JSarad.ViewModels
         private async Task NavToEditCourse(object o)
         {
             DatabaseService.IsAdd = false;
-            DatabaseService.SelectedCourse = o as Course;
-            DatabaseService.SelectedInstructor = await DatabaseService.GetInstuctorByCourse(DatabaseService.SelectedCourse.Id);
+            DatabaseService.CurrentCourse = o as Course;
+            DatabaseService.CurrentInstructor = await DatabaseService.GetInstuctorByCourse(DatabaseService.CurrentCourse.Id);
             await Application.Current.MainPage.Navigation.PushAsync(new ModifyCoursePage());
         }
 
         private async Task ViewCourse(object o)
         {
-            DatabaseService.SelectedCourse = o as Course;
+            DatabaseService.CurrentCourse = o as Course;
+            DatabaseService.CurrentInstructor = await DatabaseService.GetInstuctorByCourse(DatabaseService.CurrentCourse.Id);
             await Application.Current.MainPage.Navigation.PushAsync(new DetailedCourseViewPage());
         }
 
-        private async void AddCourse(Course course)
-        {
-            await DatabaseService.AddCourse(course);
-            Refresh();
-        }
+        //private async void AddCourse(Course course)
+        //{
+        //    await DatabaseService.AddCourse(course);
+        //    Refresh();
+        //}
 
-        private async void UpdateCourse(Course course)
-        {
-            //SelectedTerm = term;
-            await DatabaseService.UpdateCourse(course);
-            Refresh();
-        }
+        //private async void UpdateCourse(Course course)
+        //{
+        //    //SelectedTerm = term;
+        //    await DatabaseService.UpdateCourse(course);
+        //    Refresh();
+        //}
         private async Task DeleteCourse(object o)
         {
-            SelectedCourse = o as Course;
-            await DatabaseService.DeleteCourse(SelectedCourse.Id);
+            Course course = o as Course;
+            await DatabaseService.DeleteCourse(course.Id);
             Refresh();
         }
 
         private async void LoadCourses()
         {
             //IsBusy = true;
-            Courses = new ObservableCollection<Course>(await DatabaseService.GetCourseByTerm(DatabaseService.SelectedTerm.Id));
+            Courses = new ObservableCollection<Course>(await DatabaseService.GetCourseByTerm(DatabaseService.CurrentTerm.Id));
             //IsBusy = false;
         }
 
         public void Refresh()
         {
-            //IsBusy = true;
+            IsBusy = true;
             Courses.Clear();
-            //Terms = new ObservableCollection<Term>(await DatabaseService.GetTerm());
             LoadCourses();
-            //IsBusy = false;
+            IsBusy = false;
         }
     }
 }

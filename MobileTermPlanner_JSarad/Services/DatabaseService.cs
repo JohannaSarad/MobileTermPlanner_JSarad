@@ -14,11 +14,11 @@ namespace MobileTermPlanner_JSarad.Services
     public static class DatabaseService
     {
         public static SQLiteAsyncConnection db;
-        public static Term SelectedTerm { get; set; }
+        public static Term CurrentTerm { get; set; }
         //public static int TargetTermId { get; set; }
-        public static Course SelectedCourse { get; set; }
+        public static Course CurrentCourse { get; set; }
         public static int TargetCourseId { get; set; }
-        public static Instructor SelectedInstructor { get; set; }
+        public static Instructor CurrentInstructor { get; set; }
         public static bool IsAdd { get; set; }
 
         
@@ -102,7 +102,7 @@ namespace MobileTermPlanner_JSarad.Services
             }
         }
 
-        public static async Task AddCourse(Course course)
+        public static async Task AddCourse(Course course, int id)
         {
             //bool startDateNotification, bool endDateNotification
             await Init();
@@ -114,7 +114,7 @@ namespace MobileTermPlanner_JSarad.Services
                 EndDate = course.EndDate,
                 //StartDateNotification = startDateNotification,
                 //EndDateNotification = endDateNotification,
-                TermId = SelectedTerm.Id
+                TermId = id
             };
 
             TargetCourseId = await db.InsertAsync(courseToAdd);
@@ -193,7 +193,7 @@ namespace MobileTermPlanner_JSarad.Services
                 Name = instructor.Name,
                 Email = instructor.Email,
                 Phone = instructor.Phone,
-                CourseId = SelectedCourse.Id
+                CourseId = courseId
             };
 
             var id = await db.InsertAsync(instructorToAdd);

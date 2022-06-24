@@ -14,36 +14,35 @@ namespace MobileTermPlanner_JSarad.ViewModels
     public class ModifyTermViewModel : BaseViewModel
     {
         //properties
+
         public List<Term> TermList { get; set; }
         
-        private Term _modifyTerm;
-        public Term ModifyTerm
+        private Term _term;
+        public Term Term
         {
             get
             {
-                return _modifyTerm;
+                return _term;
             }
             set
             {
-                _modifyTerm = value;
+                _term = value;
                 OnPropertyChanged();
             }
         }
         
-        public string Name
+        public string TermName
         {
             get
             {
-                return _modifyTerm.Name;
+                return _term.Name;
             }
             set
             {
-                _modifyTerm.Name = value;
+                _term.Name = value;
                 OnPropertyChanged();
-                ValidString(Name);
+                ValidString(TermName);
                 EmptyErrorMessageOne = ValidationMessage;
-                
-                //ValidateString(Name, "Name");
             }
         }
 
@@ -51,15 +50,14 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             get
             {
-                return _modifyTerm.StartDate;
+                return _term.StartDate;
             }
             set
             {
-                _modifyTerm.StartDate = value;
+                _term.StartDate = value;
                 OnPropertyChanged();
                 ValidDates(StartDate, EndDate);
                 DatesErrorMessageOne = ValidationMessage;
-                //ValidateDates(_modifyTerm.StartDate, _modifyTerm.EndDate);
             }
         }
 
@@ -67,15 +65,14 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             get
             {
-                return _modifyTerm.EndDate;
+                return _term.EndDate;
             }
             set
             {
-                _modifyTerm.EndDate = value;
+                _term.EndDate = value;
                 OnPropertyChanged();
                 ValidDates(StartDate, EndDate);
                 DatesErrorMessageOne = ValidationMessage;
-                //ValidateDates(_modifyTerm.StartDate, _modifyTerm.EndDate);
             }
         }
 
@@ -94,7 +91,6 @@ namespace MobileTermPlanner_JSarad.ViewModels
         }
 
         public bool IsValidInput;
-        //public bool IsAdd;
         
         //commands
         public ICommand SaveCommand { get; set; }
@@ -102,17 +98,17 @@ namespace MobileTermPlanner_JSarad.ViewModels
         
         public ModifyTermViewModel()
         {
-            if (DatabaseService.IsAdd) 
+            if (DatabaseService.IsAdd)
             {
-                _modifyTerm = new Term();
+                Term = new Term();
                 StartDate = DateTime.Now;
                 EndDate = StartDate.AddDays(180);
             }
             else
             {
-                _modifyTerm = DatabaseService.SelectedTerm;
+                Term = DatabaseService.CurrentTerm;
             }
-            
+          
             SaveCommand = new Command(async () => await SaveTerm());
             CancelCommand = new Command(async () => await CancelTerm());
         }
@@ -127,30 +123,33 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 for (int i = 0; i < TermList.Count; i++)
                 {
-                    if (((TermList[i].StartDate <= ModifyTerm.EndDate && TermList[i].StartDate >= ModifyTerm.StartDate) ||
-                        (TermList[i].EndDate <= ModifyTerm.EndDate && TermList[i].EndDate >= ModifyTerm.StartDate)) && (TermList[i].Id != ModifyTerm.Id))
+                    if (((TermList[i].StartDate <= Term.EndDate && TermList[i].StartDate >= Term.StartDate) ||
+                        (TermList[i].EndDate <= Term.EndDate && TermList[i].EndDate >= Term.StartDate)) && (TermList[i].Id != Term.Id))
                     {
                         IsValidInput = false;
-                        OverlapMessage = $"* There is an overlapping term for these dates for Term {TermList[i].Name} from {TermList[i].StartDate.Date} to " +
-                            $"{TermList[i].EndDate.Date}";
+                        await Application.Current.MainPage.DisplayAlert("Overlapping Course", $" * There is an overlapping term for these dates for Term { TermList[i].Name}" +
+                            $"from { TermList[i].StartDate.Date} to {TermList[i].EndDate.Date}", "Ok");
+                        //OverlapMessage = $"* There is an overlapping term for these dates for Term {TermList[i].Name} from {TermList[i].StartDate.Date} to " +
+                        //    $"{TermList[i].EndDate.Date}";
                     }
-                    else
-                    {
-                        OverlapMessage = "";
-                    }
+                    //else
+                    //{
+                    //    OverlapMessage = "";
+                    //}
                 }
             }
-            //if (IsValidInput && ValidateString(Name, "Name") && ValidateDates(StartDate, EndDate))
-            if (IsValidInput && ValidString(Name) && ValidDates(StartDate, EndDate))
+            if (IsValidInput && ValidString(TermName) && ValidDates(StartDate, EndDate))
             {
                 if (DatabaseService.IsAdd)
                 {
-                    MessagingCenter.Send(this, "AddTerm", ModifyTerm);
+                    //MessagingCenter.Send(this, "AddTerm", Term);
+                    await DatabaseService.AddTerm(Term);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
                 else
                 {
-                    MessagingCenter.Send(this, "EditTerm", ModifyTerm);
+                    //MessagingCenter.Send(this, "EditTerm", Term);
+                    await DatabaseService.UpdateTerm(Term);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
             }
@@ -158,6 +157,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
         private async Task CancelTerm()
         {
+            //MessagingCenter.Send(this, "CancelChanges");
             await Application.Current.MainPage.Navigation.PopAsync();
         }
     }

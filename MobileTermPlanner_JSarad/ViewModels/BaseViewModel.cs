@@ -1,13 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
+using MobileTermPlanner_JSarad.Models;
+using MobileTermPlanner_JSarad.Services;
 
 namespace MobileTermPlanner_JSarad.ViewModels
 {
-    public class BaseViewModel : Services.Validation
+    public class BaseViewModel : Validation
     {
+        public bool _isAdd;
+        public bool IsAdd
+        {
+            get { return _isAdd; }
+            set { _isAdd = value; }
+        }
+
         private bool _isBusy;
         public bool IsBusy
         {
@@ -22,21 +33,17 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
+
+
+        
+       
         //Validation MessageProperties
 
         private string _emptyErrorMessageOne;
         public string EmptyErrorMessageOne
         {
-            get
-            {
-                return _emptyErrorMessageOne;
-            }
-            set
-            {
-                _emptyErrorMessageOne = value;
-                OnPropertyChanged();
-
-            }
+            get { return _emptyErrorMessageOne; }
+            set { _emptyErrorMessageOne = value; OnPropertyChanged(); }
         }
 
         private string _emptyErrorMessageTwo;

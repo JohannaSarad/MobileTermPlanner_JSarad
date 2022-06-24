@@ -14,16 +14,16 @@ namespace MobileTermPlanner_JSarad.ViewModels
         public List<Course> CourseList { get; set; }
 
         //course properties
-        private Course _modifyCourse;
-        public Course ModifyCourse
+        private Course _course;
+        public Course Course
         {
             get
             {
-                return _modifyCourse;
+                return _course;
             }
             set
             {
-                _modifyCourse = value;
+                _course = value;
                 OnPropertyChanged();
             }
         }
@@ -32,16 +32,14 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             get
             {
-                return _modifyCourse.Name;
+                return _course.Name;
             }
             set
             {
-                _modifyCourse.Name = value;
+                _course.Name = value;
                 OnPropertyChanged();
                 ValidString(CourseName);
                 EmptyErrorMessageOne = ValidationMessage;
-                //ValidateString(CourseName, "Name");
-
             }
         }
 
@@ -49,11 +47,11 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             get
             {
-                return _modifyCourse.StartDate;
+                return _course.StartDate;
             }
             set
             {
-                _modifyCourse.StartDate = value;
+                _course.StartDate = value;
                 OnPropertyChanged();
                 ValidDates(CourseStartDate, CourseEndDate);
                 DatesErrorMessageOne = ValidationMessage;
@@ -65,29 +63,28 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             get
             {
-                return _modifyCourse.EndDate;
+                return _course.EndDate;
             }
             set
             {
-                _modifyCourse.EndDate = value;
+                _course.EndDate = value;
                 OnPropertyChanged();
                 ValidDates(CourseStartDate, CourseEndDate);
                 DatesErrorMessageOne = ValidationMessage;
-                //ValidateDates(_modifyCourse.StartDate, _modifyCourse.EndDate);
             }
         }
 
         //instructor properties
-        private Instructor _modifyInstructor;
-        public Instructor ModifyInstructor
+        private Instructor _instructor;
+        public Instructor Instructor
         {
             get
             {
-                return _modifyInstructor;
+                return _instructor;
             }
             set
             {
-                _modifyInstructor = value;
+                _instructor = value;
                 OnPropertyChanged();
             }
         }
@@ -96,15 +93,14 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             get
             {
-                return _modifyInstructor.Name;
+                return _instructor.Name;
             }
             set
             {
-                _modifyInstructor.Name = value;
+                _instructor.Name = value;
                 OnPropertyChanged();
                 ValidString(InstructorName);
                 EmptyErrorMessageTwo = ValidationMessage;
-                //ValidateString(InstructorName, "Name");
             }
         }
 
@@ -112,15 +108,14 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             get
             {
-                return _modifyInstructor.Email;
+                return _instructor.Email;
             }
             set
             {
-                _modifyInstructor.Email = value;
+                _instructor.Email = value;
                 OnPropertyChanged();
                 ValidEmail(Email);
                 EmailErrorMessage = ValidationMessage;
-                //ValidateEmail(Email);
             }
         }
 
@@ -128,19 +123,17 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             get
             {
-                return _modifyInstructor.Phone;
+                return _instructor.Phone;
             }
             set
             {
-                _modifyInstructor.Phone = value;
+                _instructor.Phone = value;
                 OnPropertyChanged();
                 ValidPhone(Phone);
                 PhoneErrorMessage = ValidationMessage;
-                //ValidatePhone(Phone);
             }
         }
 
-        
         private string _overlapMesssage;
         public string OverlapMessage
         {
@@ -169,17 +162,16 @@ namespace MobileTermPlanner_JSarad.ViewModels
             if (DatabaseService.IsAdd)
             {
                 //AddEdit = "Add Course";
-                _modifyCourse = new Course();
-                CourseStartDate = DatabaseService.SelectedTerm.StartDate;
+                Course = new Course();
+                CourseStartDate = DatabaseService.CurrentTerm.StartDate;
                 CourseEndDate = CourseStartDate.AddDays(30);
-                _modifyInstructor = new Instructor();
+                Instructor = new Instructor();
             }
             else
             {
                 //AddEdit = "Edit Course";
-                _modifyCourse = DatabaseService.SelectedCourse;
-                //GetInstructor(ModifyCourse.Id);
-                _modifyInstructor = DatabaseService.SelectedInstructor;
+                Course = DatabaseService.CurrentCourse;
+                Instructor = DatabaseService.CurrentInstructor;
             }
 
             SaveCommand = new Command(async () => await SaveCourse());
@@ -194,7 +186,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         //}
         private async Task SaveCourse()
         {
-            CourseList = await DatabaseService.GetCourseByTerm(DatabaseService.SelectedTerm.Id);
+            CourseList = await DatabaseService.GetCourseByTerm(DatabaseService.CurrentTerm.Id);
             IsValidInput = true;
            
             if (CourseList.Count > 0)
@@ -202,33 +194,27 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 int i;
                 for (i = 0; i < CourseList.Count; i++)
                 {
-                    if (((CourseList[i].StartDate <= ModifyCourse.EndDate && CourseList[i].StartDate >= ModifyCourse.StartDate) ||
-                        (CourseList[i].EndDate <= ModifyCourse.EndDate && CourseList[i].EndDate >= ModifyCourse.StartDate)) && (CourseList[i].Id != ModifyCourse.Id))
+                    if (((CourseList[i].StartDate <= Course.EndDate && CourseList[i].StartDate >= Course.StartDate) ||
+                        (CourseList[i].EndDate <= Course.EndDate && CourseList[i].EndDate >= Course.StartDate)) && (CourseList[i].Id != Course.Id))
                     {
                         IsValidInput = false;
-                        OverlapMessage = $"* There is an overlapping term for these dates for Term {CourseList[i].Name} from {CourseList[i].StartDate.Date} to " +
-                            $"{CourseList[i].EndDate.Date}";
-                    }
-                    else
-                    {
-                        OverlapMessage = "";
+                        await Application.Current.MainPage.DisplayAlert("Overlapping Course", $" * There is an overlapping term for these dates for Term { CourseList[i].Name}" +
+                            $"from { CourseList[i].StartDate.Date} to {CourseList[i].EndDate.Date}", "Ok");
                     }
                 }
             }
-            //if (IsValidInput && ValidateDates(CourseStartDate, CourseEndDate) && ValidateString(CourseName, "Course Name") && 
-            //    ValidateString(InstructorName, "Instructor Name") && ValidateEmail(Email) && ValidatePhone(Phone))
             if (IsValidInput && ValidString(CourseName) && ValidDates(CourseStartDate, CourseEndDate) && ValidString(InstructorName)
                 && ValidEmail(Email) && ValidPhone(Phone))
             {
                 if (DatabaseService.IsAdd)
                 {
-                    MessagingCenter.Send(this, "AddCourse", ModifyCourse);
-                    await DatabaseService.AddInstructor(ModifyInstructor, ModifyCourse.Id);
+                    await DatabaseService.AddCourse(Course, DatabaseService.CurrentCourse.Id);
+                    await DatabaseService.AddInstructor(Instructor, Course.Id);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
                 else
                 {
-                    MessagingCenter.Send(this, "EditCourse", ModifyCourse);
+                    await DatabaseService.UpdateCourse(Course);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
             }

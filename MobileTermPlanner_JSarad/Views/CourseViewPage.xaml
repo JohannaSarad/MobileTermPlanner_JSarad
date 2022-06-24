@@ -27,15 +27,15 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Label Text="{Binding SelectedTerm.Name}" TextColor="Black" FontSize="Title" FontAttributes="Bold"
+                <Label Text="{Binding Term.Name}" TextColor="Black" FontSize="Title" FontAttributes="Bold"
                        Grid.Row="0" Grid.ColumnSpan="2"/>
                 <Label Text="Start Date : " TextColor="Black" FontSize="Small" FontAttributes="Bold"
                        Grid.Row="1" Grid.Column="0"/>
-                <Label Text="{Binding SelectedTerm.StartDate, StringFormat='{0:MMMM dd, yyyy}'}" FontSize="Small"
+                <Label Text="{Binding Term.StartDate, StringFormat='{0:MMMM dd, yyyy}'}" FontSize="Small"
                        Grid.Row="1" Grid.Column="1"/>
                 <Label Text="End Date : " TextColor="Black" FontSize="Small" FontAttributes="Bold"
                        Grid.Row="2" Grid.Column="0"/>
-                <Label Text="{Binding SelectedTerm.EndDate, StringFormat='{0:MMMM dd, yyyy}'}" FontSize="Small"
+                <Label Text="{Binding Term.EndDate, StringFormat='{0:MMMM dd, yyyy}'}" FontSize="Small"
                        Grid.Row="2" Grid.Column="1"/>
             </Grid>
 

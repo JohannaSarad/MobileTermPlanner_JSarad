@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using MobileTermPlanner_JSarad.Models;
 
 namespace MobileTermPlanner_JSarad.Views
 {
