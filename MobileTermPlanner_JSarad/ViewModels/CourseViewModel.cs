@@ -127,7 +127,10 @@ namespace MobileTermPlanner_JSarad.ViewModels
         public void Refresh()
         {
             IsBusy = true;
-            Courses.Clear();
+            if (Courses != null)
+            {
+                Courses.Clear();
+            }
             LoadCourses();
             IsBusy = false;
         }

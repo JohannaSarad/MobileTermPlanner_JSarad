@@ -17,7 +17,7 @@ namespace MobileTermPlanner_JSarad.Services
         public static Term CurrentTerm { get; set; }
         //public static int TargetTermId { get; set; }
         public static Course CurrentCourse { get; set; }
-        public static int TargetCourseId { get; set; }
+        public static int LastAddedId { get; set; }
         public static Instructor CurrentInstructor { get; set; }
         public static bool IsAdd { get; set; }
 
@@ -117,7 +117,8 @@ namespace MobileTermPlanner_JSarad.Services
                 TermId = id
             };
 
-            TargetCourseId = await db.InsertAsync(courseToAdd);
+            await db.InsertAsync(courseToAdd);
+            LastAddedId = courseToAdd.Id;
         }
 
         public static async Task DeleteCourse(int id)

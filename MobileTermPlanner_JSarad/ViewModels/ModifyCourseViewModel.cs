@@ -119,6 +119,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
+        
         public string Phone
         {
             get
@@ -134,19 +135,19 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
-        private string _overlapMesssage;
-        public string OverlapMessage
-        {
-            get
-            {
-                return _overlapMesssage;
-            }
-            set
-            {
-                _overlapMesssage = value;
-                OnPropertyChanged();
-            }
-        }
+        //private string _overlapMesssage;
+        //public string OverlapMessage
+        //{
+        //    get
+        //    {
+        //        return _overlapMesssage;
+        //    }
+        //    set
+        //    {
+        //        _overlapMesssage = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
         //public string AddEdit { get; set; }
         public bool IsValidInput;
@@ -188,7 +189,18 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             CourseList = await DatabaseService.GetCourseByTerm(DatabaseService.CurrentTerm.Id);
             IsValidInput = true;
-           
+
+            //validates unchanged properties and displays any errors to user on save attempt
+            ValidString(CourseName);
+            EmptyErrorMessageOne = ValidationMessage;
+            ValidString(InstructorName);
+            EmptyErrorMessageTwo = ValidationMessage;
+            ValidEmail(Email);
+            EmailErrorMessage = ValidationMessage;
+            ValidPhone(Phone);
+            PhoneErrorMessage = ValidationMessage;
+            
+            //checks for overlapping courses 
             if (CourseList.Count > 0)
             {
                 int i;
@@ -198,18 +210,33 @@ namespace MobileTermPlanner_JSarad.ViewModels
                         (CourseList[i].EndDate <= Course.EndDate && CourseList[i].EndDate >= Course.StartDate)) && (CourseList[i].Id != Course.Id))
                     {
                         IsValidInput = false;
-                        await Application.Current.MainPage.DisplayAlert("Overlapping Course", $" * There is an overlapping term for these dates for Term { CourseList[i].Name}" +
+                        await Application.Current.MainPage.DisplayAlert("Overlapping Course", $" * There is an overlapping term for these dates for " +
+                            $"Term { CourseList[i].Name}" +
                             $"from { CourseList[i].StartDate.Date} to {CourseList[i].EndDate.Date}", "Ok");
                     }
                 }
             }
+
+            //checks that new or edited Course dates are within the dates of the Term
+            if (DatabaseService.CurrentTerm.StartDate > Course.StartDate || DatabaseService.CurrentTerm.StartDate > Course.EndDate
+                || DatabaseService.CurrentTerm.EndDate < Course.StartDate || DatabaseService.CurrentTerm.EndDate < Course.EndDate)
+            {
+                IsValidInput = false;
+                await Application.Current.MainPage.DisplayAlert("Course Dates Outside of Term", $"Term {DatabaseService.CurrentTerm.Name}" +
+                            $" starts on { DatabaseService.CurrentTerm.StartDate.Date} and ends on {DatabaseService.CurrentTerm.EndDate.Date}" +
+                            $" Courses within this term must be schedule within these dates", "Ok");
+            }
+
+            //saves course if all validations return true
             if (IsValidInput && ValidString(CourseName) && ValidDates(CourseStartDate, CourseEndDate) && ValidString(InstructorName)
                 && ValidEmail(Email) && ValidPhone(Phone))
             {
                 if (DatabaseService.IsAdd)
                 {
-                    await DatabaseService.AddCourse(Course, DatabaseService.CurrentCourse.Id);
-                    await DatabaseService.AddInstructor(Instructor, Course.Id);
+                    await DatabaseService.AddCourse(Course, DatabaseService.CurrentTerm.Id);
+                    //note that you changed this before and after breaking. May cause break. 
+                    
+                    await DatabaseService.AddInstructor(Instructor, DatabaseService.LastAddedId);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
                 else

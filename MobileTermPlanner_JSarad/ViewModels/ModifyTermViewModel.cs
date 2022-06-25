@@ -119,6 +119,11 @@ namespace MobileTermPlanner_JSarad.ViewModels
             TermList = await DatabaseService.GetTerm();
             IsValidInput = true;
 
+            //validates unchanged properties and displays any errors to user on save attempt
+            ValidString(TermName);
+            EmptyErrorMessageOne = ValidationMessage;
+
+            //checks for overlapping Terms
             if (TermList.Count > 0)
             {
                 for (int i = 0; i < TermList.Count; i++)
@@ -128,27 +133,21 @@ namespace MobileTermPlanner_JSarad.ViewModels
                     {
                         IsValidInput = false;
                         await Application.Current.MainPage.DisplayAlert("Overlapping Course", $" * There is an overlapping term for these dates for Term { TermList[i].Name}" +
-                            $"from { TermList[i].StartDate.Date} to {TermList[i].EndDate.Date}", "Ok");
-                        //OverlapMessage = $"* There is an overlapping term for these dates for Term {TermList[i].Name} from {TermList[i].StartDate.Date} to " +
-                        //    $"{TermList[i].EndDate.Date}";
+                            $" from { TermList[i].StartDate.Date} to {TermList[i].EndDate.Date}", "Ok");
                     }
-                    //else
-                    //{
-                    //    OverlapMessage = "";
-                    //}
                 }
             }
+
+            //saves term if all validations return true
             if (IsValidInput && ValidString(TermName) && ValidDates(StartDate, EndDate))
             {
                 if (DatabaseService.IsAdd)
                 {
-                    //MessagingCenter.Send(this, "AddTerm", Term);
                     await DatabaseService.AddTerm(Term);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
                 else
                 {
-                    //MessagingCenter.Send(this, "EditTerm", Term);
                     await DatabaseService.UpdateTerm(Term);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
