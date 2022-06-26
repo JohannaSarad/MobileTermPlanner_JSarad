@@ -13,6 +13,9 @@ namespace MobileTermPlanner_JSarad.ViewModels
     {
         public List<Course> CourseList { get; set; }
 
+        public List<string> StatusList { get; } = new List<string>{ "In Progress", "Completed", "Plan to Take", "Dropped" };
+        public string StatusTitle { get; } = "Select a Course Status";
+
         //course properties
         private Course _course;
         public Course Course
@@ -71,6 +74,21 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 OnPropertyChanged();
                 ValidDates(CourseStartDate, CourseEndDate);
                 DatesErrorMessageOne = ValidationMessage;
+            }
+        }
+
+        public string Status
+        {
+            get
+            {
+                return _course.Status;
+            }
+            set
+            {
+                _course.Status = value;
+                OnPropertyChanged();
+                ValidStatus(Status, StatusTitle);
+                StatusErrorMessage = ValidationMessage;
             }
         }
 
@@ -135,20 +153,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
-        //private string _overlapMesssage;
-        //public string OverlapMessage
-        //{
-        //    get
-        //    {
-        //        return _overlapMesssage;
-        //    }
-        //    set
-        //    {
-        //        _overlapMesssage = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
+       
         //public string AddEdit { get; set; }
         public bool IsValidInput;
 
@@ -199,6 +204,8 @@ namespace MobileTermPlanner_JSarad.ViewModels
             EmailErrorMessage = ValidationMessage;
             ValidPhone(Phone);
             PhoneErrorMessage = ValidationMessage;
+            ValidStatus(Status, StatusTitle);
+            StatusErrorMessage = ValidationMessage;
             
             //checks for overlapping courses 
             if (CourseList.Count > 0)
@@ -211,8 +218,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
                     {
                         IsValidInput = false;
                         await Application.Current.MainPage.DisplayAlert("Overlapping Course", $" * There is an overlapping term for these dates for " +
-                            $"Term { CourseList[i].Name}" +
-                            $"from { CourseList[i].StartDate.Date} to {CourseList[i].EndDate.Date}", "Ok");
+                            $"Term { CourseList[i].Name} from { CourseList[i].StartDate.Date} to {CourseList[i].EndDate.Date}", "Ok");
                     }
                 }
             }
@@ -229,7 +235,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
             //saves course if all validations return true
             if (IsValidInput && ValidString(CourseName) && ValidDates(CourseStartDate, CourseEndDate) && ValidString(InstructorName)
-                && ValidEmail(Email) && ValidPhone(Phone))
+                && ValidEmail(Email) && ValidPhone(Phone) && ValidStatus(Status, StatusTitle))
             {
                 if (DatabaseService.IsAdd)
                 {
@@ -242,6 +248,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 else
                 {
                     await DatabaseService.UpdateCourse(Course);
+                    await DatabaseService.UpdateInstructor(Instructor);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
             }
@@ -254,5 +261,5 @@ namespace MobileTermPlanner_JSarad.ViewModels
     }
 }
 
-    
+
 

@@ -18,97 +18,124 @@
 
     <!--layout-->
     <ContentPage.Content>
-        <ScrollView>
-        <StackLayout >
-            <Grid Padding="30" RowSpacing="1" ColumnSpacing="22" BackgroundColor="WhiteSmoke">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="0.5*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                    
-                    <RowDefinition Height="0.5*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    
-                    <RowDefinition Height="0.5*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    
-                    <RowDefinition Height="Auto"/>
-                    
-                    <RowDefinition Height="0.5*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                    
-                    <RowDefinition Height="0.5*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                    
-                    <RowDefinition Height="0.5*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="1.5*"/>
-                    <ColumnDefinition Width="0.3*"/>
-                </Grid.ColumnDefinitions>
-                
-                <Label Text ="Course Name" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold"
-                       Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
-                <Entry Text="{Binding CourseName, Mode=TwoWay}" Placeholder="Course Name" VerticalTextAlignment="Center" 
-                       Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"/>
-                <Label Text="{Binding EmptyErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
-                       Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"/>
+        <ScrollView BackgroundColor="#D0D0CD">
+            <StackLayout BackgroundColor="#D0D0CD" Margin="10" Padding="10">
+                <!--<Grid Padding="30" RowSpacing="1" ColumnSpacing="22" BackgroundColor="WhiteSmoke">-->
+                <Frame BackgroundColor="#003057">
+                    <Label Text="Course Information" FontSize="Large" TextColor="White" Margin="0"/>
+                </Frame>
+                <Grid Margin="10" Padding="20" RowSpacing="1" ColumnSpacing="22" BackgroundColor="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
 
-                <Label Text="Start Date" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold"
-                       Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
-                <DatePicker Date="{Binding CourseStartDate, Mode=TwoWay}" MinimumDate="2020/01/01" MaximumDate="2025/01/01" 
-                            Grid.Row="4" Grid.Column="0"  Grid.ColumnSpan="3" />
-                <Label x:Name="lbNotifyStart" Text="Turn On Notification" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
-                        Grid.Row="5" Grid.Column="1"/>
-                <Switch Grid.Row="5" Grid.Column="2" HorizontalOptions="Center" x:Name="swNotifyStart"/>
-                <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
-                       Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" />
-                <!-- Toggled="swNotifyStart_Toggled"-->
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
 
-                <Label Text="End Date" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" 
-                       Grid.Row="7" Grid.Column="0" />
-                <DatePicker Date="{Binding CourseEndDate, Mode=TwoWay}" MinimumDate="2020/01/01" MaximumDate="2025/01/01"
-                            Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3"/>
-                <Label  x:Name="lbNotifyEnd" Text="Turn On Notification" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
-                        Grid.Row="9" Grid.Column="1" />
-                <!--<Switch Grid.Row="9" Grid.Column="2" HorizontalOptions="Center" x:Name="swNotifyEnd" Toggled="swNotifyEnd_Toggled"/>-->
-                <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
-                       Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3"/>
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
 
-                <!--<Label Text="{Binding OverlapMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
-                       Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="3"/>-->
-                
-                <Label Text="Instructor Name" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold"  
-                       Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="3"/>
-                <Entry Text="{Binding InstructorName}" Placeholder="Instructor Name" VerticalTextAlignment="Center"
-                       Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="3"/>
-                <Label Text="{Binding EmptyErrorMessageTwo}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
-                       Grid.Row="14" Grid.Column="0" Grid.ColumnSpan="3"/>
-                
-                <Label Text="Instructor Phone" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold"
-                       Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="3"/>
-                <Entry x:Name="Phone" Text="{Binding Phone, Mode=TwoWay}" Placeholder="Instuctor Phone" VerticalTextAlignment="Center" 
-                       Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="3"/>
-                <Label Text="{Binding PhoneErrorMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
-                       Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="3"/>
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="0.3*"/>
+                    </Grid.ColumnDefinitions>
 
-                <Label Text="Instructor Email" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold"
-                       Grid.Row="18" Grid.Column="0" Grid.ColumnSpan="3"/>
-                <Entry x:Name="Email" Text="{Binding Email}" Placeholder="Instructor Email" VerticalTextAlignment="Center" 
-                       Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="3"/>
-                <Label Text="{Binding EmailErrorMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
-                       Grid.Row="20" Grid.Column="0" Grid.ColumnSpan="3"/>
-            </Grid>
-        </StackLayout>
+                    <Label Text="Course Status :" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
+                        Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <Picker Title="{Binding StatusTitle}" ItemsSource="{Binding StatusList}" SelectedItem="{Binding Status}"
+                        Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"/>
+                    <Label Text="{Binding StatusErrorMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
+                        Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"/>
+
+                    <Label Text ="Course Name :" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
+                        Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <Entry Text="{Binding CourseName, Mode=TwoWay}" Placeholder="Course Name" VerticalTextAlignment="Center" 
+                        Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"/>
+                    <Label Text="{Binding EmptyErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
+                        Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3"/>
+
+                    <Label Text="Start Date :" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
+                        Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <DatePicker Date="{Binding CourseStartDate, Mode=TwoWay}" MinimumDate="2020/01/01" MaximumDate="2025/01/01" 
+                            Grid.Row="7" Grid.Column="0"  Grid.ColumnSpan="3" />
+                    <Label x:Name="lbNotifyStart" Text="Turn On Notification" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
+                        Grid.Row="8" Grid.Column="1"/>
+                    <Switch Grid.Row="8" Grid.Column="2" HorizontalOptions="Center" x:Name="swNotifyStart"/>
+                    <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
+                        Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" />
+                    <!-- Toggled="swNotifyStart_Toggled"-->
+
+                    <Label Text="End Date :" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
+                        Grid.Row="10" Grid.Column="0" />
+                    <DatePicker Date="{Binding CourseEndDate, Mode=TwoWay}" MinimumDate="2020/01/01" MaximumDate="2025/01/01"
+                            Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="3"/>
+                    <Label  x:Name="lbNotifyEnd" Text="Turn On Notification" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
+                        Grid.Row="12" Grid.Column="1" />
+                    <Switch Grid.Row="12" Grid.Column="2" HorizontalOptions="Center" x:Name="swNotifyEnd"/>
+                    <!--Toggled="swNotifyEnd_Toggled"-->
+                    <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
+                        Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="3"/>
+                </Grid>
+                <Frame BackgroundColor="#003057">
+                    <Label Text="Instructor Information" FontSize="Large" TextColor="White"/>
+                </Frame>
+                <Grid Margin="10" Padding="20" RowSpacing="1" ColumnSpacing="22" BackgroundColor="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="0.3*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Text="Instructor Name :" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
+                           Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"/>
+                    <Entry Text="{Binding InstructorName}" Placeholder="Instructor Name" VerticalTextAlignment="Center"
+                               Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"/>
+                    <Label Text="{Binding EmptyErrorMessageTwo}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
+                               Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"/>
+
+                    <Label Text="Instructor Phone :" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
+                               Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"/>
+                    <Entry x:Name="Phone" Text="{Binding Phone, Mode=TwoWay}" Placeholder="Instuctor Phone" VerticalTextAlignment="Center" 
+                               Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"/>
+                    <Label Text="{Binding PhoneErrorMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
+                               Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3"/>
+
+                    <Label Text="Instructor Email :" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
+                               Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3"/>
+                    <Entry x:Name="Email" Text="{Binding Email}" Placeholder="Instructor Email" VerticalTextAlignment="Center" 
+                               Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3"/>
+                    <Label Text="{Binding EmailErrorMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
+                               Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3"/>
+                </Grid>
+                <Button x:Name="NavToAssessments" Text="Add Assessments" BackgroundColor="#327DA9" TextColor="White"/>
+                <Button x:Name="NavToNotes" Text="Add Notes" BackgroundColor="#327DA9" TextColor="White"/>
+            </StackLayout>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>
+    
+            
+          

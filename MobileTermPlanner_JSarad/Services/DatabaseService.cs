@@ -21,7 +21,7 @@ namespace MobileTermPlanner_JSarad.Services
         public static Instructor CurrentInstructor { get; set; }
         public static bool IsAdd { get; set; }
 
-        
+
         public static async Task Init()
         {
             if (db != null)
@@ -32,10 +32,10 @@ namespace MobileTermPlanner_JSarad.Services
             var databasePath = Path.Combine(FileSystem.AppDataDirectory, "MobileTermPlanner.db");
             db = new SQLiteAsyncConnection(databasePath);
             db.CreateTablesAsync<Term, Course, Instructor>().Wait();
-            
+
             await FillSampleData();
         }
-        
+
         public static async Task AddTerm(Term term)
         {
             await Init();
@@ -44,6 +44,7 @@ namespace MobileTermPlanner_JSarad.Services
                 Name = term.Name,
                 StartDate = term.StartDate,
                 EndDate = term.EndDate,
+
                 //StartDateNotification = startDateNotification,
                 //EndDateNotification = endDateNotification
             };
@@ -80,7 +81,7 @@ namespace MobileTermPlanner_JSarad.Services
             List<Term> terms = await db.Table<Term>().ToListAsync();
             return terms;
         }
-        
+
         public static async Task UpdateTerm(Term term)
         {
             await Init();
@@ -112,6 +113,7 @@ namespace MobileTermPlanner_JSarad.Services
                 Name = course.Name,
                 StartDate = course.StartDate,
                 EndDate = course.EndDate,
+                Status = course.Status,
                 //StartDateNotification = startDateNotification,
                 //EndDateNotification = endDateNotification,
                 TermId = id
@@ -136,12 +138,12 @@ namespace MobileTermPlanner_JSarad.Services
             return coursesByTerm;
 
         }
-        //public static async Task<List<Course>> GetCourse()
-        //{
-        //    await Init();
-        //    var courses = await db.Table<Course>().ToListAsync();
-        //    return courses;
-        //}
+        public static async Task<List<Course>> GetCourse()
+        {
+            await Init();
+            var courses = await db.Table<Course>().ToListAsync();
+            return courses;
+        }
 
         public static async Task UpdateCourse(Course course)
         {
@@ -156,10 +158,11 @@ namespace MobileTermPlanner_JSarad.Services
                 courseQuery.Name = course.Name;
                 courseQuery.StartDate = course.StartDate;
                 courseQuery.EndDate = course.EndDate;
-                //courseQuery.Status = course.Status;
+                courseQuery.Status = course.Status;
+
                 //courseQuery.StartDateNotification = startDateNotification;
                 //courseQuery.EndDateNotification = endDateNotification;
-                
+
                 await db.UpdateAsync(courseQuery);
             }
         }
@@ -187,7 +190,7 @@ namespace MobileTermPlanner_JSarad.Services
         public static async Task AddInstructor(Instructor instructor, int courseId)
         {
             await Init();
-          
+
 
             Instructor instructorToAdd = new Instructor
             {
@@ -206,9 +209,12 @@ namespace MobileTermPlanner_JSarad.Services
             await db.DeleteAsync(id);
         }
 
-        //public static async Task<IEnumerable<Instructor>> GetInstructor()
-        //{
-        //    await Init();
+        public static async Task<IEnumerable<Instructor>> GetInstructors()
+        {
+            await Init();
+            var instructors = await db.Table<Instructor>().ToListAsync();
+            return instructors;
+        }
 
         public static async Task<Instructor> GetInstuctorByCourse(int id)
         {
@@ -219,28 +225,23 @@ namespace MobileTermPlanner_JSarad.Services
             return instructor;
         }
 
-        //    var instructors = await db.Table<Instructor>().ToListAsync();
-        //    return instructors;
+        public static async Task UpdateInstructor(Instructor instructor)
+        {
+            await Init();
 
-        //}
+            var instructorQuery = await db.Table<Instructor>()
+                .Where(i => i.Id == instructor.Id)
+                .FirstOrDefaultAsync();
 
-        //public static async Task UpdateInstructor(int id, string name, string phone, string email)
-        //{
-        //    await Init();
+            if (instructorQuery != null)
+            {
+                instructorQuery.Name = instructor.Name;
+                instructorQuery.Phone = instructor.Phone;
+                instructorQuery.Email = instructor.Email;
 
-        //    var instructorQuery = await db.Table<Instructor>()
-        //        .Where(i => i.Id == id)
-        //        .FirstOrDefaultAsync();
-
-        //    if (instructorQuery != null)
-        //    {
-        //        instructorQuery.Name = name;
-        //        instructorQuery.Phone = phone;
-        //        instructorQuery.Email = email;
-
-        //        await db.UpdateAsync(instructorQuery);
-        //    }
-        //}
+                await db.UpdateAsync(instructorQuery);
+            }
+        }
 
         public static async Task FillSampleData()
         {

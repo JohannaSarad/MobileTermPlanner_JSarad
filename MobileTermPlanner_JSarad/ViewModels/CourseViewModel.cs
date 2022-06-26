@@ -14,6 +14,21 @@ namespace MobileTermPlanner_JSarad.ViewModels
     public class CourseViewModel : BaseViewModel
     {
         //properties
+
+        private ObservableCollection<Course> _courses;
+        public ObservableCollection<Course> Courses
+        {
+            get
+            {
+                return _courses;
+            }
+            set
+            {
+                _courses = value;
+                OnPropertyChanged();
+            }
+        }
+        
         private Term _term;
         public Term Term
         {
@@ -28,21 +43,6 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
         
-        
-        private ObservableCollection<Course> _courses;
-        public ObservableCollection<Course> Courses
-        {
-            get
-            {
-                return _courses;
-            }
-            set
-            {
-                _courses = value;
-                OnPropertyChanged();
-            }
-        }
-
         private Course _course;
         public Course Course
         {
@@ -59,12 +59,12 @@ namespace MobileTermPlanner_JSarad.ViewModels
         }
 
         //commmands
-
         public ICommand NavToAddCommand { get; set; }
         public ICommand NavToEditCommand { get; set; }
         public ICommand ViewCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
 
+        //class constructor
         public CourseViewModel()
         {
             Term = DatabaseService.CurrentTerm;
@@ -98,18 +98,6 @@ namespace MobileTermPlanner_JSarad.ViewModels
             await Application.Current.MainPage.Navigation.PushAsync(new DetailedCourseViewPage());
         }
 
-        //private async void AddCourse(Course course)
-        //{
-        //    await DatabaseService.AddCourse(course);
-        //    Refresh();
-        //}
-
-        //private async void UpdateCourse(Course course)
-        //{
-        //    //SelectedTerm = term;
-        //    await DatabaseService.UpdateCourse(course);
-        //    Refresh();
-        //}
         private async Task DeleteCourse(object o)
         {
             Course course = o as Course;

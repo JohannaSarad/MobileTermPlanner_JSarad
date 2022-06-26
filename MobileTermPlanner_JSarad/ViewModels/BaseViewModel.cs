@@ -12,12 +12,6 @@ namespace MobileTermPlanner_JSarad.ViewModels
 {
     public class BaseViewModel : Validation
     {
-        public bool _isAdd;
-        public bool IsAdd
-        {
-            get { return _isAdd; }
-            set { _isAdd = value; }
-        }
 
         private bool _isBusy;
         public bool IsBusy
@@ -32,18 +26,21 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 OnPropertyChanged();
             }
         }
-
-
-
         
-       
         //Validation MessageProperties
 
         private string _emptyErrorMessageOne;
         public string EmptyErrorMessageOne
         {
-            get { return _emptyErrorMessageOne; }
-            set { _emptyErrorMessageOne = value; OnPropertyChanged(); }
+            get 
+            { 
+                return _emptyErrorMessageOne; 
+            }
+            set
+            {
+                _emptyErrorMessageOne = value;
+                OnPropertyChanged();
+            }
         }
 
         private string _emptyErrorMessageTwo;
@@ -116,12 +113,18 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
-        //public event PropertyChangedEventHandler PropertyChanged;
-
-        //public void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        //{
-        //    PropertyChanged?.Invoke(this,
-        //    new PropertyChangedEventArgs(propertyName));
-        //}
+        private string _statusErrorMessage;
+        public string StatusErrorMessage
+        {
+            get
+            {
+                return _statusErrorMessage;
+            }
+            set
+            {
+                _statusErrorMessage = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

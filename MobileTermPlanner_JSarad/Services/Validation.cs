@@ -113,6 +113,20 @@ namespace MobileTermPlanner_JSarad.Services
                 return true;
             }
         }
+
+        public bool ValidStatus(string str1, string str2)
+        {
+            if(str1 == str2)
+            {
+                ValidationMessage = "* Course status can not be empty";
+                return false;
+            }
+            else
+            {
+                ValidationMessage = "";
+                return true;
+            }
+        }
     }
 
     
