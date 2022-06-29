@@ -160,8 +160,6 @@ namespace MobileTermPlanner_JSarad.ViewModels
         //commands
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
-        //public ICommand NavToModifyAssessmentsCommand { get; set; }
-        //public ICommand NavToModifyNotesCommand { get; set; }
 
         public ModifyCourseViewModel()
         {
@@ -186,10 +184,6 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
         //methods
         
-        //private async void GetInstructor(int id)
-        //{
-        //    _modifyInstructor = await DatabaseService.GetInstuctorByCourse(id);
-        //}
         private async Task SaveCourse()
         {
             CourseList = await DatabaseService.GetCourseByTerm(DatabaseService.CurrentTerm.Id);
