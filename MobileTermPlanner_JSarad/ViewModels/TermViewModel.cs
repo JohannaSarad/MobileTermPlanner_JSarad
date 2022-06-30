@@ -104,7 +104,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         private async void LoadTerms()
         {
             IsBusy = true;
-            Terms = new ObservableCollection<Term>(await DatabaseService.GetTerm());
+            Terms = new ObservableCollection<Term>(await DatabaseService.GetTerms());
             IsBusy = false;
         }
 

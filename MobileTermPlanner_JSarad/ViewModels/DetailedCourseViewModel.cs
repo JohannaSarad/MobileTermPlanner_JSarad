@@ -13,6 +13,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
 {
     class DetailedCourseViewModel : BaseViewModel
     {
+        private List<Assessment> AssessmentList {get; set;}
         private ObservableCollection<Assessment> _assessments;
         public ObservableCollection<Assessment> Assessments
         {
@@ -94,8 +95,18 @@ namespace MobileTermPlanner_JSarad.ViewModels
         }
         private async Task NavToAddAssessment()
         {
-            DatabaseService.IsAdd = true;
-            await Application.Current.MainPage.Navigation.PushAsync(new ModifyAssessmentsPage());
+            //verify there are 2 or fewer assessments associated with course before allowing the user to add
+            AssessmentList = await DatabaseService.GetAssessmentsByCourse(DatabaseService.CurrentCourse.Id);
+            if (AssessmentList.Count >= 2)
+            {
+                await Application.Current.MainPage.DisplayAlert("A course may only have 2 assessments", "There are already 2 assessments assigned" +
+                    "to this course. You must edit or delete an existing assessment to update assessment information for this course", "Ok");
+            }
+            else
+            {
+                DatabaseService.IsAdd = true;
+                await Application.Current.MainPage.Navigation.PushAsync(new ModifyAssessmentsPage());
+            }
         }
 
         private async Task NavToEditAssessment(object o)
@@ -120,14 +131,17 @@ namespace MobileTermPlanner_JSarad.ViewModels
             //IsBusy = false;
         }
 
-        public void Refresh()
+        public async void Refresh()
         {
+            //needs to update course instructor and notes
             IsBusy = true;
             if (Assessments != null)
             {
                 Assessments.Clear();
             }
             LoadAssessments();
+            Instructor = await DatabaseService.GetInstructor(DatabaseService.CurrentInstructor.Id);
+            Course = await DatabaseService.GetCourse(DatabaseService.CurrentCourse.Id);
             IsBusy = false;
         }
     }

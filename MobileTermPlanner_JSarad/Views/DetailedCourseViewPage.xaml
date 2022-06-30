@@ -111,6 +111,7 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+                
 
             </StackLayout>
         </ScrollView>

@@ -113,16 +113,16 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
-        private string _statusErrorMessage;
-        public string StatusErrorMessage
+        private string _selectionErrorMessage;
+        public string SelectionErrorMessage
         {
             get
             {
-                return _statusErrorMessage;
+                return _selectionErrorMessage;
             }
             set
             {
-                _statusErrorMessage = value;
+                _selectionErrorMessage = value;
                 OnPropertyChanged();
             }
         }

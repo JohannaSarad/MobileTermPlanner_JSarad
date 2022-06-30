@@ -1,12 +1,89 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MobileTermPlanner_JSarad.Views.ModifyAssessmentsPage">
+             x:Class="MobileTermPlanner_JSarad.Views.ModifyAssessmentsPage"
+             xmlns:viewmodel="clr-namespace:MobileTermPlanner_JSarad.ViewModels">
+
+    <!--Binding Context-->
+    <ContentPage.BindingContext>
+        <viewmodel:ModifyAssessmentViewModel />
+    </ContentPage.BindingContext>
+
+    <!-- toolbar-->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" x:Name="SaveTerm" Command="{Binding SaveCommand}"/>
+        <ToolbarItem Text="Cancel" x:Name="Cancel" Command="{Binding CancelCommand}"/>
+    </ContentPage.ToolbarItems>
+
+    <!--layout-->
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView>
+            <StackLayout BackgroundColor="#F2F6F8">
+                <Grid Padding="30" RowSpacing="1" ColumnSpacing="22" BackgroundColor="#F2F6F8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="0.3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label  Text="Assessment Type : " FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold"
+                        Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <Picker Title="{Binding TypeTitle}" ItemsSource="{Binding TypeList}" SelectedItem="{Binding Type}"
+                        Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"/>
+                    <Label Text="{Binding SelectionErrorMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
+                        Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"/>
+
+                    <Label  Text="Assessment Name : " FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold"
+                        Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <Entry Text="{Binding Name, Mode=TwoWay}" Placeholder="Assessment Name"  Grid.ColumnSpan="3" VerticalTextAlignment="Center" 
+                       Grid.Row="4" Grid.Column="0"/>
+                    <Label Text="{Binding EmptyErrorMessageOne}"  FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
+                       Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3"/>
+
+
+                    <Label Text="Start Date" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" 
+                         Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <DatePicker Date="{Binding StartDate, Mode=TwoWay}" MinimumDate="2020/01/01" MaximumDate="2025/01/01" 
+                            Grid.Row="7" Grid.Column="0"  Grid.ColumnSpan="3" />
+                    <Label x:Name="lbNotifyStart" Text="Turn On Notifications" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
+                       Grid.Row="8" Grid.Column="1"/>
+                    <Switch x:Name="swNotifyStart" HorizontalOptions="Center" 
+                        Grid.Row="8" Grid.Column="2"  />
+                    <!-- Toggled="swNotifyStart_Toggled"-->
+                    <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
+                       Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" />
+
+                    <Label Grid.Row="10" Grid.Column="0" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold">End Date :</Label>
+                    <DatePicker Date="{Binding EndDate, Mode=TwoWay}" MinimumDate="2020/01/01" MaximumDate="2025/01/01" 
+                            Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="3"/>
+                    <Label x:Name="lbNotifyEnd" Text="Turn On Notifications" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
+                       Grid.Row="12" Grid.Column="1" />
+                    <Switch Grid.Row="12" Grid.Column="2" HorizontalOptions="Center" x:Name="swNotifyEnd" />
+                    <!--Toggled="swNotifyEnd_Toggled"-->
+                    <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
+                       Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="3"/>
+
+                </Grid>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

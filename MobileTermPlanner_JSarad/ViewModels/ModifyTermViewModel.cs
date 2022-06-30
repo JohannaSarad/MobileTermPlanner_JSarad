@@ -116,7 +116,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         //methods
         private async Task SaveTerm()
         {
-            TermList = await DatabaseService.GetTerm();
+            TermList = await DatabaseService.GetTerms();
             IsValidInput = true;
 
             //validates unchanged properties and displays any errors to user on save attempt

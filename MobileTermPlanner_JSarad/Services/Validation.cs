@@ -21,7 +21,7 @@ namespace MobileTermPlanner_JSarad.Services
 
         public bool ValidString(string str)
         {
-            if (String.IsNullOrEmpty(str))
+            if (string.IsNullOrEmpty(str))
             {
                 ValidationMessage = $"* field is required";
                 return false;
@@ -54,7 +54,7 @@ namespace MobileTermPlanner_JSarad.Services
 
             if (!string.IsNullOrEmpty(str))
             {
-                string phone = str.Replace("-", String.Empty).Replace("(", String.Empty).Replace(")", String.Empty);
+                string phone = str.Replace("-", string.Empty).Replace("(", string.Empty).Replace(")", string.Empty);
                 if (phone.Length > 10 || phone.Length < 7 || (!long.TryParse(phone, out long i)))
                 {
                     ValidationMessage = "* Phone number must be between 7 and 10 digits";
@@ -114,11 +114,11 @@ namespace MobileTermPlanner_JSarad.Services
             }
         }
 
-        public bool ValidStatus(string str1, string str2)
+        public bool ValidSelection(string str1, string str2, string type)
         {
             if(str1 == str2)
             {
-                ValidationMessage = "* Course status can not be empty";
+                ValidationMessage = $"* Please select {type}";
                 return false;
             }
             else
@@ -128,6 +128,4 @@ namespace MobileTermPlanner_JSarad.Services
             }
         }
     }
-
-    
 }

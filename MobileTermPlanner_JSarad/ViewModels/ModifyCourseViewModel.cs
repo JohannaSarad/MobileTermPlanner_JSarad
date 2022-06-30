@@ -87,8 +87,8 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 _course.Status = value;
                 OnPropertyChanged();
-                ValidStatus(Status, StatusTitle);
-                StatusErrorMessage = ValidationMessage;
+                ValidSelection(Status, StatusTitle, "Course Status");
+                SelectionErrorMessage = ValidationMessage;
             }
         }
 
@@ -198,8 +198,8 @@ namespace MobileTermPlanner_JSarad.ViewModels
             EmailErrorMessage = ValidationMessage;
             ValidPhone(Phone);
             PhoneErrorMessage = ValidationMessage;
-            ValidStatus(Status, StatusTitle);
-            StatusErrorMessage = ValidationMessage;
+            ValidSelection(Status, StatusTitle, "Course Status");
+            SelectionErrorMessage = ValidationMessage;
             
             //checks for overlapping courses 
             if (CourseList.Count > 0)
@@ -217,19 +217,19 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 }
             }
 
-            //checks that new or edited Course dates are within the dates of the Term
-            if (DatabaseService.CurrentTerm.StartDate > Course.StartDate || DatabaseService.CurrentTerm.StartDate > Course.EndDate
-                || DatabaseService.CurrentTerm.EndDate < Course.StartDate || DatabaseService.CurrentTerm.EndDate < Course.EndDate)
-            {
-                IsValidInput = false;
-                await Application.Current.MainPage.DisplayAlert("Course Dates Outside of Term", $"Term {DatabaseService.CurrentTerm.Name}" +
-                            $" starts on { DatabaseService.CurrentTerm.StartDate.Date} and ends on {DatabaseService.CurrentTerm.EndDate.Date}" +
-                            $" Courses within this term must be schedule within these dates", "Ok");
-            }
+            ////checks that new or edited Course dates are within the dates of the Term for future use
+            //if (DatabaseService.CurrentTerm.StartDate > Course.StartDate || DatabaseService.CurrentTerm.StartDate > Course.EndDate
+            //    || DatabaseService.CurrentTerm.EndDate < Course.StartDate || DatabaseService.CurrentTerm.EndDate < Course.EndDate)
+            //{
+            //    IsValidInput = false;
+            //    await Application.Current.MainPage.DisplayAlert("Course Dates Outside of Term", $"Term {DatabaseService.CurrentTerm.Name}" +
+            //                $" starts on { DatabaseService.CurrentTerm.StartDate.Date} and ends on {DatabaseService.CurrentTerm.EndDate.Date}" +
+            //                $" Courses within this term must be schedule within these dates", "Ok");
+            //}
 
             //saves course if all validations return true
             if (IsValidInput && ValidString(CourseName) && ValidDates(CourseStartDate, CourseEndDate) && ValidString(InstructorName)
-                && ValidEmail(Email) && ValidPhone(Phone) && ValidStatus(Status, StatusTitle))
+                && ValidEmail(Email) && ValidPhone(Phone) && ValidSelection(Status, StatusTitle, "Course Status"))
             {
                 if (DatabaseService.IsAdd)
                 {

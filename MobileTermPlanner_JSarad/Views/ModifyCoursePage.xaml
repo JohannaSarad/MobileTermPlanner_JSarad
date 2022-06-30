@@ -72,7 +72,7 @@
                         Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
                     <Picker Title="{Binding StatusTitle}" ItemsSource="{Binding StatusList}" SelectedItem="{Binding Status}"
                         Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"/>
-                    <Label Text="{Binding StatusErrorMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
+                    <Label Text="{Binding SelectionErrorMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
                         Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"/>
 
                     <Label Text ="Course Name :" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
