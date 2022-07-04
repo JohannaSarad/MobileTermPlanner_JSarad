@@ -1,12 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MobileTermPlanner_JSarad.Views.ModifyNotesPage">
+             x:Class="MobileTermPlanner_JSarad.Views.ModifyNotesPage"
+             xmlns:viewmodel ="clr-namespace:MobileTermPlanner_JSarad.ViewModels">
+    <!--Binding Context-->
+    <ContentPage.BindingContext>
+        <viewmodel:ModifyNotesViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" x:Name="SaveTerm" Command="{Binding SaveCommand}"/>
+        <ToolbarItem Text="Cancel" x:Name="Cancel" Command ="{Binding CancelCommand}"/>
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Label Text="Course Notes"/>
+            <Editor Text="{Binding Note.Note}" AutoSize="TextChanges"/>
+            <Button Text="Share Notes"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -42,15 +42,16 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
-        public string CourseNotes
+        private Notes _courseNotes;
+        public Notes CourseNotes
         {
             get
             {
-                return _course.Notes;
+                return _courseNotes;
             }
             set
             {
-                _course.Notes = value;
+                _courseNotes = value;
                 OnPropertyChanged();
             }
         }
@@ -80,11 +81,13 @@ namespace MobileTermPlanner_JSarad.ViewModels
             Course = DatabaseService.CurrentCourse;
             Instructor = DatabaseService.CurrentInstructor;
             LoadAssessments();
+            LoadNotes();
 
             NavToEditCourseCommand = new Command(async () => await NavToEditCourse());
             NavToAddAssessmentCommand = new Command(async () => await NavToAddAssessment());
             NavToEditAssessmentCommand = new Command(async (o) => await NavToEditAssessment(o));
             DeleteAssessmentCommand = new Command(async (o) => await DeleteAssessment(o));
+            NavToNotesCommand = new Command(async () => await NavToAddNotes());
         }
 
         private async Task NavToEditCourse()
@@ -123,11 +126,23 @@ namespace MobileTermPlanner_JSarad.ViewModels
             Refresh();
         }
 
+        private async Task NavToAddNotes()
+        {
+            await Application.Current.MainPage.Navigation.PushAsync(new ModifyNotesPage());
+        }
 
+        
         private async void LoadAssessments()
         {
             //IsBusy = true;
             Assessments = new ObservableCollection<Assessment>(await DatabaseService.GetAssessmentsByCourse(DatabaseService.CurrentCourse.Id));
+            //IsBusy = false;
+        }
+
+        private async void LoadNotes()
+        {
+            //IsBusy = true;
+            CourseNotes = await DatabaseService.GetNotesByCourse(DatabaseService.CurrentCourse.Id);
             //IsBusy = false;
         }
 
@@ -140,8 +155,10 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 Assessments.Clear();
             }
             LoadAssessments();
+            LoadNotes();
             Instructor = await DatabaseService.GetInstructor(DatabaseService.CurrentInstructor.Id);
             Course = await DatabaseService.GetCourse(DatabaseService.CurrentCourse.Id);
+            
             IsBusy = false;
         }
     }

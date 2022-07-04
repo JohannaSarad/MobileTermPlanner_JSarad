@@ -112,7 +112,15 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
                 
-
+                        
+                <!--Adding notes Untested-->
+                <Button Text="Add Assessments" Command="{Binding NavToAddAssessmentCommand}"/>
+                <Label Text="Course Notes" FontSize="Large" TextDecorations="Underline"/>
+                <Frame>
+                    <Label Text="{Binding CourseNotes.Note}" LineBreakMode="WordWrap"/>
+                </Frame>
+                <Button Text="Add/Edit Notes" Command="{Binding NavToNotesCommand}"/>
+               <!---->
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

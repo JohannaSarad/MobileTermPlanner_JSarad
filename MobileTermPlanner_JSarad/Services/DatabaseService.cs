@@ -16,10 +16,12 @@ namespace MobileTermPlanner_JSarad.Services
         public static SQLiteAsyncConnection db;
         public static Term CurrentTerm { get; set; }
         public static Course CurrentCourse { get; set; }
+        public static Instructor CurrentInstructor { get; set; }
         public static Assessment CurrentAssessment { get; set; }
+        public static Notes CurrentNotes { get; set; }
         public static int LastAddedId { get; set; }
 
-        public static Instructor CurrentInstructor { get; set; }
+        
         public static bool IsAdd { get; set; }
 
 
@@ -32,7 +34,7 @@ namespace MobileTermPlanner_JSarad.Services
 
             var databasePath = Path.Combine(FileSystem.AppDataDirectory, "MobileTermPlanner.db");
             db = new SQLiteAsyncConnection(databasePath);
-            db.CreateTablesAsync<Term, Course, Instructor, Assessment>().Wait();
+            db.CreateTablesAsync<Term, Course, Instructor, Assessment, Notes>().Wait();
 
             await FillSampleData();
         }
@@ -156,7 +158,9 @@ namespace MobileTermPlanner_JSarad.Services
             await db.DeleteAsync<Course>(id);
             Instructor associatedInstructor = await GetInstuctorByCourse(id);
             await db.DeleteAsync<Instructor>(associatedInstructor.Id);
-
+            Notes associatedNotes = await GetNotesByCourse(id);
+            await db.DeleteAsync<Notes>(associatedNotes.Id);
+            
             List<Assessment> associatedAssessments = await GetAssessmentsByCourse(id);
             if(associatedAssessments.Count > 0)
             {
@@ -297,7 +301,7 @@ namespace MobileTermPlanner_JSarad.Services
         public static async Task DeleteInstructor(int id)
         {
             await Init();
-            await db.DeleteAsync(id);
+            await db.DeleteAsync<Instructor>(id);
         }
 
         //Instructor get methods
@@ -326,6 +330,82 @@ namespace MobileTermPlanner_JSarad.Services
                 .FirstOrDefaultAsync();
             return instructor;
         }
+
+        //Notes modifying methods
+        public static async Task AddNotes(Notes note, int courseId)
+        {
+            await Init();
+
+            Notes noteToAdd = new Notes
+            {
+                Note = note.Note,
+                CourseId = courseId
+            };
+
+            await db.InsertAsync(noteToAdd);
+        }
+
+        public static async Task UpdateNotes(Notes note)
+        {
+            await Init();
+
+            var notesQuery = await db.Table<Notes>()
+                .Where(i => i.Id == note.Id)
+                .FirstOrDefaultAsync();
+
+            if (notesQuery != null)
+            {
+                notesQuery.Note = note.Note;
+                await db.UpdateAsync(notesQuery);
+            }
+        }
+
+        public static async Task DeleteNotes(int id)
+        {
+            await Init();
+            await db.DeleteAsync<Notes>(id);
+        }
+
+        //Instructor get methods
+
+        public static async Task<Notes> GetNote(int id)
+        {
+            await Init();
+            Notes note = await db.Table<Notes>()
+                .Where(i => i.Id == id)
+                .FirstOrDefaultAsync();
+            return note;
+        }
+
+        public static async Task<IEnumerable<Notes>> GetNotes()
+        {
+            await Init();
+            var notes = await db.Table<Notes>().ToListAsync();
+            return notes;
+        }
+
+        public static async Task<Notes> GetNotesByCourse(int id)
+        {
+            await Init();
+            Notes placeholder;
+            Notes note = await db.Table<Notes>()
+                .Where(i => i.CourseId == id)
+                .FirstOrDefaultAsync();
+            if (note != null)
+            {
+                return note;
+            }
+            else
+            {
+                placeholder = new Notes
+                {
+                    Note = "There are no notes to display for this course",
+                    CourseId = id
+                };
+            return placeholder;
+            }
+        }
+
 
         //sample data
         public static async Task FillSampleData()
@@ -387,6 +467,12 @@ namespace MobileTermPlanner_JSarad.Services
                     CourseId = courseId
                 };
                 await db.InsertAsync(sampleAssessment2);
+
+                Notes sampleNotes = new Notes
+                {
+                    Note = "",
+                    CourseId = courseId
+                };
             }
             else
             {
