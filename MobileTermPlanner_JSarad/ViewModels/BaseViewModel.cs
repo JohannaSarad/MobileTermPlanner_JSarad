@@ -126,5 +126,33 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        private string _startDateLabel;
+        public string StartDateLabel
+        {
+            get
+            {
+                return _startDateLabel;
+            }
+            set
+            {
+                _startDateLabel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _endDateLabel;
+        public string EndDateLabel
+        {
+            get
+            {
+                return _endDateLabel;
+            }
+            set
+            {
+                _endDateLabel = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

@@ -89,6 +89,37 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
+        public bool NotifyStart
+        {
+            get
+            {
+                return _assessment.NotifyStartDate;
+            }
+            set
+            {
+                _assessment.NotifyStartDate = value;
+                OnPropertyChanged();
+                UpdateNotifyLabel(NotifyStart, "Start");
+                StartDateLabel = ValidationMessage;
+
+            }
+        }
+
+        public bool NotifyEnd
+        {
+            get
+            {
+                return _assessment.NotifyEndDate;
+            }
+            set
+            {
+                _assessment.NotifyEndDate = value;
+                OnPropertyChanged();
+                UpdateNotifyLabel(NotifyEnd, "End");
+                EndDateLabel = ValidationMessage;
+            }
+        }
+
         public bool IsValidInput;
 
         public ICommand SaveCommand { get; set; }
@@ -100,6 +131,8 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 Assessment = new Assessment();
                 StartDate = DateTime.Now;
                 EndDate = StartDate.AddDays(180);
+                NotifyStart = false;
+                NotifyEnd = false;
             }
             else
             {

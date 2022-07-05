@@ -13,7 +13,8 @@ namespace MobileTermPlanner_JSarad.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Type { get; set; }
-        //public bool Notifications { get; set; }
+        public bool NotifyStartDate { get; set; }
+        public bool NotifyEndDate { get; set; }
         [Indexed]
         public int CourseId { get; set; }
     }

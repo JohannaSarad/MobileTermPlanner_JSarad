@@ -76,6 +76,38 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
+        public bool NotifyStart
+        {
+            get
+            {
+                return _term.NotifyStartDate;
+            }
+            set
+            {
+                _term.NotifyStartDate = value;
+                OnPropertyChanged();
+                UpdateNotifyLabel(NotifyStart, "Start");
+                StartDateLabel = ValidationMessage;
+
+            }
+        }
+
+        public bool NotifyEnd
+        {
+            get
+            {
+                return _term.NotifyEndDate;
+            }
+            set
+            {
+                _term.NotifyEndDate = value;
+                OnPropertyChanged();
+                UpdateNotifyLabel(NotifyEnd, "End");
+                EndDateLabel = ValidationMessage;
+            }
+        }
+
+
         private string _overlapMesssage;
         public string OverlapMessage
         {
@@ -103,6 +135,8 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 Term = new Term();
                 StartDate = DateTime.Now;
                 EndDate = StartDate.AddDays(180);
+                NotifyStart = false;
+                NotifyEnd = false;
             }
             else
             {

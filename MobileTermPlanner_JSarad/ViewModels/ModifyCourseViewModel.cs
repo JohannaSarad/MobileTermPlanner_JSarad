@@ -92,6 +92,37 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
+        public bool NotifyStart
+        {
+            get
+            {
+                return _course.NotifyStartDate;
+            }
+            set
+            {
+                _course.NotifyStartDate = value;
+                OnPropertyChanged();
+                UpdateNotifyLabel(NotifyStart, "Start");
+                StartDateLabel = ValidationMessage;
+
+            }
+        }
+
+        public bool NotifyEnd
+        {
+            get
+            {
+                return _course.NotifyEndDate;
+            }
+            set
+            {
+                _course.NotifyEndDate = value;
+                OnPropertyChanged();
+                UpdateNotifyLabel(NotifyEnd, "End");
+                EndDateLabel = ValidationMessage;
+            }
+        }
+
         //instructor properties
         private Instructor _instructor;
         public Instructor Instructor
@@ -169,6 +200,8 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 Course = new Course();
                 CourseStartDate = DatabaseService.CurrentTerm.StartDate;
                 CourseEndDate = CourseStartDate.AddDays(30);
+                NotifyStart = false;
+                NotifyEnd = false;
                 Instructor = new Instructor();
             }
             else

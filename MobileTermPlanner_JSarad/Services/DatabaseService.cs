@@ -48,9 +48,8 @@ namespace MobileTermPlanner_JSarad.Services
                 Name = term.Name,
                 StartDate = term.StartDate,
                 EndDate = term.EndDate,
-
-                //StartDateNotification = startDateNotification,
-                //EndDateNotification = endDateNotification
+                NotifyStartDate = term.NotifyStartDate,
+                NotifyEndDate = term.NotifyEndDate
             };
             var id = await db.InsertAsync(termToAdd);
         }
@@ -68,9 +67,8 @@ namespace MobileTermPlanner_JSarad.Services
                 termQuery.Name = term.Name;
                 termQuery.StartDate = term.StartDate;
                 termQuery.EndDate = term.EndDate;
-
-                //termQuery.StartDateNotification = startDateNotification;
-                //termQuery.EndDateNotification = endDateNotification;
+                termQuery.NotifyStartDate = term.NotifyStartDate; ;
+                termQuery.NotifyEndDate = term.NotifyEndDate;
 
                 var id = await db.UpdateAsync(termQuery);
             }
@@ -121,8 +119,8 @@ namespace MobileTermPlanner_JSarad.Services
                 StartDate = course.StartDate,
                 EndDate = course.EndDate,
                 Status = course.Status,
-                //StartDateNotification = startDateNotification,
-                //EndDateNotification = endDateNotification,
+                NotifyStartDate = course.NotifyStartDate,
+                NotifyEndDate = course.NotifyEndDate,
                 TermId = id
             };
 
@@ -144,9 +142,8 @@ namespace MobileTermPlanner_JSarad.Services
                 courseQuery.StartDate = course.StartDate;
                 courseQuery.EndDate = course.EndDate;
                 courseQuery.Status = course.Status;
-
-                //courseQuery.StartDateNotification = startDateNotification;
-                //courseQuery.EndDateNotification = endDateNotification;
+                courseQuery.NotifyStartDate = course.NotifyStartDate;
+                courseQuery.NotifyEndDate = course.NotifyEndDate;
 
                 await db.UpdateAsync(courseQuery);
             }
@@ -208,6 +205,8 @@ namespace MobileTermPlanner_JSarad.Services
                 Name = assessment.Name,
                 StartDate = assessment.StartDate,
                 EndDate = assessment.EndDate,
+                NotifyStartDate = assessment.NotifyStartDate,
+                NotifyEndDate = assessment.NotifyEndDate,
                 CourseId = courseId
             };
             await db.InsertAsync(assessmentToAdd);
@@ -227,7 +226,8 @@ namespace MobileTermPlanner_JSarad.Services
                 assessmentQuery.Name = assessment.Name;
                 assessmentQuery.StartDate = assessment.StartDate;
                 assessmentQuery.EndDate = assessment.EndDate;
-
+                assessmentQuery.NotifyStartDate = assessment.NotifyStartDate;
+                assessmentQuery.NotifyEndDate = assessment.NotifyEndDate;
                 await db.UpdateAsync(assessmentQuery);
             }
         }

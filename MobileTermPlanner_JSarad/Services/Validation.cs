@@ -127,5 +127,19 @@ namespace MobileTermPlanner_JSarad.Services
                 return true;
             }
         }
+
+        public void UpdateNotifyLabel(bool notificationOn, string str)
+        {
+            if(notificationOn)
+            {
+                ValidationMessage = $"Turn Off {str} Date Notification";
+            }
+            else
+            {
+                ValidationMessage = $"Turn On {str} Date Notication";
+            }
+        }
+
+        
     }
 }

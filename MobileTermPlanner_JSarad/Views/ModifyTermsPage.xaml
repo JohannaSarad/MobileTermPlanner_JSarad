@@ -50,21 +50,21 @@
                          Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
                 <DatePicker Date="{Binding StartDate, Mode=TwoWay}" MinimumDate="2020/01/01" MaximumDate="2025/01/01" 
                             Grid.Row="4" Grid.Column="0"  Grid.ColumnSpan="3" />
-                <Label x:Name="lbNotifyStart" Text="Turn On Notifications" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
+                <Label  Text="{Binding StartDateLabel}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
                        Grid.Row="5" Grid.Column="1"/>
-                <Switch x:Name="swNotifyStart" HorizontalOptions="Center" 
+                <Switch  HorizontalOptions="Center" IsToggled="{Binding NotifyStart}"
                         Grid.Row="5" Grid.Column="2"  />
-                <!-- Toggled="swNotifyStart_Toggled"-->
+                
                 <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
                        Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" />
                 
                 <Label Grid.Row="7" Grid.Column="0" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold">End Date :</Label>
                 <DatePicker Date="{Binding EndDate, Mode=TwoWay}" MinimumDate="2020/01/01" MaximumDate="2025/01/01" 
                             Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3"/>
-                <Label x:Name="lbNotifyEnd" Text="Turn On Notifications" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
+                <Label Text="{Binding EndDateLabel}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
                        Grid.Row="9" Grid.Column="1" />
-                <Switch Grid.Row="9" Grid.Column="2" HorizontalOptions="Center" x:Name="swNotifyEnd" />
-                <!--Toggled="swNotifyEnd_Toggled"-->
+                <Switch Grid.Row="9" Grid.Column="2" HorizontalOptions="Center" IsToggled="{Binding NotifyEnd}"/>
+                
                 <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
                        Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3"/>
 
