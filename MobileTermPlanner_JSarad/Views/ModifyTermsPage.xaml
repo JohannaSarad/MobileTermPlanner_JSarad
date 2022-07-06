@@ -23,10 +23,12 @@
                     <RowDefinition Height="0.5*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
+                    
                     <RowDefinition Height="0.5*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    
                     <RowDefinition Height="0.5*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
@@ -51,7 +53,7 @@
                 <DatePicker Date="{Binding StartDate, Mode=TwoWay}" MinimumDate="2020/01/01" MaximumDate="2025/01/01" 
                             Grid.Row="4" Grid.Column="0"  Grid.ColumnSpan="3" />
                 <Label  Text="{Binding StartDateLabel}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
-                       Grid.Row="5" Grid.Column="1"/>
+                       Grid.Row="5" Grid.Column="0"/>
                 <Switch  HorizontalOptions="Center" IsToggled="{Binding NotifyStart}"
                         Grid.Row="5" Grid.Column="2"  />
                 

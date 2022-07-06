@@ -43,20 +43,20 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
         
-        private Course _course;
-        public Course Course
-        {
-            get
-            {
-                return _course;
-            }
-            set
-            {
-                _course = value;
-                OnPropertyChanged();
+        //private Course _course;
+        //public Course Course
+        //{
+        //    get
+        //    {
+        //        return _course;
+        //    }
+        //    set
+        //    {
+        //        _course = value;
+        //        OnPropertyChanged();
                     
-            }
-        }
+        //    }
+        //}
 
         //commmands
         public ICommand NavToAddCommand { get; set; }
@@ -74,6 +74,25 @@ namespace MobileTermPlanner_JSarad.ViewModels
             NavToEditCommand = new Command(async (o) => await NavToEditCourse(o));
             ViewCommand = new Command(async (o) => await ViewCourse(o));
             DeleteCommand = new Command(async (o) => await DeleteCourse(o));
+
+            MessagingCenter.Subscribe<ModifyCourseViewModel, Course>(this, "AddCourse", (sender, course) =>
+            {
+                AddCourse(course);
+            });
+
+            MessagingCenter.Subscribe<ModifyCourseViewModel, Course>(this, "UpdateCouse", (sender, course) =>
+            {
+                UpdateCourse(course);
+            });
+            //MessagingCenter.Subscribe<ModifyCourseViewModel, Instructor>(this, "AddInstructor", (sender, instructor) =>
+            //{
+            //    AddInstructor(instructor);
+            //});
+
+            //MessagingCenter.Subscribe<ModifyCourseViewModel, Instructor>(this, "UpdateInstructor", (sender, instructor) =>
+            //{
+            //    UpdateInstructor(instructor);
+            //});
         }
 
         //methods
@@ -98,29 +117,53 @@ namespace MobileTermPlanner_JSarad.ViewModels
             await Application.Current.MainPage.Navigation.PushAsync(new DetailedCourseViewPage());
         }
 
+        private async void AddCourse(Course course)
+        {
+            await DatabaseService.AddCourse(course, Term.Id);
+            LoadCourses();
+        }
+
+        private async void UpdateCourse(Course course)
+        {
+            await DatabaseService.UpdateCourse(course);
+            LoadCourses();
+        }
+
+        //private async void AddInstructor(Instructor instructor)
+        //{
+        //    await DatabaseService.AddInstructor(instructor, DatabaseService.LastAddedId);
+        //    //LoadCourses();
+        //}
+
+        //private async void UpdateInstructor(Instructor instructor)
+        //{
+        //    await DatabaseService.UpdateInstructor(instructor);
+        //    //LoadCourses();
+        //}
+
         private async Task DeleteCourse(object o)
         {
             Course course = o as Course;
             await DatabaseService.DeleteCourse(course.Id);
-            Refresh();
+            LoadCourses();
         }
 
         private async void LoadCourses()
         {
-            //IsBusy = true;
-            Courses = new ObservableCollection<Course>(await DatabaseService.GetCourseByTerm(DatabaseService.CurrentTerm.Id));
-            //IsBusy = false;
-        }
-
-        public void Refresh()
-        {
-            IsBusy = true;
             if (Courses != null)
             {
                 Courses.Clear();
+
+                List<Course> courseList = new List<Course>(await DatabaseService.GetCoursesByTerm(Term.Id));
+                foreach (Course course in courseList)
+                {
+                    Courses.Add(course);
+                }
             }
-            LoadCourses();
-            IsBusy = false;
+            else
+            {
+                Courses = new ObservableCollection<Course>(await DatabaseService.GetCoursesByTerm(Term.Id));
+            }
         }
     }
 }

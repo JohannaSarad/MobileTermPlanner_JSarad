@@ -177,12 +177,12 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 if (DatabaseService.IsAdd)
                 {
-                    await DatabaseService.AddTerm(Term);
+                    MessagingCenter.Send(this, "AddTerm", Term);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
                 else
                 {
-                    await DatabaseService.UpdateTerm(Term);
+                    MessagingCenter.Send(this, "UpdateTerm", Term);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
             }

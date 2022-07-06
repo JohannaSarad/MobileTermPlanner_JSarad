@@ -12,18 +12,20 @@ namespace MobileTermPlanner_JSarad.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class TermViewPage : ContentPage
     {
-        private TermViewModel _viewModel;
+        //private TermViewModel _viewModel;
         public TermViewPage()
         {
             InitializeComponent();
-            _viewModel = new TermViewModel();
-            BindingContext = _viewModel;
+            //TermViewModel _viewModel = new TermViewModel();
+            //BindingContext = _viewModel;
         }
 
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            _viewModel.Refresh();
-        }
+        //protected override void OnAppearing()
+        //{
+        //    base.OnAppearing();
+            
+        //    TermViewModel _viewModel = new TermViewModel();
+        //    _viewModel.Refresh();
+        //}
     }
 }

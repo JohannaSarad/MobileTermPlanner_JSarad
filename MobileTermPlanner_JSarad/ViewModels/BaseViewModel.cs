@@ -13,6 +13,38 @@ namespace MobileTermPlanner_JSarad.ViewModels
     public class BaseViewModel : Validation
     {
 
+        //private ObservableCollection<Term> _terms;
+        //public ObservableCollection<Term> Terms
+        //{
+        //    get
+        //    {
+        //        return _terms;
+        //    }
+        //    set
+        //    {
+        //        _terms = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
+        
+        //public async void LoadTerms()
+        //{
+        //    if (Terms != null) {
+        //        Terms.Clear();
+                
+        //        List<Term> termList = new List<Term>(await DatabaseService.GetTerms());
+        //        foreach (Term term in termList)
+        //        {
+        //            Terms.Add(term);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Terms = new ObservableCollection<Term>(await DatabaseService.GetTerms());
+        //    }
+        //}
+
+
         private bool _isBusy;
         public bool IsBusy
         {

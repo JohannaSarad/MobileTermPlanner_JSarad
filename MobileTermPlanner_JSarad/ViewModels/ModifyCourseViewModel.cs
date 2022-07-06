@@ -219,7 +219,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         
         private async Task SaveCourse()
         {
-            CourseList = await DatabaseService.GetCourseByTerm(DatabaseService.CurrentTerm.Id);
+            CourseList = await DatabaseService.GetCoursesByTerm(DatabaseService.CurrentTerm.Id);
             IsValidInput = true;
 
             //validates unchanged properties and displays any errors to user on save attempt
@@ -266,15 +266,15 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 if (DatabaseService.IsAdd)
                 {
-                    await DatabaseService.AddCourse(Course, DatabaseService.CurrentTerm.Id);
-                    //note that you changed this before and after breaking. May cause break. 
-                    
+                    MessagingCenter.Send(this, "AddCourse", Course);
+                    //MessagingCenter.Send(this, "AddInstructor", Instructor);
                     await DatabaseService.AddInstructor(Instructor, DatabaseService.LastAddedId);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
                 else
                 {
-                    await DatabaseService.UpdateCourse(Course);
+                    MessagingCenter.Send(this, "UpdateCourse", Course);
+                    //MessagingCenter.Send(this, "UpdateInstructor", Instructor);
                     await DatabaseService.UpdateInstructor(Instructor);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }

@@ -16,6 +16,7 @@
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
+        <ScrollView>
         <StackLayout BackgroundColor="#F2F6F8">
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
 
@@ -76,5 +77,6 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

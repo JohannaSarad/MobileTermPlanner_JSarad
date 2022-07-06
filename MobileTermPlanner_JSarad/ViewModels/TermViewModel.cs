@@ -42,21 +42,21 @@ namespace MobileTermPlanner_JSarad.ViewModels
         public TermViewModel()
         {
             LoadTerms();
-
+            
             NavToAddCommand = new Command(async () => await NavToAddTerm());
             NavToEditCommand = new Command(async (o) => await NavToEditTerm(o));
             ViewTermCommand = new Command(async (o) => await ViewTerm(o));
             DeleteTermCommand = new Command(async (o) => await DeleteTerm(o));
 
-            //MessagingCenter.Subscribe<ModifyTermViewModel, Term>(this, "AddTerm", (sender, obj) =>
-            //{
-            //    AddTerm(obj);
-            //});
+            MessagingCenter.Subscribe<ModifyTermViewModel, Term>(this, "AddTerm", (sender, term) =>
+            {
+                AddTerm(term);
+            });
 
-            //MessagingCenter.Subscribe<ModifyTermViewModel, Term>(this, "EditTerm", (sender, obj) =>
-            //{
-            //    UpdateTerm(obj);
-            //});
+            MessagingCenter.Subscribe<ModifyTermViewModel, Term>(this, "UpdateTerm", (sender, term) =>
+            {
+                UpdateTerm(term);
+            });
 
             //MessagingCenter.Subscribe<ModifyTermViewModel>(this, "CancelChanges", sender => { Refresh(); });
         }
@@ -82,38 +82,42 @@ namespace MobileTermPlanner_JSarad.ViewModels
             await Application.Current.MainPage.Navigation.PushAsync(new CourseViewPage());
         }
 
-        //private async void AddTerm(Term term)
-        //{
-        //    await DatabaseService.AddTerm(term);
-        //}
+        private async void AddTerm(Term term)
+        {
+            await DatabaseService.AddTerm(term);
+            LoadTerms();
+        }
 
-        //private async void UpdateTerm(Term term)
-        //{
-        //    await DatabaseService.UpdateTerm(term);
-        //    Refresh();
-        //}
-        
+        private async void UpdateTerm(Term term)
+        {
+            await DatabaseService.UpdateTerm(term);
+            LoadTerms();
+        }
+
         private async Task DeleteTerm(object o)
         {
             Term term = o as Term;
             await DatabaseService.DeleteTerm(term.Id);
-            Refresh();
+            LoadTerms();
            
         }
 
-        private async void LoadTerms()
+        public async void LoadTerms()
         {
-            IsBusy = true;
-            Terms = new ObservableCollection<Term>(await DatabaseService.GetTerms());
-            IsBusy = false;
-        }
+            if (Terms != null)
+            {
+                Terms.Clear();
 
-        public void Refresh()
-        {
-            IsBusy = true;
-            Terms.Clear();
-            LoadTerms();
-            IsBusy = false;
+                List<Term> termList = new List<Term>(await DatabaseService.GetTerms());
+                foreach (Term term in termList)
+                {
+                    Terms.Add(term);
+                }
+            }
+            else
+            {
+                Terms = new ObservableCollection<Term>(await DatabaseService.GetTerms());
+            }
         }
     }
 }
