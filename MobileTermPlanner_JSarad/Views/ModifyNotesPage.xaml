@@ -9,15 +9,15 @@
     </ContentPage.BindingContext>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Save" x:Name="SaveTerm" Command="{Binding SaveCommand}"/>
-        <ToolbarItem Text="Cancel" x:Name="Cancel" Command ="{Binding CancelCommand}"/>
+        <ToolbarItem Text="Save" Command="{Binding SaveCommand}"/>
+        <ToolbarItem Text="Cancel" Command ="{Binding CancelCommand}"/>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Course Notes"/>
             <Editor Text="{Binding Note.Note}" AutoSize="TextChanges"/>
-            <Button Text="Share Notes"/>
+            <Button Text="Share Notes" Command="{Binding ShareCommand}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

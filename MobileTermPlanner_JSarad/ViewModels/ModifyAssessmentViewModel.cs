@@ -183,12 +183,14 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 if (DatabaseService.IsAdd)
                 {
-                    await DatabaseService.AddAssessment(Assessment, DatabaseService.CurrentCourse.Id);
+                    MessagingCenter.Send(this, "AddAssessment", Assessment);
+                    //await DatabaseService.AddAssessment(Assessment, DatabaseService.CurrentCourse.Id);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
                 else
                 {
-                    await DatabaseService.UpdateAssessment(Assessment);
+                    MessagingCenter.Send(this, "UpdateAssessment", Assessment);
+                    //await DatabaseService.UpdateAssessment(Assessment);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
             }

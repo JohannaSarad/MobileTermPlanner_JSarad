@@ -20,23 +20,11 @@ namespace MobileTermPlanner_JSarad
             Current.On<Xamarin.Forms.PlatformConfiguration.Android>().UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
             InitializeComponent();
 
-            //OnStart();
-            //InitializeDatabase();
-            InitializeNavigation();
-            
-            
-            //MainPage = new NavigationPage(new TermViewPage());
+            MainPage = new NavigationPage(new MainPage());
         }
 
-        private async void InitializeDatabase()
-        {
-            await DatabaseService.Init();
-        }
-
-        private async void InitializeNavigation()
-        {
-            MainPage = new NavigationPage(new TermViewPage());
-        }
+        
+       
 
         
         

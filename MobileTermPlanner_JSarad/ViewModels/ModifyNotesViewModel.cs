@@ -6,6 +6,7 @@ using MobileTermPlanner_JSarad.Services;
 using MobileTermPlanner_JSarad.Models;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace MobileTermPlanner_JSarad.ViewModels
 {
@@ -40,27 +41,35 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
+        public ICommand ShareCommand { get; set; }
 
         public ModifyNotesViewModel()
         {
             LoadNote();
             SaveCommand = new Command(async () => await SaveNote());
             CancelCommand = new Command(async () => await CancelNote());
+            ShareCommand = new Command(async () => await ShareNote());
+        }
+
+        private async Task ShareNote()
+        {
+            MessagingCenter.Send(this, "UpdateNotes", Note);
+            await Share.RequestAsync(new ShareTextRequest
+            {
+                Text = NoteText,
+                Title = $"Notes for {DatabaseService.CurrentCourse.Name}"
+            });
         }
 
         private async void LoadNote()
         {
             Note = await DatabaseService.GetNotesByCourse(DatabaseService.CurrentCourse.Id);
-            if (Note == null || string.IsNullOrEmpty(NoteText))
-            {
-                NoteText = "There are no notes for this course";
-            }
         }
 
         private async Task SaveNote()
         {
-            //this doesn't work right. Either need to only edit or have the option to not have sample notes in DatabaseService AddNotes Method
-            await DatabaseService.UpdateNotes(Note);
+            MessagingCenter.Send(this, "UpdateNotes", Note);
+            //await DatabaseService.UpdateNotes(Note);
             await Application.Current.MainPage.Navigation.PopAsync();
         }
 

@@ -42,21 +42,6 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 OnPropertyChanged();
             }
         }
-        
-        //private Course _course;
-        //public Course Course
-        //{
-        //    get
-        //    {
-        //        return _course;
-        //    }
-        //    set
-        //    {
-        //        _course = value;
-        //        OnPropertyChanged();
-                    
-        //    }
-        //}
 
         //commmands
         public ICommand NavToAddCommand { get; set; }
@@ -75,24 +60,16 @@ namespace MobileTermPlanner_JSarad.ViewModels
             ViewCommand = new Command(async (o) => await ViewCourse(o));
             DeleteCommand = new Command(async (o) => await DeleteCourse(o));
 
-            MessagingCenter.Subscribe<ModifyCourseViewModel, Course>(this, "AddCourse", (sender, course) =>
+            
+            MessagingCenter.Subscribe<ModifyCourseViewModel, Instructor>(this, "AddInstructor", (sender, instructor) =>
             {
-                AddCourse(course);
+                AddInstructor(instructor);
             });
 
-            MessagingCenter.Subscribe<ModifyCourseViewModel, Course>(this, "UpdateCouse", (sender, course) =>
+            MessagingCenter.Subscribe<ModifyCourseViewModel, Instructor>(this, "UpdateInstructor", (sender, instructor) =>
             {
-                UpdateCourse(course);
+                UpdateInstructor(instructor);
             });
-            //MessagingCenter.Subscribe<ModifyCourseViewModel, Instructor>(this, "AddInstructor", (sender, instructor) =>
-            //{
-            //    AddInstructor(instructor);
-            //});
-
-            //MessagingCenter.Subscribe<ModifyCourseViewModel, Instructor>(this, "UpdateInstructor", (sender, instructor) =>
-            //{
-            //    UpdateInstructor(instructor);
-            //});
         }
 
         //methods
@@ -117,29 +94,17 @@ namespace MobileTermPlanner_JSarad.ViewModels
             await Application.Current.MainPage.Navigation.PushAsync(new DetailedCourseViewPage());
         }
 
-        private async void AddCourse(Course course)
+        private async void AddInstructor(Instructor instructor)
         {
-            await DatabaseService.AddCourse(course, Term.Id);
+            await DatabaseService.AddInstructor(instructor, DatabaseService.LastAddedId);
             LoadCourses();
         }
 
-        private async void UpdateCourse(Course course)
+        private async void UpdateInstructor(Instructor instructor)
         {
-            await DatabaseService.UpdateCourse(course);
+            await DatabaseService.UpdateInstructor(instructor);
             LoadCourses();
         }
-
-        //private async void AddInstructor(Instructor instructor)
-        //{
-        //    await DatabaseService.AddInstructor(instructor, DatabaseService.LastAddedId);
-        //    //LoadCourses();
-        //}
-
-        //private async void UpdateInstructor(Instructor instructor)
-        //{
-        //    await DatabaseService.UpdateInstructor(instructor);
-        //    //LoadCourses();
-        //}
 
         private async Task DeleteCourse(object o)
         {

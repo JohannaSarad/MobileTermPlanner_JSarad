@@ -234,21 +234,21 @@ namespace MobileTermPlanner_JSarad.ViewModels
             ValidSelection(Status, StatusTitle, "Course Status");
             SelectionErrorMessage = ValidationMessage;
             
-            //checks for overlapping courses 
-            if (CourseList.Count > 0)
-            {
-                int i;
-                for (i = 0; i < CourseList.Count; i++)
-                {
-                    if (((CourseList[i].StartDate <= Course.EndDate && CourseList[i].StartDate >= Course.StartDate) ||
-                        (CourseList[i].EndDate <= Course.EndDate && CourseList[i].EndDate >= Course.StartDate)) && (CourseList[i].Id != Course.Id))
-                    {
-                        IsValidInput = false;
-                        await Application.Current.MainPage.DisplayAlert("Overlapping Course", $" * There is an overlapping term for these dates for " +
-                            $"Term { CourseList[i].Name} from { CourseList[i].StartDate.Date} to {CourseList[i].EndDate.Date}", "Ok");
-                    }
-                }
-            }
+            //checks for overlapping courses Not nessecary yet
+            //if (CourseList.Count > 0)
+            //{
+            //    int i;
+            //    for (i = 0; i < CourseList.Count; i++)
+            //    {
+            //        if (((CourseList[i].StartDate <= Course.EndDate && CourseList[i].StartDate >= Course.StartDate) ||
+            //            (CourseList[i].EndDate <= Course.EndDate && CourseList[i].EndDate >= Course.StartDate)) && (CourseList[i].Id != Course.Id))
+            //        {
+            //            IsValidInput = false;
+            //            await Application.Current.MainPage.DisplayAlert("Overlapping Course", $" * There is an overlapping term for these dates for " +
+            //                $"Term { CourseList[i].Name} from { CourseList[i].StartDate.Date} to {CourseList[i].EndDate.Date}", "Ok");
+            //        }
+            //    }
+            //}
 
             ////checks that new or edited Course dates are within the dates of the Term for future use
             //if (DatabaseService.CurrentTerm.StartDate > Course.StartDate || DatabaseService.CurrentTerm.StartDate > Course.EndDate
@@ -266,16 +266,14 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 if (DatabaseService.IsAdd)
                 {
-                    MessagingCenter.Send(this, "AddCourse", Course);
-                    //MessagingCenter.Send(this, "AddInstructor", Instructor);
-                    await DatabaseService.AddInstructor(Instructor, DatabaseService.LastAddedId);
+                    await DatabaseService.AddCourse(Course, DatabaseService.CurrentTerm.Id);
+                    MessagingCenter.Send(this, "AddInstructor", Instructor);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
                 else
                 {
-                    MessagingCenter.Send(this, "UpdateCourse", Course);
-                    //MessagingCenter.Send(this, "UpdateInstructor", Instructor);
-                    await DatabaseService.UpdateInstructor(Instructor);
+                    await DatabaseService.UpdateCourse(Course);
+                    MessagingCenter.Send(this, "UpdateInstructor", Instructor);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
             }

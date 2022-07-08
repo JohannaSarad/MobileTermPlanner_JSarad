@@ -79,7 +79,7 @@ namespace MobileTermPlanner_JSarad.Services
             //await Init();
             await db.DeleteAsync<Term>(id);
 
-            List<Course> associatedCourses = await GetCourseByTerm(id);
+            List<Course> associatedCourses = await GetCoursesByTerm(id);
 
             if (associatedCourses.Count > 0)
             {
@@ -157,9 +157,9 @@ namespace MobileTermPlanner_JSarad.Services
             await db.DeleteAsync<Instructor>(associatedInstructor.Id);
             Notes associatedNotes = await GetNotesByCourse(id);
             await db.DeleteAsync<Notes>(associatedNotes.Id);
-            
+
             List<Assessment> associatedAssessments = await GetAssessmentsByCourse(id);
-            if(associatedAssessments.Count > 0)
+            if (associatedAssessments.Count > 0)
             {
                 foreach (Assessment assessment in associatedAssessments)
                 {
@@ -454,6 +454,8 @@ namespace MobileTermPlanner_JSarad.Services
                     Name = "Assessment 1",
                     StartDate = new DateTime(2022, 01, 25),
                     EndDate = new DateTime(2022, 01, 31),
+                    NotifyStartDate = false,
+                    NotifyEndDate = false,
                     CourseId = courseId
                 };
                 await db.InsertAsync(sampleAssessment1);
@@ -464,13 +466,15 @@ namespace MobileTermPlanner_JSarad.Services
                     Name = "Assessment 2",
                     StartDate = new DateTime(2022, 01, 25),
                     EndDate = new DateTime(2022, 01, 31),
+                    NotifyStartDate = false,
+                    NotifyEndDate = false,
                     CourseId = courseId
                 };
                 await db.InsertAsync(sampleAssessment2);
 
                 Notes sampleNotes = new Notes
                 {
-                    Note = "",
+                    Note = null,
                     CourseId = courseId
                 };
 

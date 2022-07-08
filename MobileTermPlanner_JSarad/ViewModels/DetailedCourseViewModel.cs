@@ -88,6 +88,33 @@ namespace MobileTermPlanner_JSarad.ViewModels
             NavToEditAssessmentCommand = new Command(async (o) => await NavToEditAssessment(o));
             DeleteAssessmentCommand = new Command(async (o) => await DeleteAssessment(o));
             NavToNotesCommand = new Command(async () => await NavToAddNotes());
+
+            MessagingCenter.Subscribe<ModifyAssessmentViewModel, Assessment>(this, "AddAssessment", (sender, assessment) =>
+            {
+                AddAssessment(assessment);
+            });
+
+            MessagingCenter.Subscribe<ModifyAssessmentViewModel, Assessment>(this, "UpdateAssessment", (sender, assessment) =>
+            {
+                UpdateAssessment(assessment);
+            });
+
+            //MessagingCenter.Subscribe<ModifyCourseViewModel, Course>(this, "UpdateCourse", (sender, course) =>
+            //{
+            //    UpdateCourse(course);
+            //});
+
+            MessagingCenter.Subscribe<ModifyCourseViewModel, Instructor>(this, "UpdateInstructor", (sender, instructor) =>
+            {
+                UpdateInstructor(instructor);
+            });
+
+            MessagingCenter.Subscribe<ModifyNotesViewModel, Notes>(this, "UpdateNotes", (sender, note) =>
+            {
+                UpdateNotes(note);
+            });
+
+
         }
 
         private async Task NavToEditCourse()
@@ -119,24 +146,65 @@ namespace MobileTermPlanner_JSarad.ViewModels
             await Application.Current.MainPage.Navigation.PushAsync(new ModifyAssessmentsPage());
         }
 
-        private async Task DeleteAssessment(object o)
-        {
-            Assessment assessment = o as Assessment;
-            await DatabaseService.DeleteAssessment(assessment.Id);
-            Refresh();
-        }
-
         private async Task NavToAddNotes()
         {
             await Application.Current.MainPage.Navigation.PushAsync(new ModifyNotesPage());
         }
 
-        
+        private async void AddAssessment(Assessment assessment)
+        {
+            await DatabaseService.AddAssessment(assessment, DatabaseService.CurrentCourse.Id);
+            LoadAssessments();
+        }
+
+        private async void UpdateAssessment(Assessment assessment)
+        {
+            await DatabaseService.UpdateAssessment(assessment);
+            LoadAssessments();
+        }
+
+        private async Task DeleteAssessment(object o)
+        {
+            Assessment assessment = o as Assessment;
+            await DatabaseService.DeleteAssessment(assessment.Id);
+            //Refresh();
+            LoadAssessments();
+        }
+
+        private async void UpdateInstructor(Instructor instructor)
+        {
+            Course = await DatabaseService.GetCourse(DatabaseService.CurrentCourse.Id);
+            await DatabaseService.UpdateInstructor(instructor);
+            Instructor = await DatabaseService.GetInstructor(instructor.Id);
+                 
+        }
+
+        private async void UpdateNotes(Notes note)
+        {
+            await DatabaseService.UpdateNotes(note);
+            LoadNotes();
+        }
+
+        //load methods
         private async void LoadAssessments()
         {
             //IsBusy = true;
-            Assessments = new ObservableCollection<Assessment>(await DatabaseService.GetAssessmentsByCourse(DatabaseService.CurrentCourse.Id));
+            
             //IsBusy = false;
+            if (Assessments != null)
+            {
+                Assessments.Clear();
+
+                List<Assessment> assessmentList = new List<Assessment>(await DatabaseService.GetAssessmentsByCourse(Course.Id));
+                foreach (Assessment assessment in assessmentList)
+                {
+                    Assessments.Add(assessment);
+                }
+            }
+            else
+            {
+                Assessments = new ObservableCollection<Assessment>(await DatabaseService.GetAssessmentsByCourse(DatabaseService.CurrentCourse.Id));
+            }
         }
 
         private async void LoadNotes()
@@ -146,20 +214,20 @@ namespace MobileTermPlanner_JSarad.ViewModels
             //IsBusy = false;
         }
 
-        public async void Refresh()
-        {
-            //needs to update course instructor and notes
-            IsBusy = true;
-            if (Assessments != null)
-            {
-                Assessments.Clear();
-            }
-            LoadAssessments();
-            LoadNotes();
-            Instructor = await DatabaseService.GetInstructor(DatabaseService.CurrentInstructor.Id);
-            Course = await DatabaseService.GetCourse(DatabaseService.CurrentCourse.Id);
+        //public async void Refresh()
+        //{
+        //    //needs to update course instructor and notes
+        //    IsBusy = true;
+        //    if (Assessments != null)
+        //    {
+        //        Assessments.Clear();
+        //    }
+        //    LoadAssessments();
+        //    LoadNotes();
+        //    Instructor = await DatabaseService.GetInstructor(DatabaseService.CurrentInstructor.Id);
+        //    Course = await DatabaseService.GetCourse(DatabaseService.CurrentCourse.Id);
             
-            IsBusy = false;
-        }
+        //    IsBusy = false;
+        //}
     }
 }
