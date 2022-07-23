@@ -45,7 +45,14 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
         public ModifyNotesViewModel()
         {
-            LoadNote();
+            if (DatabaseService.IsAdd)
+            {
+                Note = new Notes();
+            }
+            else
+            {
+                LoadNote();
+            }
             SaveCommand = new Command(async () => await SaveNote());
             CancelCommand = new Command(async () => await CancelNote());
             ShareCommand = new Command(async () => await ShareNote());
@@ -68,8 +75,14 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
         private async Task SaveNote()
         {
-            MessagingCenter.Send(this, "UpdateNotes", Note);
-            //await DatabaseService.UpdateNotes(Note);
+            if (DatabaseService.IsAdd)
+            {
+                MessagingCenter.Send(this, "AddNotes", Note);
+            }
+            else
+            {
+                MessagingCenter.Send(this, "UpdateNotes", Note);
+            }
             await Application.Current.MainPage.Navigation.PopAsync();
         }
 

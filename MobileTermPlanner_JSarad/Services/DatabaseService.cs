@@ -14,14 +14,15 @@ namespace MobileTermPlanner_JSarad.Services
     public static class DatabaseService
     {
         public static SQLiteAsyncConnection db;
+
+        //static Database Helpers
         public static Term CurrentTerm { get; set; }
         public static Course CurrentCourse { get; set; }
         public static Instructor CurrentInstructor { get; set; }
         public static Assessment CurrentAssessment { get; set; }
         public static Notes CurrentNotes { get; set; }
         public static int LastAddedId { get; set; }
-
-        
+        public static bool IsBusy { get; set; }
         public static bool IsAdd { get; set; }
 
 
@@ -34,7 +35,8 @@ namespace MobileTermPlanner_JSarad.Services
 
             var databasePath = Path.Combine(FileSystem.AppDataDirectory, "MobileTermPlanner.db");
             db = new SQLiteAsyncConnection(databasePath);
-            db.CreateTablesAsync<Term, Course, Instructor, Assessment, Notes>().Wait();
+            await db.CreateTablesAsync<Term, Course, Instructor, Assessment, Notes>();
+            //await db.CreateTableAsync<Notifications>();
 
             await FillSampleData();
         }
@@ -48,8 +50,8 @@ namespace MobileTermPlanner_JSarad.Services
                 Name = term.Name,
                 StartDate = term.StartDate,
                 EndDate = term.EndDate,
-                NotifyStartDate = term.NotifyStartDate,
-                NotifyEndDate = term.NotifyEndDate
+                //NotifyStartDate = term.NotifyStartDate,
+                //NotifyEndDate = term.NotifyEndDate
             };
             var id = await db.InsertAsync(termToAdd);
         }
@@ -67,10 +69,10 @@ namespace MobileTermPlanner_JSarad.Services
                 termQuery.Name = term.Name;
                 termQuery.StartDate = term.StartDate;
                 termQuery.EndDate = term.EndDate;
-                termQuery.NotifyStartDate = term.NotifyStartDate; ;
-                termQuery.NotifyEndDate = term.NotifyEndDate;
+                //termQuery.NotifyStartDate = term.NotifyStartDate; ;
+                //termQuery.NotifyEndDate = term.NotifyEndDate;
 
-                var id = await db.UpdateAsync(termQuery);
+               await db.UpdateAsync(termQuery);
             }
         }
 
@@ -119,8 +121,9 @@ namespace MobileTermPlanner_JSarad.Services
                 StartDate = course.StartDate,
                 EndDate = course.EndDate,
                 Status = course.Status,
-                NotifyStartDate = course.NotifyStartDate,
-                NotifyEndDate = course.NotifyEndDate,
+                Notify = course.Notify,
+                //NotifyStartDate = course.NotifyStartDate,
+                //NotifyEndDate = course.NotifyEndDate,
                 TermId = id
             };
 
@@ -142,8 +145,9 @@ namespace MobileTermPlanner_JSarad.Services
                 courseQuery.StartDate = course.StartDate;
                 courseQuery.EndDate = course.EndDate;
                 courseQuery.Status = course.Status;
-                courseQuery.NotifyStartDate = course.NotifyStartDate;
-                courseQuery.NotifyEndDate = course.NotifyEndDate;
+                courseQuery.Notify = course.Notify;
+                //courseQuery.NotifyStartDate = course.NotifyStartDate;
+                //courseQuery.NotifyEndDate = course.NotifyEndDate;
 
                 await db.UpdateAsync(courseQuery);
             }
@@ -205,8 +209,9 @@ namespace MobileTermPlanner_JSarad.Services
                 Name = assessment.Name,
                 StartDate = assessment.StartDate,
                 EndDate = assessment.EndDate,
-                NotifyStartDate = assessment.NotifyStartDate,
-                NotifyEndDate = assessment.NotifyEndDate,
+                Notify = assessment.Notify,
+                //NotifyStartDate = assessment.NotifyStartDate,
+                //NotifyEndDate = assessment.NotifyEndDate,
                 CourseId = courseId
             };
             await db.InsertAsync(assessmentToAdd);
@@ -226,8 +231,9 @@ namespace MobileTermPlanner_JSarad.Services
                 assessmentQuery.Name = assessment.Name;
                 assessmentQuery.StartDate = assessment.StartDate;
                 assessmentQuery.EndDate = assessment.EndDate;
-                assessmentQuery.NotifyStartDate = assessment.NotifyStartDate;
-                assessmentQuery.NotifyEndDate = assessment.NotifyEndDate;
+                assessmentQuery.Notify = assessment.Notify;
+                //assessmentQuery.NotifyStartDate = assessment.NotifyStartDate;
+                //assessmentQuery.NotifyEndDate = assessment.NotifyEndDate;
                 await db.UpdateAsync(assessmentQuery);
             }
         }
@@ -387,30 +393,59 @@ namespace MobileTermPlanner_JSarad.Services
         public static async Task<Notes> GetNotesByCourse(int id)
         {
             //await Init();
-            Notes placeholder;
+            //Notes placeholder;
             Notes note = await db.Table<Notes>()
                 .Where(i => i.CourseId == id)
                 .FirstOrDefaultAsync();
-            if (note != null)
-            {
-                return note;
-            }
-            else
-            {
-                placeholder = new Notes
-                {
-                    Note = "There are no notes to display for this course",
-                    CourseId = id
-                };
-            return placeholder;
-            }
+            //if (note != null)
+            //{
+            return note;
+            //}
+            //else
+            //{
+            //    placeholder = new Notes
+            //    {
+            //        Note = "There are no notes to display for this course",
+            //        CourseId = id
+            //    };
+            //return placeholder;
+            //}
         }
 
+        //public static async Task AddNotification(Notifications notification)
+        //{
+        //    Notifications notificationToAdd = new Notifications
+        //    {
+        //        Type = notification.Type,
+        //        TypeName = notification.TypeName,
+        //        Occurrence = notification.Occurrence,
+        //        NotifyDate = notification.NotifyDate
+        //    };
+        //    await db.InsertAsync(notificationToAdd);
+        //}
 
+        //public static async Task DeleteNotification(Notifications notification)
+        //{
+        //    var notificationQuery = await db.Table<Notifications>()
+        //       .Where(i => i.Id == notification.Id)
+        //       .FirstOrDefaultAsync();
+
+        //    if (notificationQuery != null)
+        //    {
+        //        await db.DeleteAsync<Notifications>(notification.Id);
+        //    }
+        //}
+
+        //public static async Task<List<Notifications>> GetNotifications()
+        //{
+        //    var notificationList = await db.Table<Notifications>().ToListAsync();
+        //    return notificationList;
+        //}
+        
         //sample data
         public static async Task FillSampleData()
         {
-            
+            //await Task.Delay(1000);
             List<Term> terms = await db.Table<Term>().ToListAsync();
             //int lastId = 0;
             if (terms.Count == 0)
@@ -420,25 +455,26 @@ namespace MobileTermPlanner_JSarad.Services
                     Name = "Term 1",
                     StartDate = new DateTime(2022, 01, 01),
                     EndDate = new DateTime(2022, 05, 31),
-                    NotifyStartDate = true,
-                    NotifyEndDate = false
+                    //NotifyStartDate = true,
+                    //NotifyEndDate = false
                 };
-                await db.InsertAsync(sampleTerm);
+                var term = await db.InsertAsync(sampleTerm);
                 int termId = sampleTerm.Id;
-                
+
                 Course sampleCourse = new Course
                 {
                     Status = "Plan to Take",
                     Name = "Course 1",
                     StartDate = new DateTime(2022, 01, 01),
                     EndDate = new DateTime(2022, 01, 31),
-                    NotifyStartDate = true,
-                    NotifyEndDate = false,
+                    Notify = true,
+                    //NotifyStartDate = true,
+                    //NotifyEndDate = false,
                     TermId = termId
                 };
-                await db.InsertAsync(sampleCourse);
+                var course = await db.InsertAsync(sampleCourse);
                 int courseId = sampleCourse.Id;
-                
+
                 Instructor sampleInstructor = new Instructor
                 {
                     Name = "Johanna Sarad",
@@ -446,7 +482,7 @@ namespace MobileTermPlanner_JSarad.Services
                     Email = "jsarad2@wgu.edu",
                     CourseId = courseId
                 };
-                await db.InsertAsync(sampleInstructor);
+                var instructor = await db.InsertAsync(sampleInstructor);
 
                 Assessment sampleAssessment1 = new Assessment
                 {
@@ -454,23 +490,25 @@ namespace MobileTermPlanner_JSarad.Services
                     Name = "Assessment 1",
                     StartDate = new DateTime(2022, 01, 25),
                     EndDate = new DateTime(2022, 01, 31),
-                    NotifyStartDate = false,
-                    NotifyEndDate = false,
+                    Notify = false,
+                    //NotifyStartDate = false,
+                    //NotifyEndDate = false,
                     CourseId = courseId
                 };
-                await db.InsertAsync(sampleAssessment1);
-                
+                var assessment1 = await db.InsertAsync(sampleAssessment1);
+
                 Assessment sampleAssessment2 = new Assessment
                 {
                     Type = "Performance",
                     Name = "Assessment 2",
                     StartDate = new DateTime(2022, 01, 25),
                     EndDate = new DateTime(2022, 01, 31),
-                    NotifyStartDate = false,
-                    NotifyEndDate = false,
+                    Notify = false,
+                    //NotifyStartDate = false,
+                    //NotifyEndDate = false,
                     CourseId = courseId
                 };
-                await db.InsertAsync(sampleAssessment2);
+                var assessment2 = await db.InsertAsync(sampleAssessment2);
 
                 Notes sampleNotes = new Notes
                 {
@@ -478,10 +516,13 @@ namespace MobileTermPlanner_JSarad.Services
                     CourseId = courseId
                 };
 
-                await db.InsertAsync(sampleNotes);
+                var note = await db.InsertAsync(sampleNotes);
+                Console.WriteLine("Sample Data filled filled");
+
             }
             else
             {
+                Console.WriteLine("Sample Data filled");
                 return;
             }
         }

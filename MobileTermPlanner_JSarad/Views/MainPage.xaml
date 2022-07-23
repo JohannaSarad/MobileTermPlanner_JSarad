@@ -8,6 +8,7 @@
     <ContentPage.BindingContext>
         <viewmodel:HomeViewModel/>
     </ContentPage.BindingContext>
+    
 
     <!--Toolbar-->
     <ContentPage.ToolbarItems>
@@ -33,7 +34,9 @@
                 </FormattedString>
             </Label.FormattedText>
         </Label>
-        
+        <!--<Button Text="Display Notification" Command="{Binding DisplayNotificationsCommand}" />-->
+
+
     </StackLayout>
 
 </ContentPage>

@@ -14,7 +14,22 @@ namespace MobileTermPlanner_JSarad.ViewModels
     class DetailedCourseViewModel : BaseViewModel
     {
         private List<Assessment> AssessmentList {get; set;}
+        private string placeholder = "There are no notes to display for this course";
         private ObservableCollection<Assessment> _assessments;
+        private string _addOrEdit;
+        public string AddOrEdit
+        {
+            get
+            {
+                return _addOrEdit;
+            }
+            set
+            {
+                _addOrEdit = value;
+                OnPropertyChanged();
+            }
+
+        }
         public ObservableCollection<Assessment> Assessments
         {
             get
@@ -83,11 +98,13 @@ namespace MobileTermPlanner_JSarad.ViewModels
             LoadAssessments();
             LoadNotes();
 
+           
+
             NavToEditCourseCommand = new Command(async () => await NavToEditCourse());
             NavToAddAssessmentCommand = new Command(async () => await NavToAddAssessment());
             NavToEditAssessmentCommand = new Command(async (o) => await NavToEditAssessment(o));
             DeleteAssessmentCommand = new Command(async (o) => await DeleteAssessment(o));
-            NavToNotesCommand = new Command(async () => await NavToAddNotes());
+            NavToNotesCommand = new Command(async () => await NavToNotes());
 
             MessagingCenter.Subscribe<ModifyAssessmentViewModel, Assessment>(this, "AddAssessment", (sender, assessment) =>
             {
@@ -99,14 +116,15 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 UpdateAssessment(assessment);
             });
 
-            //MessagingCenter.Subscribe<ModifyCourseViewModel, Course>(this, "UpdateCourse", (sender, course) =>
-            //{
-            //    UpdateCourse(course);
-            //});
 
             MessagingCenter.Subscribe<ModifyCourseViewModel, Instructor>(this, "UpdateInstructor", (sender, instructor) =>
             {
                 UpdateInstructor(instructor);
+            });
+
+            MessagingCenter.Subscribe<ModifyNotesViewModel, Notes>(this, "AddNotes", (sender, note) =>
+            {
+                AddNotes(note);
             });
 
             MessagingCenter.Subscribe<ModifyNotesViewModel, Notes>(this, "UpdateNotes", (sender, note) =>
@@ -129,8 +147,8 @@ namespace MobileTermPlanner_JSarad.ViewModels
             AssessmentList = await DatabaseService.GetAssessmentsByCourse(DatabaseService.CurrentCourse.Id);
             if (AssessmentList.Count >= 2)
             {
-                await Application.Current.MainPage.DisplayAlert("A course may only have 2 assessments", "There are already 2 assessments assigned" +
-                    "to this course. You must edit or delete an existing assessment to update assessment information for this course", "Ok");
+                await Application.Current.MainPage.DisplayAlert("A course may only have 2 assessments", "There are already 2 assessments for" +
+                    " this course", "Ok");
             }
             else
             {
@@ -146,8 +164,16 @@ namespace MobileTermPlanner_JSarad.ViewModels
             await Application.Current.MainPage.Navigation.PushAsync(new ModifyAssessmentsPage());
         }
 
-        private async Task NavToAddNotes()
+        private async Task NavToNotes()
         {
+            if (CourseNotes.Note == placeholder)
+            {
+                DatabaseService.IsAdd = true;
+            }
+            else
+            {
+                DatabaseService.IsAdd = false;
+            }
             await Application.Current.MainPage.Navigation.PushAsync(new ModifyNotesPage());
         }
 
@@ -176,9 +202,16 @@ namespace MobileTermPlanner_JSarad.ViewModels
             Course = await DatabaseService.GetCourse(DatabaseService.CurrentCourse.Id);
             await DatabaseService.UpdateInstructor(instructor);
             Instructor = await DatabaseService.GetInstructor(instructor.Id);
+            // I think this needs to load something to refresh the course
                  
         }
 
+        private async void AddNotes(Notes note)
+        {
+            await DatabaseService.AddNotes(note, DatabaseService.CurrentCourse.Id);
+            LoadNotes();
+        }
+        
         private async void UpdateNotes(Notes note)
         {
             await DatabaseService.UpdateNotes(note);
@@ -209,25 +242,16 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
         private async void LoadNotes()
         {
-            //IsBusy = true;
-            CourseNotes = await DatabaseService.GetNotesByCourse(DatabaseService.CurrentCourse.Id);
-            //IsBusy = false;
+            //Fix ME!!! there is something totally messed up right here that's giving me a null reference error and/or not completing loop (async issue?)            CourseNotes = await DatabaseService.GetNotesByCourse(DatabaseService.CurrentCourse.Id);
+            if (CourseNotes == null || string.IsNullOrEmpty(CourseNotes.Note) )
+            {
+                CourseNotes.Note = placeholder;
+                AddOrEdit = "Add Notes";
+            }
+            else
+            {
+                AddOrEdit = "Edit Notes";
+            }
         }
-
-        //public async void Refresh()
-        //{
-        //    //needs to update course instructor and notes
-        //    IsBusy = true;
-        //    if (Assessments != null)
-        //    {
-        //        Assessments.Clear();
-        //    }
-        //    LoadAssessments();
-        //    LoadNotes();
-        //    Instructor = await DatabaseService.GetInstructor(DatabaseService.CurrentInstructor.Id);
-        //    Course = await DatabaseService.GetCourse(DatabaseService.CurrentCourse.Id);
-            
-        //    IsBusy = false;
-        //}
     }
 }

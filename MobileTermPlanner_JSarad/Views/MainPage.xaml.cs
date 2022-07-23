@@ -1,42 +1,94 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using MobileTermPlanner_JSarad.Services;
-using MobileTermPlanner_JSarad.Models;
-using MobileTermPlanner_JSarad.Views;
-using Plugin.LocalNotifications;
 using Xamarin.Forms;
+using MobileTermPlanner_JSarad.Models;
+using MobileTermPlanner_JSarad.Services;
+using Plugin.LocalNotifications;
 
-namespace MobileTermPlanner_JSarad.ViewModels
+namespace MobileTermPlanner_JSarad
 {
-    public class HomeViewModel
+    public partial class MainPage : ContentPage
     {
-        
-        public ICommand NavToTermsCommand { get; set; }
-        //public ICommand DisplayNotificationsCommand { get; set; }
-
-        public HomeViewModel()
+        //private readonly Task _initializeDatabase();
+        public MainPage()
         {
-            //DatabaseService.IsBusy = true;
+            InitializeComponent();
             //Task.Run(async() => await DatabaseService.Init());
-
-            //DisplayNotifications();
-            NavToTermsCommand = new Command(async () => await NavToTerms());
-            //Task.Run(async () => { await DisplayNotifications(); });
-            //DisplayNotificationsCommand = new Command(async () => await DisplayNotifications());
-
+           
         }
 
-        private async Task NavToTerms()
-        {
-            await Application.Current.MainPage.Navigation.PushAsync(new TermViewPage());
-        }
-
-        //private async Task DisplayNotifications()
+        //protected override async void OnAppearing()
         //{
-        //    await DatabaseService.Init();
+            
+        //    //await Task.Delay(2000);
+        //    var courseList = await DatabaseService.db.Table<Course>().ToListAsync();
+        //    var assessmentList = await DatabaseService.db.Table<Assessment>().ToListAsync();
+
+        //    //try
+        //    //{
+        //        if (courseList.Count > 0)
+        //        {
+
+        //            for (int i = 0; i < courseList.Count; i++)
+        //            {
+        //            try
+        //            {
+
+        //                if (courseList[i].Notify)
+        //                {
+        //                    if (courseList[i].StartDate.Date == DateTime.Today)
+        //                    {
+        //                        CrossLocalNotifications.Current.Show("Reminder", $"Upcoming Course {courseList[i].Name} starts today " +
+        //                            $"on {courseList[i].StartDate} ", i);
+        //                    }
+        //                    else if (courseList[i].EndDate.Date == DateTime.Today)
+        //                    {
+        //                        CrossLocalNotifications.Current.Show("Reminder", $"Course {courseList[i].Name} ends today " +
+        //                            $"on {courseList[i].EndDate} ", i + 1);
+        //                    }
+        //                }
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Console.WriteLine($"{ex}");
+        //            }
+                        
+        //            }
+        //        }
+        //        if (assessmentList.Count > 0)
+        //        { 
+        //            for (int i = 0; i < assessmentList.Count; i++)
+        //            {
+        //                if (assessmentList[i].Notify)
+        //                {
+        //                    if (assessmentList[i].StartDate.Date == DateTime.Today)
+        //                    {
+        //                        CrossLocalNotifications.Current.Show("Reminder", $"Upcoming Assessment {assessmentList[i].Name} that " +
+        //                        $"starts today on {assessmentList[i].StartDate}", i + 1);
+        //                    }
+        //                    else if (assessmentList[i].EndDate.Date == DateTime.Today)
+        //                    {
+        //                        CrossLocalNotifications.Current.Show("Reminder", $"Assessment {assessmentList[i].Name} ends today " +
+        //                        $"on {assessmentList[i].EndDate} ", i + 1);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    base.OnAppearing();
+            //}
+
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine($"{ex}");
+            //}
+        //}
+        
+        //protected override async void OnAppearing()
+        //{
         //    var notifications = await DatabaseService.db.Table<Notifications>().ToListAsync();
         //    if (notifications.Count > 0)
         //    {
@@ -53,18 +105,15 @@ namespace MobileTermPlanner_JSarad.ViewModels
         //            Console.WriteLine($"{ex}");
         //        }
         //    }
-        //}
+        //    base.OnAppearing();
 
-        //private async void DisplayNotifications()
-        //{
-        //    NotificationsService notify = new NotificationsService();
-        //    await notify.CheckNotifications();
         //}
 
         //private async Task CheckNotifications()
         //{
-        //    //if (DatabaseService.IsBusy)
-        //    //{
+        //    await Task.Delay(2000);
+        //    if (DatabaseService.IsBusy)
+        //    {
         //        await DatabaseService.Init();
         //        //await DatabaseService.FillSampleData();
 
@@ -82,15 +131,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         //            {
         //                if (term.NotifyStartDate && (term.StartDate.Date == DateTime.Today))
         //                {
-        //                    Notifications notification = new Notifications
-        //                    {
-        //                        Type = "Term",
-        //                        TypeName = $"{term.Name}",
-        //                        NotifyDate = term.StartDate,
-        //                        Occurrence = "Upcoming"
-        //                    };
-        //                    await DatabaseService.AddNotification(notification);
-        //                    //CrossLocalNotifications.Current.Show("Reminder", $"Upcoming Term {term.Name} starts today on {term.StartDate} ");
+        //                    CrossLocalNotifications.Current.Show("Reminder", $"Upcoming Term {term.Name} starts today on {term.StartDate} ");
         //                }
         //                else if (term.NotifyEndDate && (term.EndDate.Date == DateTime.Today))
         //                {
@@ -127,8 +168,8 @@ namespace MobileTermPlanner_JSarad.ViewModels
         //                }
         //            }
         //        }
-        //        //DatabaseService.IsBusy = false;
-        //    //}
+        //        DatabaseService.IsBusy = false;
+        //    }
         //}
     }
 }

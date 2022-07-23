@@ -130,16 +130,7 @@ namespace MobileTermPlanner_JSarad.Services
 
         public void UpdateNotifyLabel(bool notificationOn, string str)
         {
-            if(notificationOn)
-            {
-                ValidationMessage = $"Turn Off {str} Date Notification";
-            }
-            else
-            {
-                ValidationMessage = $"Turn On {str} Date Notication";
-            }
+            ValidationMessage = notificationOn ? $"Turn Off {str} Notifications" : $"Turn On {str} Notifications";
         }
-
-        
     }
 }

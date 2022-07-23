@@ -119,7 +119,7 @@
                 <Frame>
                     <Label Text="{Binding CourseNotes.Note}" LineBreakMode="WordWrap"/>
                 </Frame>
-                <Button Text="Add/Edit Notes" Command="{Binding NavToNotesCommand}"/>
+                <Button Text="{Binding AddOrEdit}" Command="{Binding NavToNotesCommand}"/>
                <!---->
             </StackLayout>
         </ScrollView>

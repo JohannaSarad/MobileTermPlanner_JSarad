@@ -11,6 +11,8 @@ namespace MobileTermPlanner_JSarad.ViewModels
 {
     public class ModifyCourseViewModel : BaseViewModel
     {
+        public string AddEdit { get; set; }
+        public bool IsValidInput;
         public List<Course> CourseList { get; set; }
 
         public List<string> StatusList { get; } = new List<string>{ "In Progress", "Completed", "Plan to Take", "Dropped" };
@@ -92,36 +94,51 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
-        public bool NotifyStart
+        public bool Notify
         {
             get
             {
-                return _course.NotifyStartDate;
+                return _course.Notify;
             }
             set
             {
-                _course.NotifyStartDate = value;
+                _course.Notify = value;
                 OnPropertyChanged();
-                UpdateNotifyLabel(NotifyStart, "Start");
-                StartDateLabel = ValidationMessage;
+                UpdateNotifyLabel(Notify, "Course");
+                NotifyLabel = ValidationMessage;
 
             }
         }
+        //public bool NotifyStart
+        //{
+        //    get
+        //    {
+        //        return _course.NotifyStartDate;
+        //    }
+        //    set
+        //    {
+        //        _course.NotifyStartDate = value;
+        //        OnPropertyChanged();
+        //        UpdateNotifyLabel(NotifyStart, "Start");
+        //        StartDateLabel = ValidationMessage;
 
-        public bool NotifyEnd
-        {
-            get
-            {
-                return _course.NotifyEndDate;
-            }
-            set
-            {
-                _course.NotifyEndDate = value;
-                OnPropertyChanged();
-                UpdateNotifyLabel(NotifyEnd, "End");
-                EndDateLabel = ValidationMessage;
-            }
-        }
+        //    }
+        //}
+
+        //public bool NotifyEnd
+        //{
+        //    get
+        //    {
+        //        return _course.NotifyEndDate;
+        //    }
+        //    set
+        //    {
+        //        _course.NotifyEndDate = value;
+        //        OnPropertyChanged();
+        //        UpdateNotifyLabel(NotifyEnd, "End");
+        //        EndDateLabel = ValidationMessage;
+        //    }
+        //}
 
         //instructor properties
         private Instructor _instructor;
@@ -185,8 +202,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         }
 
        
-        //public string AddEdit { get; set; }
-        public bool IsValidInput;
+        
 
         //commands
         public ICommand SaveCommand { get; set; }
@@ -196,17 +212,19 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             if (DatabaseService.IsAdd)
             {
-                //AddEdit = "Add Course";
+               AddEdit = "Add Course";
                 Course = new Course();
                 CourseStartDate = DatabaseService.CurrentTerm.StartDate;
                 CourseEndDate = CourseStartDate.AddDays(30);
-                NotifyStart = false;
-                NotifyEnd = false;
+                Notify = false;
+                //NotifyStart = false;
+                //NotifyEnd = false;
+               
                 Instructor = new Instructor();
             }
             else
             {
-                //AddEdit = "Edit Course";
+                AddEdit = "Edit Course";
                 Course = DatabaseService.CurrentCourse;
                 Instructor = DatabaseService.CurrentInstructor;
             }

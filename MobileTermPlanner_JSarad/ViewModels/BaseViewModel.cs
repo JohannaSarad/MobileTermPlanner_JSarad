@@ -12,39 +12,6 @@ namespace MobileTermPlanner_JSarad.ViewModels
 {
     public class BaseViewModel : Validation
     {
-
-        //private ObservableCollection<Term> _terms;
-        //public ObservableCollection<Term> Terms
-        //{
-        //    get
-        //    {
-        //        return _terms;
-        //    }
-        //    set
-        //    {
-        //        _terms = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-        
-        //public async void LoadTerms()
-        //{
-        //    if (Terms != null) {
-        //        Terms.Clear();
-                
-        //        List<Term> termList = new List<Term>(await DatabaseService.GetTerms());
-        //        foreach (Term term in termList)
-        //        {
-        //            Terms.Add(term);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Terms = new ObservableCollection<Term>(await DatabaseService.GetTerms());
-        //    }
-        //}
-
-
         private bool _isBusy;
         public bool IsBusy
         {
@@ -159,32 +126,46 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
-        private string _startDateLabel;
-        public string StartDateLabel
+        private string _notifyLabel;
+        public string NotifyLabel
         {
             get
             {
-                return _startDateLabel;
+                return _notifyLabel;
             }
             set
             {
-                _startDateLabel = value;
+                _notifyLabel = value;
                 OnPropertyChanged();
             }
         }
 
-        private string _endDateLabel;
-        public string EndDateLabel
-        {
-            get
-            {
-                return _endDateLabel;
-            }
-            set
-            {
-                _endDateLabel = value;
-                OnPropertyChanged();
-            }
-        }
+        //private string _startDateLabel;
+        //public string StartDateLabel
+        //{
+        //    get
+        //    {
+        //        return _startDateLabel;
+        //    }
+        //    set
+        //    {
+        //        _startDateLabel = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
+
+        //private string _endDateLabel;
+        //public string EndDateLabel
+        //{
+        //    get
+        //    {
+        //        return _endDateLabel;
+        //    }
+        //    set
+        //    {
+        //        _endDateLabel = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
     }
 }

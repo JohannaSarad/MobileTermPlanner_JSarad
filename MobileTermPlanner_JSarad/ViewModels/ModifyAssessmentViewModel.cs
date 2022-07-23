@@ -89,36 +89,52 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
-        public bool NotifyStart
+        public bool Notify
         {
             get
             {
-                return _assessment.NotifyStartDate;
+                return _assessment.Notify;
             }
             set
             {
-                _assessment.NotifyStartDate = value;
+                _assessment.Notify = value;
                 OnPropertyChanged();
-                UpdateNotifyLabel(NotifyStart, "Start");
-                StartDateLabel = ValidationMessage;
+                UpdateNotifyLabel(Notify, "Assessment");
+                NotifyLabel = ValidationMessage;
 
             }
         }
 
-        public bool NotifyEnd
-        {
-            get
-            {
-                return _assessment.NotifyEndDate;
-            }
-            set
-            {
-                _assessment.NotifyEndDate = value;
-                OnPropertyChanged();
-                UpdateNotifyLabel(NotifyEnd, "End");
-                EndDateLabel = ValidationMessage;
-            }
-        }
+        //public bool NotifyStart
+        //{
+        //    get
+        //    {
+        //        return _assessment.NotifyStartDate;
+        //    }
+        //    set
+        //    {
+        //        _assessment.NotifyStartDate = value;
+        //        OnPropertyChanged();
+        //        UpdateNotifyLabel(NotifyStart, "Start");
+        //        StartDateLabel = ValidationMessage;
+
+        //    }
+        //}
+
+        //public bool NotifyEnd
+        //{
+        //    get
+        //    {
+        //        return _assessment.NotifyEndDate;
+        //    }
+        //    set
+        //    {
+        //        _assessment.NotifyEndDate = value;
+        //        OnPropertyChanged();
+        //        UpdateNotifyLabel(NotifyEnd, "End");
+        //        EndDateLabel = ValidationMessage;
+        //    }
+        //}
 
         public bool IsValidInput;
 
@@ -131,8 +147,9 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 Assessment = new Assessment();
                 StartDate = DateTime.Now;
                 EndDate = StartDate.AddDays(180);
-                NotifyStart = false;
-                NotifyEnd = false;
+                Notify = false;
+                //NotifyStart = false;
+                //NotifyEnd = false;
             }
             else
             {
@@ -161,9 +178,10 @@ namespace MobileTermPlanner_JSarad.ViewModels
                     if ((assessment.Type == Type) && (assessment.Id != DatabaseService.CurrentAssessment.Id))
                     {
                         IsValidInput = false;
-                        await Application.Current.MainPage.DisplayAlert($"There may only be 1 {Type} Assessment per Course", $"There is already one {Type} Assessment for this " +
-                            $"course for {assessment.Type} Assessment {assessment.Name} from {assessment.StartDate.Date} to {assessment.EndDate.Date} " +
-                            $"Please select a different Assessment Type to continue.", "Ok");
+                        await Application.Current.MainPage.DisplayAlert($"There may only be one {Type} Assessment per Course", 
+                            $"There is already one {Type} Assessment for this " +
+                            $"course for {assessment.Type} Assessment {assessment.Name} from {assessment.StartDate.Date} " +
+                            $"to {assessment.EndDate.Date} ", "Ok");
                     }
                 }
             }

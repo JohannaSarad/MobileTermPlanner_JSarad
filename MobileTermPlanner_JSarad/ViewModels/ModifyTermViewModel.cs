@@ -15,6 +15,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
     {
         //properties
 
+        public string AddEdit { get; set; }
         public List<Term> TermList { get; set; }
         
         private Term _term;
@@ -76,36 +77,36 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
-        public bool NotifyStart
-        {
-            get
-            {
-                return _term.NotifyStartDate;
-            }
-            set
-            {
-                _term.NotifyStartDate = value;
-                OnPropertyChanged();
-                UpdateNotifyLabel(NotifyStart, "Start");
-                StartDateLabel = ValidationMessage;
+        //public bool NotifyStart
+        //{
+        //    get
+        //    {
+        //        return _term.NotifyStartDate;
+        //    }
+        //    set
+        //    {
+        //        _term.NotifyStartDate = value;
+        //        OnPropertyChanged();
+        //        UpdateNotifyLabel(NotifyStart, "Start");
+        //        StartDateLabel = ValidationMessage;
 
-            }
-        }
+        //    }
+        //}
 
-        public bool NotifyEnd
-        {
-            get
-            {
-                return _term.NotifyEndDate;
-            }
-            set
-            {
-                _term.NotifyEndDate = value;
-                OnPropertyChanged();
-                UpdateNotifyLabel(NotifyEnd, "End");
-                EndDateLabel = ValidationMessage;
-            }
-        }
+        //public bool NotifyEnd
+        //{
+        //    get
+        //    {
+        //        return _term.NotifyEndDate;
+        //    }
+        //    set
+        //    {
+        //        _term.NotifyEndDate = value;
+        //        OnPropertyChanged();
+        //        UpdateNotifyLabel(NotifyEnd, "End");
+        //        EndDateLabel = ValidationMessage;
+        //    }
+        //}
 
 
         private string _overlapMesssage;
@@ -132,14 +133,16 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             if (DatabaseService.IsAdd)
             {
+                AddEdit = "Add Term";
                 Term = new Term();
                 StartDate = DateTime.Now;
                 EndDate = StartDate.AddDays(180);
-                NotifyStart = false;
-                NotifyEnd = false;
+                //NotifyStart = false;
+                //NotifyEnd = false;
             }
             else
             {
+                AddEdit = "Edit Term";
                 Term = DatabaseService.CurrentTerm;
             }
           
@@ -166,8 +169,8 @@ namespace MobileTermPlanner_JSarad.ViewModels
                         (TermList[i].EndDate <= Term.EndDate && TermList[i].EndDate >= Term.StartDate)) && (TermList[i].Id != Term.Id))
                     {
                         IsValidInput = false;
-                        await Application.Current.MainPage.DisplayAlert("Overlapping Course", $" * There is an overlapping term for these dates for Term { TermList[i].Name}" +
-                            $" from { TermList[i].StartDate.Date} to {TermList[i].EndDate.Date}", "Ok");
+                        await Application.Current.MainPage.DisplayAlert("Overlapping Course", $" * There is an overlapping term for these " +
+                            $"dates for Term { TermList[i].Name} from { TermList[i].StartDate.Date} to {TermList[i].EndDate.Date}", "Ok");
                     }
                 }
             }

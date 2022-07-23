@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MobileTermPlanner_JSarad.Views.CourseViewPage"
              xmlns:viewmodel ="clr-namespace:MobileTermPlanner_JSarad.ViewModels" 
-             Title="View Courses">
+             Title="Courses">
 
     <!--Binding Context-->
     <ContentPage.BindingContext>
@@ -16,29 +16,32 @@
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
-        <StackLayout BackgroundColor="#D0D0CD">
-            <Frame BackgroundColor="#003057" >
-                <Grid  RowSpacing="1" ColumnSpacing="10" BackgroundColor="#003057">
+        <ScrollView>
+            <StackLayout BackgroundColor="#F2F6F8">
+                <Frame BackgroundColor="#F2F6F8" >
+                    <Grid  RowSpacing="1" ColumnSpacing="10" BackgroundColor="#F2F6F8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                           
+                        </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Label Text="{Binding Term.Name}" TextColor="White" FontSize="Large" FontAttributes="Bold"
+                <Label Text="{Binding Term.Name}" TextColor="Black" FontSize="Large" FontAttributes="Bold"
                        Grid.Row="0" Grid.ColumnSpan="2"/>
-                <Label Text="Start Date : " TextColor="White" FontSize="Small" 
+                        <Label Text="Start Date : " TextColor="Black" FontSize="Small" 
                        Grid.Row="1" Grid.Column="0"/>
-                <Label Text="{Binding Term.StartDate, StringFormat='{0:MMMM dd, yyyy}'}" FontSize="Small" TextColor="White"
+                        <Label Text="{Binding Term.StartDate, StringFormat='{0:MMMM dd, yyyy}'}" FontSize="Small" TextColor="Black"
                        Grid.Row="1" Grid.Column="1"/>
-                <Label Text="End Date : " TextColor="White" FontSize="Small"
+                        <Label Text="End Date : " TextColor="Black" FontSize="Small"
                        Grid.Row="2" Grid.Column="0"/>
-                <Label Text="{Binding Term.EndDate, StringFormat='{0:MMMM dd, yyyy}'}" FontSize="Small" TextColor="White"
+                        <Label Text="{Binding Term.EndDate, StringFormat='{0:MMMM dd, yyyy}'}" FontSize="Small" TextColor="Black"
                        Grid.Row="2" Grid.Column="1"/>
-            </Grid>
+                       
+                    </Grid>
             </Frame>
 
             <!--<ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>-->
@@ -71,7 +74,7 @@
                                     </Grid.ColumnDefinitions>
                                 <!--<Label Text="{Binding Id}" FontSize="Large" VerticalTextAlignment="Center" FontAttributes="Bold"
                                    Grid.Row="2" Grid.Column="1"/>-->
-                                <Label Text="{Binding Name}" TextColor="Black" FontSize="Medium" VerticalTextAlignment="Center"
+                                <Label Text="{Binding Name}" TextColor="Black" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold"
                                    Grid.ColumnSpan="2" Grid.Row="0" Grid.Column="0"  />
                                     <Label Text="Start Date : " TextColor="Black" FontSize="Small" FontAttributes="Bold" VerticalTextAlignment="Center" 
                                    Grid.Row="1" Grid.Column="0"/>
@@ -100,5 +103,6 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

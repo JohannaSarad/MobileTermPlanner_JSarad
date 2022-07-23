@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MobileTermPlanner_JSarad.Views.TermViewPage" 
              xmlns:viewmodel ="clr-namespace:MobileTermPlanner_JSarad.ViewModels" 
-             Title="View Terms">
+             Title="Terms">
 
     <!--Binding Context-->
     <ContentPage.BindingContext>
@@ -19,19 +19,20 @@
         <ScrollView>
         <StackLayout BackgroundColor="#F2F6F8">
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
+               
 
-                <!--CollectionView-->
+                    <!--CollectionView-->
             <CollectionView x:Name="cvTerms" 
                             ItemsSource="{Binding Terms}" 
                             EmptyView="No Terms to Display" 
-                            SelectionMode="Single" Margin="10">
+                            SelectionMode="Single" Margin="20">
                 <!--SelectionChanged="cvTerm_SelectionChanged"-->
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame BorderColor="DimGray" HasShadow="true" CornerRadius="10">
+                        <Frame BorderColor="DimGray" HasShadow="true" CornerRadius="10" Padding="10">
                             <Grid ColumnSpacing="10" BackgroundColor="white">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -48,11 +49,12 @@
 
                                 <!--<Label Text="{Binding Id}"  FontSize="Large" VerticalTextAlignment="Center" FontAttributes="Bold" 
                                    Grid.Row="0" Grid.Column="1"/>-->
-                                    <Label Text="{Binding Name}" TextColor="Black"  FontSize="Large" FontAttributes="Bold" VerticalTextAlignment="Center"
+                                    <Label Text="{Binding Name}" TextColor="Black"  FontSize="Medium" FontAttributes="Bold" VerticalTextAlignment="Center"
                                    Grid.Row="0" Grid.Column="0"/>
-                                <Label Text="Start Date : "   FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold"
+                                    <Label Text="Start Date : "   FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold"
                                    Grid.Row="1" Grid.Column="0" />
-                                <Label Text="{Binding StartDate, StringFormat='{0:MMMM dd, yyyy}'}"  FontSize="Small" VerticalTextAlignment="Center"
+
+                                    <Label Text="{Binding StartDate, StringFormat='{0:MMMM dd, yyyy}'}"  FontSize="Small" VerticalTextAlignment="Center"
                                    Grid.Row="1" Grid.Column="1"/>
                                 <Label Text="End Date : "  FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold"
                                        Grid.Row="2" Grid.Column="0"/>
