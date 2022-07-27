@@ -39,6 +39,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         public ICommand ViewTermCommand { get; set; }
         public ICommand DeleteTermCommand { get; set; }
 
+        //constructor
         public TermViewModel()
         {
             LoadTerms();
@@ -57,12 +58,10 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 UpdateTerm(term);
             });
-
-            //MessagingCenter.Subscribe<ModifyTermViewModel>(this, "CancelChanges", sender => { Refresh(); });
         }
             
 
-        //methods
+        // navigation methods
         private async Task NavToAddTerm()
         {
             DatabaseService.IsAdd = true;
@@ -76,6 +75,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             await Application.Current.MainPage.Navigation.PushAsync(new ModifyTermsPage());
         }
 
+        //modify and view methods
         private async Task ViewTerm(object o)
         {
             DatabaseService.CurrentTerm = o as Term;
@@ -102,6 +102,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
            
         }
 
+        //load methods
         public async void LoadTerms()
         {
             if (Terms != null)

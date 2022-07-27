@@ -14,6 +14,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
 {
     class DetailedCourseViewModel : BaseViewModel
     {
+        //properties
         /*checks Assessments in Database against Observable collection for one of each assessment type and no more than two assessments validation.
         Loads Assessments */
         private List<Assessment> AssessmentList {get; set;}
@@ -21,7 +22,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         private ObservableCollection<Assessment> _assessments;
         public string Placeholder = "There are no notes for this course";
         
-        // to adjust height of ObservableCollections Assessments
+        //adjusts height of ObservableCollections Assessments
         private int _rowHeight;
         public int RowHeight
         {
@@ -36,7 +37,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
-        //sets text content for notes... if there are no notes text is a placeholder
+        //sets text content for notes... if there are no notes text is Placeholder
         private string _filler;
         public string Filler
         {
@@ -93,13 +94,14 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
+        //commands
         public ICommand NavToEditCourseCommand { get; set; }
         public ICommand NavToAddAssessmentCommand { get; set; }
         public ICommand NavToEditAssessmentCommand { get; set; }
         public ICommand DeleteAssessmentCommand { get; set; }
-        //public ICommand NavToNotesCommand { get; set; }
         public ICommand ShareCommand { get; set; }
 
+        //constuctor
         public DetailedCourseViewModel()
         {
             Course = DatabaseService.CurrentCourse;

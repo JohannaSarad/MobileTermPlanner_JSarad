@@ -11,6 +11,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
 {
     public class ModifyAssessmentViewModel : BaseViewModel
     {
+        //properties
         public List<Assessment> AssessmentList { get; set; }
         public List<string> TypeList { get; } = new List<string> { "Objective", "Performance" };
         public string TypeTitle { get; } = "Select Assessment Type";
@@ -104,42 +105,14 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
             }
         }
-
-        //public bool NotifyStart
-        //{
-        //    get
-        //    {
-        //        return _assessment.NotifyStartDate;
-        //    }
-        //    set
-        //    {
-        //        _assessment.NotifyStartDate = value;
-        //        OnPropertyChanged();
-        //        UpdateNotifyLabel(NotifyStart, "Start");
-        //        StartDateLabel = ValidationMessage;
-
-        //    }
-        //}
-
-        //public bool NotifyEnd
-        //{
-        //    get
-        //    {
-        //        return _assessment.NotifyEndDate;
-        //    }
-        //    set
-        //    {
-        //        _assessment.NotifyEndDate = value;
-        //        OnPropertyChanged();
-        //        UpdateNotifyLabel(NotifyEnd, "End");
-        //        EndDateLabel = ValidationMessage;
-        //    }
-        //}
-
+        
         public bool IsValidInput;
 
+        //commands
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
+        
+        //constructor
         public ModifyAssessmentViewModel()
         {
             if (DatabaseService.IsAdd)
@@ -148,8 +121,6 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 StartDate = DateTime.Now;
                 EndDate = StartDate.AddDays(180);
                 Notify = false;
-                //NotifyStart = false;
-                //NotifyEnd = false;
             }
             else
             {
@@ -160,6 +131,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             CancelCommand = new Command(async () => await CancelAssessment());
         }
 
+        //methods Save/Cancel
         private async Task SaveAssessment()
         {
             AssessmentList = await DatabaseService.GetAssessmentsByCourse(DatabaseService.CurrentCourse.Id);

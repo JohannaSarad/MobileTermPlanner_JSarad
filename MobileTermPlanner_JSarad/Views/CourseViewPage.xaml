@@ -15,6 +15,7 @@
         <ToolbarItem Text="Add" x:Name="AddCourse" Command="{Binding NavToAddCommand}"/>
     </ContentPage.ToolbarItems>
 
+    <!--layout-->
     <ContentPage.Content>
         <ScrollView>
             <StackLayout BackgroundColor="#F2F6F8">
@@ -23,7 +24,6 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <!--<RowDefinition Height="Auto"/>-->
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -70,15 +70,13 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <!--<Label Text="{Binding Id}" FontSize="Large" VerticalTextAlignment="Center" FontAttributes="Bold"
-                                    Grid.Row="2" Grid.Column="1"/>-->
                                     <Label Text="{Binding Name}" TextColor="Black" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold"
                                            Grid.ColumnSpan="2" Grid.Row="0" Grid.Column="0"  />
                                     <Label FontSize="Small"  Grid.Row="1"  Grid.ColumnSpan="3" TextColor="Black" >
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <FormattedString.Spans>
-                                                    <Span  Text="Start Date : "/>
+                                                    <Span  Text="Start Date : " FontAttributes="Bold"/>
                                                     <Span  Text="{Binding StartDate, StringFormat='{0:MMMM dd, yyyy}'}" />
                                                 </FormattedString.Spans>
                                             </FormattedString>
@@ -88,12 +86,13 @@
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <FormattedString.Spans>
-                                                    <Span  Text="End Date : "/>
+                                                    <Span  Text="End Date : " FontAttributes="Bold"/>
                                                     <Span  Text="{Binding EndDate, StringFormat='{0:MMMM dd, yyyy}'}" />
                                                 </FormattedString.Spans>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
+                                    <!--Modify icons-->
                                     <ImageButton Source="viewIcon31.png" VerticalOptions="Center"
                                                  Command ="{Binding Path=BindingContext.ViewCommand, Source={x:Reference cvCourses}}"
                                                  CommandParameter="{Binding .}" Grid.Column="2" Grid.RowSpan="3"/>

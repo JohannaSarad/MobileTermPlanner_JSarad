@@ -18,56 +18,51 @@
     
     <!--layout-->
     <ContentPage.Content>
-        <ScrollView BackgroundColor="#F2F6F8" Padding="10">
-            <StackLayout BackgroundColor="#F2F6F8">
-                <Grid Margin="10, 0, 10, 10" Padding="20" RowSpacing="1" ColumnSpacing="22" BackgroundColor="White">
-                    <Grid.RowDefinitions>
+        <ScrollView BackgroundColor="#F2F6F8" Padding="20">
+            <Frame  CornerRadius="10" Padding="10">
+                <StackLayout BackgroundColor="White">
+                    <Grid Margin="10, 0, 10, 10" Padding="20" RowSpacing="1" ColumnSpacing="22" BackgroundColor="White">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
 
-                        <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition Width="0.3*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label  Text="Term Name: " FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
+                                Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+                        <Entry Text="{Binding TermName, Mode=TwoWay}" Placeholder="Term Name" TextColor="Black" VerticalTextAlignment="Center" 
+                               Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"/>
+                        <Label Text="{Binding EmptyErrorMessageOne}"  FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
+                               Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"/>
                         
-                    <RowDefinition Height="0.5*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                    
-                    <RowDefinition Height="0.5*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    
-                    <RowDefinition Height="0.5*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
+                        <Label Text="Start Date : " FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
+                               Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
+                        <DatePicker Date="{Binding StartDate, Mode=TwoWay}" MinimumDate="2020/01/01" MaximumDate="2030/01/01" 
+                                    Grid.Row="4" Grid.Column="0"  Grid.ColumnSpan="3" />
+                        <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
+                               Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" />
 
-                    </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="1.5*"/>
-                    <ColumnDefinition Width="0.3*"/>
-                </Grid.ColumnDefinitions>
-                    <Label Text="Term Information" TextColor="#003057" TextDecorations="Underline" FontSize="Large"
-                           Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="0, 0, 0, 30"/>
-                    <Label  Text="Term Name: " FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
-                        Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
-                    <Entry Text="{Binding TermName, Mode=TwoWay}" Placeholder="Term Name" TextColor="Black" VerticalTextAlignment="Center" 
-                       Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"/>
-                <Label Text="{Binding EmptyErrorMessageOne}"  FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
-                       Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"/>
-
-
-                    <Label Text="Start Date" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
-                         Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"/>
-                <DatePicker Date="{Binding StartDate, Mode=TwoWay}" MinimumDate="2020/01/01" MaximumDate="2025/01/01" 
-                            Grid.Row="5" Grid.Column="0"  Grid.ColumnSpan="3" />
-                    <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
-                        Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" />
-                   
-                    <Label Text ="End Date: " FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
-                           Grid.Row="7" Grid.Column="0" />
-                    <DatePicker Date="{Binding EndDate, Mode=TwoWay}" MinimumDate="2020/01/01" MaximumDate="2025/01/01" 
-                            Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3"/>
-                    <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
-                        Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" />
-                </Grid>
-        </StackLayout>
-            </ScrollView>
+                        <Label Text ="End Date: " FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
+                               Grid.Row="6" Grid.Column="0" />
+                        <DatePicker Date="{Binding EndDate, Mode=TwoWay}" MinimumDate="2020/01/01" MaximumDate="2030/01/01" 
+                                    Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3"/>
+                        <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
+                               Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" />
+                    </Grid>
+                </StackLayout>
+            </Frame>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

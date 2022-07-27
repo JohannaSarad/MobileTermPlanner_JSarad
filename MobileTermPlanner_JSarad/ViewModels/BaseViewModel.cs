@@ -12,19 +12,19 @@ namespace MobileTermPlanner_JSarad.ViewModels
 {
     public class BaseViewModel : Validation
     {
-        private bool _isBusy;
-        public bool IsBusy
-        {
-            get
-            {
-                return _isBusy;
-            }
-            set
-            {
-                _isBusy = value;
-                OnPropertyChanged();
-            }
-        }
+        //private bool _isBusy;
+        //public bool IsBusy
+        //{
+        //    get
+        //    {
+        //        return _isBusy;
+        //    }
+        //    set
+        //    {
+        //        _isBusy = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
         
         //Validation MessageProperties
 
@@ -139,33 +139,5 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        //private string _startDateLabel;
-        //public string StartDateLabel
-        //{
-        //    get
-        //    {
-        //        return _startDateLabel;
-        //    }
-        //    set
-        //    {
-        //        _startDateLabel = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
-        //private string _endDateLabel;
-        //public string EndDateLabel
-        //{
-        //    get
-        //    {
-        //        return _endDateLabel;
-        //    }
-        //    set
-        //    {
-        //        _endDateLabel = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
     }
 }

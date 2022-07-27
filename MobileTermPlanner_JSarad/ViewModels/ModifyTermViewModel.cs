@@ -76,53 +76,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 DatesErrorMessageOne = ValidationMessage;
             }
         }
-
-        //public bool NotifyStart
-        //{
-        //    get
-        //    {
-        //        return _term.NotifyStartDate;
-        //    }
-        //    set
-        //    {
-        //        _term.NotifyStartDate = value;
-        //        OnPropertyChanged();
-        //        UpdateNotifyLabel(NotifyStart, "Start");
-        //        StartDateLabel = ValidationMessage;
-
-        //    }
-        //}
-
-        //public bool NotifyEnd
-        //{
-        //    get
-        //    {
-        //        return _term.NotifyEndDate;
-        //    }
-        //    set
-        //    {
-        //        _term.NotifyEndDate = value;
-        //        OnPropertyChanged();
-        //        UpdateNotifyLabel(NotifyEnd, "End");
-        //        EndDateLabel = ValidationMessage;
-        //    }
-        //}
-
-
-        private string _overlapMesssage;
-        public string OverlapMessage
-        {
-            get
-            {
-                return _overlapMesssage;
-            }
-            set
-            {
-                _overlapMesssage = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public bool IsValidInput;
         
         //commands
@@ -137,8 +91,6 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 Term = new Term();
                 StartDate = DateTime.Now;
                 EndDate = StartDate.AddDays(180);
-                //NotifyStart = false;
-                //NotifyEnd = false;
             }
             else
             {
@@ -150,7 +102,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             CancelCommand = new Command(async () => await CancelTerm());
         }
 
-        //methods
+        //methods Save/Cancel
         private async Task SaveTerm()
         {
             TermList = await DatabaseService.GetTerms();
@@ -159,6 +111,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             //validates unchanged properties and displays any errors to user on save attempt
             ValidString(TermName);
             EmptyErrorMessageOne = ValidationMessage;
+            //This seems like its missing the rest of the validations
 
             //checks for overlapping Terms
             if (TermList.Count > 0)

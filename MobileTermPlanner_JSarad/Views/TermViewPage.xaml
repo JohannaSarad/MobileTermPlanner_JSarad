@@ -24,7 +24,7 @@
                 <CollectionView x:Name="cvTerms" 
                                 ItemsSource="{Binding Terms}" 
                                 EmptyView="No Terms to Display" 
-                                SelectionMode="Single" Margin="20">
+                                SelectionMode="Single" Margin="20,0,20,0">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
                     </CollectionView.ItemsLayout>
@@ -51,7 +51,7 @@
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <FormattedString.Spans>
-                                                    <Span  Text="Start Date : "/>
+                                                    <Span  Text="Start Date : " FontAttributes="Bold"/>
                                                     <Span  Text="{Binding StartDate, StringFormat='{0:MMMM dd, yyyy}'}" />
                                                 </FormattedString.Spans>
                                             </FormattedString>
@@ -61,7 +61,7 @@
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <FormattedString.Spans>
-                                                    <Span  Text="End Date : "/>
+                                                    <Span  Text="End Date : " FontAttributes="Bold"/>
                                                     <Span  Text="{Binding EndDate, StringFormat='{0:MMMM dd, yyyy}'}" />
                                                 </FormattedString.Spans>
                                             </FormattedString>

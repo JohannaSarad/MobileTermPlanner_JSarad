@@ -72,7 +72,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             });
         }
 
-        //methods
+        //navigation methods
         private async Task NavToAddCourse()
         {
             DatabaseService.IsAdd = true;
@@ -87,6 +87,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             await Application.Current.MainPage.Navigation.PushAsync(new ModifyCoursePage());
         }
 
+        //modify and view methods
         private async Task ViewCourse(object o)
         {
             DatabaseService.CurrentCourse = o as Course;
@@ -113,6 +114,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             LoadCourses();
         }
 
+        //load methods
         private async void LoadCourses()
         {
             if (Courses != null)

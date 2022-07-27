@@ -12,6 +12,9 @@ namespace MobileTermPlanner_JSarad.ViewModels
     //FIX ME!!! Notifications Label starts as empty in edit course but not in add course something missing in the constructor when editing
     public class ModifyCourseViewModel : BaseViewModel
     {
+        //properties
+
+        //sets Title to "Add Course" or "Edit Course"
         public string AddEdit { get; set; }
         public bool IsValidInput;
         public List<Course> CourseList { get; set; }
@@ -125,37 +128,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
             }
         }
-        //public bool NotifyStart
-        //{
-        //    get
-        //    {
-        //        return _course.NotifyStartDate;
-        //    }
-        //    set
-        //    {
-        //        _course.NotifyStartDate = value;
-        //        OnPropertyChanged();
-        //        UpdateNotifyLabel(NotifyStart, "Start");
-        //        StartDateLabel = ValidationMessage;
-
-        //    }
-        //}
-
-        //public bool NotifyEnd
-        //{
-        //    get
-        //    {
-        //        return _course.NotifyEndDate;
-        //    }
-        //    set
-        //    {
-        //        _course.NotifyEndDate = value;
-        //        OnPropertyChanged();
-        //        UpdateNotifyLabel(NotifyEnd, "End");
-        //        EndDateLabel = ValidationMessage;
-        //    }
-        //}
-
+        
         //instructor properties
         private Instructor _instructor;
         public Instructor Instructor
@@ -201,7 +174,6 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
-        
         public string Phone
         {
             get
@@ -216,14 +188,12 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 PhoneErrorMessage = ValidationMessage;
             }
         }
-
-       
         
-
         //commands
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
+        //constructor
         public ModifyCourseViewModel()
         {
             if (DatabaseService.IsAdd)
@@ -232,10 +202,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 Course = new Course();
                 CourseStartDate = DatabaseService.CurrentTerm.StartDate;
                 CourseEndDate = CourseStartDate.AddDays(30);
-                Notify = false;
-                //NotifyStart = false;
-                //NotifyEnd = false;
-               
+                Notify = false;  //this should be setting the message (Don't know why it isn't working)
                 Instructor = new Instructor();
             }
             else
@@ -249,8 +216,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             CancelCommand = new Command(async () => await CancelCourse());
         }
 
-        //methods
-        
+        //methods Save/Cancel
         private async Task SaveCourse()
         {
             CourseList = await DatabaseService.GetCoursesByTerm(DatabaseService.CurrentTerm.Id);
