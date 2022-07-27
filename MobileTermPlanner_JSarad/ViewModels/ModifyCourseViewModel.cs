@@ -9,6 +9,7 @@ using Xamarin.Forms;
 
 namespace MobileTermPlanner_JSarad.ViewModels
 {
+    //FIX ME!!! Notifications Label starts as empty in edit course but not in add course something missing in the constructor when editing
     public class ModifyCourseViewModel : BaseViewModel
     {
         public string AddEdit { get; set; }
@@ -91,6 +92,21 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 OnPropertyChanged();
                 ValidSelection(Status, StatusTitle, "Course Status");
                 SelectionErrorMessage = ValidationMessage;
+            }
+        }
+
+        public string Notes
+        {
+            get
+            {
+                return _course.Notes;
+            }
+            set
+            {
+                _course.Notes = value;
+                OnPropertyChanged();
+                //ValidCharacters(Notes);
+                //CharacterErrorMessage = ValidationMessage;
             }
         }
 
@@ -212,7 +228,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             if (DatabaseService.IsAdd)
             {
-               AddEdit = "Add Course";
+                AddEdit = "Add Course";
                 Course = new Course();
                 CourseStartDate = DatabaseService.CurrentTerm.StartDate;
                 CourseEndDate = CourseStartDate.AddDays(30);
@@ -281,6 +297,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             //saves course if all validations return true
             if (IsValidInput && ValidString(CourseName) && ValidDates(CourseStartDate, CourseEndDate) && ValidString(InstructorName)
                 && ValidEmail(Email) && ValidPhone(Phone) && ValidSelection(Status, StatusTitle, "Course Status"))
+                //&&ValidCharacters
             {
                 if (DatabaseService.IsAdd)
                 {

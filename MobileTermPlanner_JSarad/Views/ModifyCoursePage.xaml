@@ -58,6 +58,9 @@
                         <RowDefinition Height="0.5*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
+
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -129,6 +132,10 @@
                                Grid.Row="22" Grid.Column="0" Grid.ColumnSpan="3"/>
                     <Label Text="{Binding EmailErrorMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
                                Grid.Row="23" Grid.Column="0" Grid.ColumnSpan="3"/>
+                    <Label Text="Course Notes :" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
+                               Grid.Row="24" Grid.Column="0" Grid.ColumnSpan="3"/>
+                    <Editor x:Name="Notes" Text="{Binding Notes}" Placeholder="Course Notes"  AutoSize="TextChanges"
+                               Grid.Row="25" Grid.Column="0" Grid.ColumnSpan="3"/>
                 </Grid>
                
             </StackLayout>

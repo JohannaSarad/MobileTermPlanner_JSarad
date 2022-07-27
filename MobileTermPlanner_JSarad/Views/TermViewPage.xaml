@@ -12,73 +12,76 @@
 
     <!--Toolbar-->
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" x:Name="AddTerm" Command="{Binding NavToAddCommand}"/>
+        <ToolbarItem Text="Add Term" Command="{Binding NavToAddCommand}"/>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
         <ScrollView>
-        <StackLayout BackgroundColor="#F2F6F8">
-            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
-               
+            <StackLayout BackgroundColor="#F2F6F8">
+                <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
+                
+                <!--CollectionView-->
+                <CollectionView x:Name="cvTerms" 
+                                ItemsSource="{Binding Terms}" 
+                                EmptyView="No Terms to Display" 
+                                SelectionMode="Single" Margin="20">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BorderColor="DimGray" HasShadow="true" CornerRadius="10" Padding="20, 10, 20, 10">
+                                <Grid ColumnSpacing="10" BackgroundColor="white">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition  Width="5*"/>
+                                        <ColumnDefinition  Width="*"/>
+                                        <ColumnDefinition  Width="*"/>
+                                        <ColumnDefinition  Width="*"/>
+                                    </Grid.ColumnDefinitions>
 
-                    <!--CollectionView-->
-            <CollectionView x:Name="cvTerms" 
-                            ItemsSource="{Binding Terms}" 
-                            EmptyView="No Terms to Display" 
-                            SelectionMode="Single" Margin="20">
-                <!--SelectionChanged="cvTerm_SelectionChanged"-->
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame BorderColor="DimGray" HasShadow="true" CornerRadius="10" Padding="10">
-                            <Grid ColumnSpacing="10" BackgroundColor="white">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition  Width="5*"/>
-                                    <ColumnDefinition  Width="*"/>
-                                    <ColumnDefinition  Width="*"/>
-                                    <ColumnDefinition  Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <!--<Label Text="{Binding Id}"  FontSize="Large" VerticalTextAlignment="Center" FontAttributes="Bold" 
-                                   Grid.Row="0" Grid.Column="1"/>-->
                                     <Label Text="{Binding Name}" TextColor="Black"  FontSize="Medium" FontAttributes="Bold" VerticalTextAlignment="Center"
-                                   Grid.Row="0" Grid.Column="0"/>
-                                    <Label Text="Start Date : "   FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold"
-                                   Grid.Row="1" Grid.Column="0" />
-
-                                    <Label Text="{Binding StartDate, StringFormat='{0:MMMM dd, yyyy}'}"  FontSize="Small" VerticalTextAlignment="Center"
-                                   Grid.Row="1" Grid.Column="1"/>
-                                <Label Text="End Date : "  FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold"
-                                       Grid.Row="2" Grid.Column="0"/>
-                                <Label Text="{Binding EndDate, StringFormat='{0:MMMM dd, yyyy}'}" FontSize="Small" VerticalTextAlignment="Center"
-                                   Grid.Row="2" Grid.Column="1" />
-                                <ImageButton Source="viewIcon31.png" VerticalOptions="Center"
-                                         Command ="{Binding Path=BindingContext.ViewTermCommand, Source={x:Reference cvTerms}}"
-                                         CommandParameter="{Binding .}"
-                                         Grid.Column="2" Grid.RowSpan="3"/>
-                                <ImageButton Source="editIcon31.png" VerticalOptions="Center"
-                                         Command="{Binding Path=BindingContext.NavToEditCommand, Source={x:Reference cvTerms}}"
-                                         CommandParameter="{Binding .}"
-                                         Grid.Column="3" Grid.RowSpan="3"/>
-                                <ImageButton Source="deleteIcon31.png" VerticalOptions="Center"
-                                         Command="{Binding Path=BindingContext.DeleteTermCommand, Source={x:Reference cvTerms}}"
-                                         CommandParameter="{Binding .}"
-                                         Grid.Column="4" Grid.RowSpan="3"/>
-
-                            </Grid>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </StackLayout>
+                                           Grid.Row="0" Grid.Column="0"/>
+                                    <Label FontSize="Small"  Grid.Row="1"  Grid.ColumnSpan="3" TextColor="Black" >
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <FormattedString.Spans>
+                                                    <Span  Text="Start Date : "/>
+                                                    <Span  Text="{Binding StartDate, StringFormat='{0:MMMM dd, yyyy}'}" />
+                                                </FormattedString.Spans>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label FontSize="Small"  Grid.Row="2"  Grid.ColumnSpan="3" TextColor="Black">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <FormattedString.Spans>
+                                                    <Span  Text="End Date : "/>
+                                                    <Span  Text="{Binding EndDate, StringFormat='{0:MMMM dd, yyyy}'}" />
+                                                </FormattedString.Spans>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <ImageButton Source="viewIcon31.png" VerticalOptions="Center"
+                                                 Command ="{Binding Path=BindingContext.ViewTermCommand, Source={x:Reference cvTerms}}"
+                                                 CommandParameter="{Binding .}" Grid.Column="2" Grid.RowSpan="3"/>
+                                    <ImageButton Source="editIcon31.png" VerticalOptions="Center"
+                                                 Command="{Binding Path=BindingContext.NavToEditCommand, Source={x:Reference cvTerms}}"
+                                                 CommandParameter="{Binding .}" Grid.Column="3" Grid.RowSpan="3"/>
+                                    <ImageButton Source="deleteIcon31.png" VerticalOptions="Center" 
+                                                 Command="{Binding Path=BindingContext.DeleteTermCommand, Source={x:Reference cvTerms}}"
+                                                 CommandParameter="{Binding .}" Grid.Column="4" Grid.RowSpan="3"/>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>

@@ -12,29 +12,58 @@ namespace MobileTermPlanner_JSarad.ViewModels
 {
     public class ModifyNotesViewModel : BaseViewModel
     {
-        private Notes _note;
-        public Notes Note
+        //private Notes _note;
+        //public Notes Note
+        //{
+        //    get
+        //    {
+        //        return _note;
+        //    }
+        //    set
+        //    {
+        //        _note = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
+
+
+        //public string NoteText
+        //{
+        //    get
+        //    {
+        //        return _note.Note;
+        //    }
+        //    set
+        //    {
+        //        _note.Note = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
+
+        public string AddEdit { get; set; }
+        private Course _course;
+        public Course Course
         {
             get
             {
-                return _note;
+                return _course;
             }
             set
             {
-                _note = value;
+                _course = value;
                 OnPropertyChanged();
             }
         }
 
-        public string NoteText
+        public string CourseNotes
         {
             get
             {
-                return _note.Note;
+                return _course.Notes;
             }
             set
             {
-                _note.Note = value;
+                _course.Notes = value;
                 OnPropertyChanged();
             }
         }
@@ -45,14 +74,25 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
         public ModifyNotesViewModel()
         {
-            if (DatabaseService.IsAdd)
+            //if (DatabaseService.IsAdd)
+            //{
+            //    Note = new Notes();
+            //}
+            //else
+            //{
+            //    LoadNote();
+            //}
+
+            if (DatabaseService.IsAdd) 
             {
-                Note = new Notes();
+                AddEdit = "Add Notes";
             }
             else
             {
-                LoadNote();
+                AddEdit = "Edit Notes";
             }
+
+            Course = DatabaseService.CurrentCourse;
             SaveCommand = new Command(async () => await SaveNote());
             CancelCommand = new Command(async () => await CancelNote());
             ShareCommand = new Command(async () => await ShareNote());
@@ -60,29 +100,38 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
         private async Task ShareNote()
         {
-            MessagingCenter.Send(this, "UpdateNotes", Note);
+            //MessagingCenter.Send(this, "UpdateNotes", Note);
+            //await Share.RequestAsync(new ShareTextRequest
+            //{
+            //    Text = NoteText,
+            //    Title = $"Notes for {DatabaseService.CurrentCourse.Name}"
+            //});
+
+            MessagingCenter.Send(this, "UpdateCourse", Course);
             await Share.RequestAsync(new ShareTextRequest
             {
-                Text = NoteText,
-                Title = $"Notes for {DatabaseService.CurrentCourse.Name}"
+                Text = CourseNotes,
+                Title = $"Notes for {Course.Name}"
             });
         }
 
-        private async void LoadNote()
-        {
-            Note = await DatabaseService.GetNotesByCourse(DatabaseService.CurrentCourse.Id);
-        }
+        //private async void LoadNote()
+        //{
+        //    Note = await DatabaseService.GetNotesByCourse(DatabaseService.CurrentCourse.Id);
+        //}
 
         private async Task SaveNote()
         {
-            if (DatabaseService.IsAdd)
-            {
-                MessagingCenter.Send(this, "AddNotes", Note);
-            }
-            else
-            {
-                MessagingCenter.Send(this, "UpdateNotes", Note);
-            }
+            //if (DatabaseService.IsAdd)
+            //{
+            //    MessagingCenter.Send(this, "AddNotes", Note);
+            //}
+            //else
+            //{
+            //    MessagingCenter.Send(this, "UpdateNotes", Note);
+            //}
+            //await Application.Current.MainPage.Navigation.PopAsync();
+            MessagingCenter.Send(this, "UpdateNotes", Course);
             await Application.Current.MainPage.Navigation.PopAsync();
         }
 

@@ -7,29 +7,50 @@ using System.Windows.Input;
 using MobileTermPlanner_JSarad.Models;
 using MobileTermPlanner_JSarad.Services;
 using MobileTermPlanner_JSarad.Views;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace MobileTermPlanner_JSarad.ViewModels
 {
     class DetailedCourseViewModel : BaseViewModel
     {
+        /*checks Assessments in Database against Observable collection for one of each assessment type and no more than two assessments validation.
+        Loads Assessments */
         private List<Assessment> AssessmentList {get; set;}
-        private string placeholder = "There are no notes to display for this course";
+        
         private ObservableCollection<Assessment> _assessments;
-        private string _addOrEdit;
-        public string AddOrEdit
+        public string Placeholder = "There are no notes for this course";
+        
+        // to adjust height of ObservableCollections Assessments
+        private int _rowHeight;
+        public int RowHeight
         {
             get
             {
-                return _addOrEdit;
+                return _rowHeight;
             }
             set
             {
-                _addOrEdit = value;
+                _rowHeight = value;
                 OnPropertyChanged();
             }
-
         }
+
+        //sets text content for notes... if there are no notes text is a placeholder
+        private string _filler;
+        public string Filler
+        {
+            get
+            {
+                return _filler;
+            }
+            set
+            {
+                _filler = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ObservableCollection<Assessment> Assessments
         {
             get
@@ -53,24 +74,11 @@ namespace MobileTermPlanner_JSarad.ViewModels
             set
             {
                 _course = value;
+                CheckNotes();
                 OnPropertyChanged();
             }
         }
-
-        private Notes _courseNotes;
-        public Notes CourseNotes
-        {
-            get
-            {
-                return _courseNotes;
-            }
-            set
-            {
-                _courseNotes = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         private Instructor _instructor;
         public Instructor Instructor
         {
@@ -89,23 +97,21 @@ namespace MobileTermPlanner_JSarad.ViewModels
         public ICommand NavToAddAssessmentCommand { get; set; }
         public ICommand NavToEditAssessmentCommand { get; set; }
         public ICommand DeleteAssessmentCommand { get; set; }
-        public ICommand NavToNotesCommand { get; set; }
+        //public ICommand NavToNotesCommand { get; set; }
+        public ICommand ShareCommand { get; set; }
 
         public DetailedCourseViewModel()
         {
             Course = DatabaseService.CurrentCourse;
             Instructor = DatabaseService.CurrentInstructor;
             LoadAssessments();
-            LoadNotes();
-
            
-
             NavToEditCourseCommand = new Command(async () => await NavToEditCourse());
             NavToAddAssessmentCommand = new Command(async () => await NavToAddAssessment());
             NavToEditAssessmentCommand = new Command(async (o) => await NavToEditAssessment(o));
             DeleteAssessmentCommand = new Command(async (o) => await DeleteAssessment(o));
-            NavToNotesCommand = new Command(async () => await NavToNotes());
-
+            ShareCommand = new Command(async () => await ShareNote());
+            
             MessagingCenter.Subscribe<ModifyAssessmentViewModel, Assessment>(this, "AddAssessment", (sender, assessment) =>
             {
                 AddAssessment(assessment);
@@ -116,25 +122,14 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 UpdateAssessment(assessment);
             });
 
-
+            //Used to update entire course including instructor and notes (strange, but it works)
             MessagingCenter.Subscribe<ModifyCourseViewModel, Instructor>(this, "UpdateInstructor", (sender, instructor) =>
             {
                 UpdateInstructor(instructor);
             });
-
-            MessagingCenter.Subscribe<ModifyNotesViewModel, Notes>(this, "AddNotes", (sender, note) =>
-            {
-                AddNotes(note);
-            });
-
-            MessagingCenter.Subscribe<ModifyNotesViewModel, Notes>(this, "UpdateNotes", (sender, note) =>
-            {
-                UpdateNotes(note);
-            });
-
-
         }
 
+        //Navigations from page
         private async Task NavToEditCourse()
         {
             DatabaseService.IsAdd = false;
@@ -144,6 +139,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         private async Task NavToAddAssessment()
         {
             //verify there are 2 or fewer assessments associated with course before allowing the user to add
+            //this all needs to get moved to the new assessments page (List of assessments)
             AssessmentList = await DatabaseService.GetAssessmentsByCourse(DatabaseService.CurrentCourse.Id);
             if (AssessmentList.Count >= 2)
             {
@@ -164,19 +160,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             await Application.Current.MainPage.Navigation.PushAsync(new ModifyAssessmentsPage());
         }
 
-        private async Task NavToNotes()
-        {
-            if (CourseNotes.Note == placeholder)
-            {
-                DatabaseService.IsAdd = true;
-            }
-            else
-            {
-                DatabaseService.IsAdd = false;
-            }
-            await Application.Current.MainPage.Navigation.PushAsync(new ModifyNotesPage());
-        }
-
+        //Modify Methods
         private async void AddAssessment(Assessment assessment)
         {
             await DatabaseService.AddAssessment(assessment, DatabaseService.CurrentCourse.Id);
@@ -199,31 +183,15 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
         private async void UpdateInstructor(Instructor instructor)
         {
+            //Updates Course which updates Notes on property changed
             Course = await DatabaseService.GetCourse(DatabaseService.CurrentCourse.Id);
             await DatabaseService.UpdateInstructor(instructor);
             Instructor = await DatabaseService.GetInstructor(instructor.Id);
-            // I think this needs to load something to refresh the course
-                 
-        }
-
-        private async void AddNotes(Notes note)
-        {
-            await DatabaseService.AddNotes(note, DatabaseService.CurrentCourse.Id);
-            LoadNotes();
         }
         
-        private async void UpdateNotes(Notes note)
-        {
-            await DatabaseService.UpdateNotes(note);
-            LoadNotes();
-        }
-
         //load methods
         private async void LoadAssessments()
         {
-            //IsBusy = true;
-            
-            //IsBusy = false;
             if (Assessments != null)
             {
                 Assessments.Clear();
@@ -233,25 +201,76 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 {
                     Assessments.Add(assessment);
                 }
+               
             }
             else
             {
                 Assessments = new ObservableCollection<Assessment>(await DatabaseService.GetAssessmentsByCourse(DatabaseService.CurrentCourse.Id));
+                
             }
+            AdjustHeight();
         }
 
-        private async void LoadNotes()
+        //FIX ME!!! Title not displaying or sharing in ShareNote
+        private async Task ShareNote()
         {
-            //Fix ME!!! there is something totally messed up right here that's giving me a null reference error and/or not completing loop (async issue?)            CourseNotes = await DatabaseService.GetNotesByCourse(DatabaseService.CurrentCourse.Id);
-            if (CourseNotes == null || string.IsNullOrEmpty(CourseNotes.Note) )
+            if (string.IsNullOrEmpty(_course.Notes))
             {
-                CourseNotes.Note = placeholder;
-                AddOrEdit = "Add Notes";
+                await Application.Current.MainPage.DisplayAlert("Cannot share empty notes", "There are no notes to share for this course", "Ok");
             }
             else
             {
-                AddOrEdit = "Edit Notes";
+                await Share.RequestAsync(new ShareTextRequest
+                {
+                    Text = _course.Notes,
+                    Title = $" Share Notes for {Course.Name}"
+                });
             }
         }
+        
+        //Adjusts height of Assessments Observable Collection when modified
+        public void AdjustHeight()
+        {
+            if (Assessments.Count > 0)
+            {
+                RowHeight = Assessments.Count * 150;
+            }
+            else
+            {
+                RowHeight = 100;
+            }
+        }
+
+        //Displays no or placeholder "No notes to display" When Course is loded/modified
+        private void CheckNotes()
+        {
+            if (string.IsNullOrEmpty(_course.Notes))
+            {
+                Filler = Placeholder;
+            }
+            else
+            {
+                Filler = _course.Notes;
+            }
+        }
+
+        //private async void LoadCourse()
+
+        //private async void LoadNotes()
+        //{
+        //    //Fix ME!!! there is something totally messed up right here that's giving me a null reference error and/or not completing loop (async issue
+        //    //CourseNotes = await DatabaseService.GetNotesByCourse(DatabaseService.CurrentCourse.Id);
+        //    //if (CourseNotes == null || string.IsNullOrEmpty(CourseNotes.Note) )
+        //    //{
+        //    //    CourseNotes.Note = placeholder;
+        //    //    AddOrEdit = "Add Notes";
+        //    //}
+        //    //else
+        //    //{
+        //    //    AddOrEdit = "Edit Notes";
+        //    //}
+        //    //maybe add notes as a property of course. No need for it's own class make the empty message a validation message, make the validation message go away
+        //    //if there are any notes to show. And update the course when you refresh add or edit notes instead of refreshing notes. 
+        //}
     }
 }

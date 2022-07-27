@@ -20,45 +20,43 @@
             <StackLayout BackgroundColor="#F2F6F8">
                 <Frame BackgroundColor="#F2F6F8" >
                     <Grid  RowSpacing="1" ColumnSpacing="10" BackgroundColor="#F2F6F8">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                        <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
-                           
+                            <RowDefinition Height="Auto"/>
+                            <!--<RowDefinition Height="Auto"/>-->
                         </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Label Text="{Binding Term.Name}" TextColor="Black" FontSize="Large" FontAttributes="Bold"
-                       Grid.Row="0" Grid.ColumnSpan="2"/>
-                        <Label Text="Start Date : " TextColor="Black" FontSize="Small" 
-                       Grid.Row="1" Grid.Column="0"/>
-                        <Label Text="{Binding Term.StartDate, StringFormat='{0:MMMM dd, yyyy}'}" FontSize="Small" TextColor="Black"
-                       Grid.Row="1" Grid.Column="1"/>
-                        <Label Text="End Date : " TextColor="Black" FontSize="Small"
-                       Grid.Row="2" Grid.Column="0"/>
-                        <Label Text="{Binding Term.EndDate, StringFormat='{0:MMMM dd, yyyy}'}" FontSize="Small" TextColor="Black"
-                       Grid.Row="2" Grid.Column="1"/>
-                       
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Text="{Binding Term.Name}" TextColor="Black" FontSize="Large" FontAttributes="Bold"
+                               Grid.Row="0" Grid.ColumnSpan="2"/>
+                        <Label FontSize="Small"   Grid.Row="1">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <FormattedString.Spans>
+                                        <Span  Text="{Binding Term.StartDate, StringFormat='{0:MMMM, dd, yyyy}'}"/>
+                                        <Span Text=" - " />
+                                        <Span  Text="{Binding Term.EndDate, StringFormat='{0:MMMM, dd, yyyy}'}" />
+                                    </FormattedString.Spans>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
                     </Grid>
-            </Frame>
+                </Frame>
 
-            <!--<ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>-->
-
-            <!--CollectionView-->
-            <CollectionView x:Name="cvCourses" 
-                            ItemsSource="{Binding Courses}" 
-                            EmptyView="No Terms to Display" 
-                            SelectionMode="Single" Margin="20">
-                <!--SelectionChanged="cvTerm_SelectionChanged"-->
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                       
-                            <Frame BorderColor="#D0D0CD" HasShadow="true" CornerRadius="10" Padding="10">
+                <!--<ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>-->
+                <!--CollectionView-->
+                <CollectionView x:Name="cvCourses" 
+                                ItemsSource="{Binding Courses}" 
+                                EmptyView="No Terms to Display" 
+                                SelectionMode="Single" Margin="20">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BorderColor="DimGray" HasShadow="true" CornerRadius="10" Padding="20, 10, 20, 10">
                                 <Grid  BackgroundColor="White" >
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
@@ -72,37 +70,45 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                <!--<Label Text="{Binding Id}" FontSize="Large" VerticalTextAlignment="Center" FontAttributes="Bold"
-                                   Grid.Row="2" Grid.Column="1"/>-->
-                                <Label Text="{Binding Name}" TextColor="Black" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold"
-                                   Grid.ColumnSpan="2" Grid.Row="0" Grid.Column="0"  />
-                                    <Label Text="Start Date : " TextColor="Black" FontSize="Small" FontAttributes="Bold" VerticalTextAlignment="Center" 
-                                   Grid.Row="1" Grid.Column="0"/>
-                                    <Label Text="{Binding StartDate, StringFormat='{0:MMMM dd, yyyy}'}" FontSize="Small" VerticalTextAlignment="Center"
-                                   Grid.Row="1" Grid.Column="1"/>
-                                    <Label Text="End Date : "  TextColor=" Black" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" 
-                                   Grid.Row="2" Grid.Column="0"/>
-                                    <Label Text="{Binding EndDate, StringFormat='{0:MMMM dd, yyyy}'}"  FontSize="Small"  VerticalTextAlignment="Center"
-                                   Grid.Row="2" Grid.Column="1"/>
+                                    <!--<Label Text="{Binding Id}" FontSize="Large" VerticalTextAlignment="Center" FontAttributes="Bold"
+                                    Grid.Row="2" Grid.Column="1"/>-->
+                                    <Label Text="{Binding Name}" TextColor="Black" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold"
+                                           Grid.ColumnSpan="2" Grid.Row="0" Grid.Column="0"  />
+                                    <Label FontSize="Small"  Grid.Row="1"  Grid.ColumnSpan="3" TextColor="Black" >
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <FormattedString.Spans>
+                                                    <Span  Text="Start Date : "/>
+                                                    <Span  Text="{Binding StartDate, StringFormat='{0:MMMM dd, yyyy}'}" />
+                                                </FormattedString.Spans>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label FontSize="Small"  Grid.Row="2"  Grid.ColumnSpan="3" TextColor="Black">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <FormattedString.Spans>
+                                                    <Span  Text="End Date : "/>
+                                                    <Span  Text="{Binding EndDate, StringFormat='{0:MMMM dd, yyyy}'}" />
+                                                </FormattedString.Spans>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
                                     <ImageButton Source="viewIcon31.png" VerticalOptions="Center"
-                                         Command ="{Binding Path=BindingContext.ViewCommand, Source={x:Reference cvCourses}}"
-                                         CommandParameter="{Binding .}"
-                                         Grid.Column="2" Grid.RowSpan="3"/>
+                                                 Command ="{Binding Path=BindingContext.ViewCommand, Source={x:Reference cvCourses}}"
+                                                 CommandParameter="{Binding .}" Grid.Column="2" Grid.RowSpan="3"/>
                                     <ImageButton Source="editIcon31.png" VerticalOptions="Center"
-                                         Command="{Binding Path=BindingContext.NavToEditCommand, Source={x:Reference cvCourses}}"
-                                         CommandParameter="{Binding .}"
-                                         Grid.Column="3" Grid.RowSpan="3"/>
+                                                 Command="{Binding Path=BindingContext.NavToEditCommand, Source={x:Reference cvCourses}}"
+                                                 CommandParameter="{Binding .}" Grid.Column="3" Grid.RowSpan="3"/>
                                     <ImageButton Source="deleteIcon31.png"  VerticalOptions="Center"
-                                         Command="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference cvCourses}}"
-                                         CommandParameter="{Binding .}" 
-                                         Grid.Column="4"  Grid.RowSpan="3"/>
+                                                 Command="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference cvCourses}}"
+                                                 CommandParameter="{Binding .}" Grid.Column="4"  Grid.RowSpan="3"/>
                                 </Grid>
                             </Frame>
-                       
-                   </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>

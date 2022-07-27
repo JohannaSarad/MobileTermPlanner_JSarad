@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MobileTermPlanner_JSarad.MainPage"
-             xmlns:viewmodel ="clr-namespace:MobileTermPlanner_JSarad.ViewModels">
+             xmlns:viewmodel ="clr-namespace:MobileTermPlanner_JSarad.ViewModels"
+             Title="Home">
     
     <!--Binding Context-->
     <ContentPage.BindingContext>
@@ -15,25 +16,14 @@
         <ToolbarItem Text="View Terms" Command="{Binding NavToTermsCommand}"/>
     </ContentPage.ToolbarItems>
 
-    <StackLayout>
-        <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
-            <Label Text="Welcome to Xamarin.Forms!" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
-        </Frame>
-        <Label Text="Home" FontSize="Title" Padding="30, 10, 30, 10"/>
-        <Label Text="Welcome to WGU's Mobile Course Manager" FontSize="Title" Padding="30,10,30,10"/>
-        <Label Text="Manage term, course, instructor, and assessment infromation." FontSize="16" Padding="30,0,30,0"/>
-        <Label Text="Stay notified about important dates." FontSize="16" Padding="30,0,30,0"/>
-        <Label Text="Create and Share course notes." FontSize="16" Padding="30,0,30,0"/>
-        <Label FontSize="16" Padding="30,24,30,0">
-            <Label.FormattedText>
-                <FormattedString>
-                    <FormattedString.Spans>
-                        <Span Text="Learn more at "/>
-                        <Span Text="https://aka.ms/xamarin-quickstart" FontAttributes="Bold"/>
-                    </FormattedString.Spans>
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>
+    <StackLayout Padding="30,50,30,20">
+       
+        
+        <Label Text="Welcome to WGU's Mobile Course Manager" FontSize="Title" TextColor="Black" FontAttributes="Bold" />
+        <Label Text="Manage Term, Course, Instructor, and Assessment infromation." FontSize="Medium"  TextColor="Black" Padding="0,20,0,0"/>
+        <Label Text="Stay notified about important Course and Assessment dates." FontSize="Medium" TextColor="Black"/>
+        <Label Text="Create and Share Course Notes." FontSize="Medium" TextColor="Black"/>
+       
         <!--<Button Text="Display Notification" Command="{Binding DisplayNotificationsCommand}" />-->
 
 

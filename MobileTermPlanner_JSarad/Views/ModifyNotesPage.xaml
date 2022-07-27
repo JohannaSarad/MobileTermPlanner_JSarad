@@ -16,7 +16,7 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Course Notes"/>
-            <Editor Text="{Binding Note.Note}" AutoSize="TextChanges"/>
+            <Editor Text="{Binding CourseNotes}" AutoSize="TextChanges"/>
             <Button Text="Share Notes" Command="{Binding ShareCommand}"/>
         </StackLayout>
     </ContentPage.Content>
