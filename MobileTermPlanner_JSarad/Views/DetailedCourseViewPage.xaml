@@ -10,10 +10,12 @@
         <viewmodel:DetailedCourseViewModel/>
     </ContentPage.BindingContext>
 
+    <!--toolbar-->
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Edit Course" Command="{Binding NavToEditCourseCommand}"/>
     </ContentPage.ToolbarItems>
 
+    <!--layout-->
     <ContentPage.Content>
         <ScrollView BackgroundColor="#F2F6F8" Padding="20">
             <Frame  CornerRadius="10" Padding="10">
@@ -116,6 +118,7 @@
                                Grid.Row="11"/>
                     </Grid>
 
+                    <!--Assessment Section-->
                     <CollectionView x:Name="cvAssessments" 
                                     ItemsSource="{Binding Assessments}" 
                                     EmptyView="There are no Assessments for this Course" 

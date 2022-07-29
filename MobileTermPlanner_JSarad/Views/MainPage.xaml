@@ -16,6 +16,7 @@
         <ToolbarItem Text="View Terms" Command="{Binding NavToTermsCommand}"/>
     </ContentPage.ToolbarItems>
 
+    <!--layout-->
     <StackLayout Padding="30,50,30,20" BackgroundColor="#F2F6F8">
         <Label Text="Welcome to WGU's Mobile Course Manager" FontSize="Title" TextColor="Black" FontAttributes="Bold" />
         <Label Text="Manage Term, Course, Instructor, and Assessment infromation." FontSize="Medium"  TextColor="Black" Padding="0,20,0,0"/>

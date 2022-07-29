@@ -12,7 +12,7 @@
 
     <!--Toolbar-->
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" x:Name="AddCourse" Command="{Binding NavToAddCommand}"/>
+        <ToolbarItem Text="Add Course" Command="{Binding NavToAddCommand}"/>
     </ContentPage.ToolbarItems>
 
     <!--layout-->
@@ -31,7 +31,7 @@
                         </Grid.ColumnDefinitions>
                         <Label Text="{Binding Term.Name}" TextColor="Black" FontSize="Large" FontAttributes="Bold"
                                Grid.Row="0" Grid.ColumnSpan="2"/>
-                        <Label FontSize="Small"   Grid.Row="1">
+                        <Label FontSize="Small"   Grid.Row="1" TextColor="Black">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <FormattedString.Spans>

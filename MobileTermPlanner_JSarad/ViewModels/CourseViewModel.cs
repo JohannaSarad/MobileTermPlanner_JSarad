@@ -70,13 +70,25 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 UpdateInstructor(instructor);
             });
+
+            MessagingCenter.Subscribe<ModifyCourseViewModel>(this, "Cancel", (sender) =>
+            {
+                LoadCourses();
+            });
         }
 
         //navigation methods
         private async Task NavToAddCourse()
         {
-            DatabaseService.IsAdd = true;
-            await Application.Current.MainPage.Navigation.PushAsync(new ModifyCoursePage());
+            if(Courses.Count >= 6)
+            {
+                await Application.Current.MainPage.DisplayAlert("Course Limit Reached", "There can be no more than 6 courses per term", "Ok");
+            }
+            else
+            {
+                DatabaseService.IsAdd = true;
+                await Application.Current.MainPage.Navigation.PushAsync(new ModifyCoursePage());
+            }
         }
 
         private async Task NavToEditCourse(object o)

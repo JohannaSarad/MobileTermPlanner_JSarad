@@ -139,5 +139,19 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        private string _characterErrorMessage;
+        public string CharacterErrorMessage
+        {
+            get
+            {
+                return _characterErrorMessage;
+            }
+            set
+            {
+                _characterErrorMessage = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

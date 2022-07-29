@@ -15,6 +15,7 @@
         <ToolbarItem Text="Add Term" Command="{Binding NavToAddCommand}"/>
     </ContentPage.ToolbarItems>
 
+    <!--layout-->
     <ContentPage.Content>
         <ScrollView>
             <StackLayout BackgroundColor="#F2F6F8">

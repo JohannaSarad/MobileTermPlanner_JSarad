@@ -12,6 +12,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
     public class ModifyAssessmentViewModel : BaseViewModel
     {
         //properties
+        public string AddEdit { get; set; }
         public List<Assessment> AssessmentList { get; set; }
         public List<string> TypeList { get; } = new List<string> { "Objective", "Performance" };
         public string TypeTitle { get; } = "Select Assessment Type";
@@ -40,7 +41,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 _assessment.Name = value;
                 OnPropertyChanged();
-                ValidString(Name);
+                ValidString(Name, "assessment name");
                 EmptyErrorMessageOne = ValidationMessage;
             }
         }
@@ -85,7 +86,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 _assessment.Type = value;
                 OnPropertyChanged();
-                ValidSelection(Type, TypeTitle, "Assessment Type");
+                ValidSelection(Type, "assessment type");
                 SelectionErrorMessage = ValidationMessage;
             }
         }
@@ -115,8 +116,10 @@ namespace MobileTermPlanner_JSarad.ViewModels
         //constructor
         public ModifyAssessmentViewModel()
         {
+            Task.Run(async () => { await LoadAssessmentList(); });
             if (DatabaseService.IsAdd)
             {
+                AddEdit = "Add Assessment";
                 Assessment = new Assessment();
                 StartDate = DateTime.Now;
                 EndDate = StartDate.AddDays(180);
@@ -124,6 +127,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
             else
             {
+                AddEdit = "Edit Assessment";
                 Assessment = DatabaseService.CurrentAssessment;
             }
 
@@ -134,61 +138,80 @@ namespace MobileTermPlanner_JSarad.ViewModels
         //methods Save/Cancel
         private async Task SaveAssessment()
         {
-            AssessmentList = await DatabaseService.GetAssessmentsByCourse(DatabaseService.CurrentCourse.Id);
-            IsValidInput = true;
 
-            ValidString(Name);
+            //IsValidInput = true;
+
+            ValidString(Name, "assessment name");
             EmptyErrorMessageOne = ValidationMessage;
-            ValidSelection(Type, TypeTitle, "Assessment Type");
+            ValidSelection(Type, "assessment type");
             SelectionErrorMessage = ValidationMessage;
-            
-            if (AssessmentList.Count > 0)
+
+            if (!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Type) && ValidDates(StartDate, EndDate))
             {
-                //verifies assessment types are not the same
-                foreach(Assessment assessment in AssessmentList)
+                if (AssessmentList.Count > 0)
                 {
-                    if ((assessment.Type == Type) && (assessment.Id != DatabaseService.CurrentAssessment.Id))
+                    foreach (Assessment assessment in AssessmentList)
                     {
-                        IsValidInput = false;
-                        await Application.Current.MainPage.DisplayAlert($"There may only be one {Type} Assessment per Course", 
-                            $"There is already one {Type} Assessment for this " +
-                            $"course for {assessment.Type} Assessment {assessment.Name} from {assessment.StartDate.Date} " +
-                            $"to {assessment.EndDate.Date} ", "Ok");
+                        if (Assessment.Id != assessment.Id)
+                        {
+                            //verifies assessment types are not the same
+                            if (assessment.Type == Type)
+                            {
+                                //IsValidInput = false;
+                                await Application.Current.MainPage.DisplayAlert($"Duplicate Assessment Type", $"There is already one {Type} Assessment for " +
+                                    $"this course \n\n {assessment.Type} Assessment {assessment.Name} from {assessment.StartDate.ToShortDateString()} " +
+                                    $"to {assessment.EndDate.ToShortDateString()} ", "Ok");
+                            }
+                            //checks for overlapping assessment dates
+                            else if ((Assessment.StartDate <= assessment.StartDate && Assessment.EndDate >= assessment.StartDate) ||
+                                (Assessment.StartDate <= assessment.EndDate && Assessment.EndDate >= assessment.EndDate)
+                                || (Assessment.StartDate >= assessment.StartDate && Assessment.EndDate <= assessment.EndDate))
+                            {
+                                //IsValidInput = false;
+                                await Application.Current.MainPage.DisplayAlert($"Overlapping Assessment", $"There is an overlapping assessment for " +
+                                    $"assessment {assessment.Name} from { assessment.StartDate.ToShortDateString()} to {assessment.EndDate.ToShortDateString()}", "Ok");
+                            }
+                        }
                     }
                 }
-            }
-           
-            ////checks that new or edited Assessment dates are within the dates of the Course (for future use)
-            //if (DatabaseService.CurrentCourse.StartDate > Assessment.StartDate || DatabaseService.CurrentCourse.StartDate > Term.EndDate
-            //    || DatabaseService.CurrentCourse.EndDate < Assessment.StartDate || DatabaseService.CurrentCourse.EndDate < Assessment.EndDate)
-            //{
-            //    IsValidInput = false;
-            //    await Application.Current.MainPage.DisplayAlert("Course Dates Outside of Course", $"Course {DatabaseService.CurrentCourse.Name}" +
-            //                $" starts on { DatabaseService.CurrentCourse.StartDate.Date} and ends on {DatabaseService.CurrentCourse.EndDate.Date}" +
-            //                $" Assessments within this Course must be schedule within these dates", "Ok");
-            //}
-            
-            //saves course if all validations return true
-            if (IsValidInput && ValidString(Name) && ValidDates(StartDate, EndDate) && ValidSelection(Type, TypeTitle, "Course Status"))
-            {
-                if (DatabaseService.IsAdd)
+                /*checks assessment dates are within the dates of the respective course (will not affect assessment dates if course dates are 
+                 * altered, will require dates of assessment to be changed if an assessment is being edited which has become outside of course date 
+                 * ranges after course modification)*/
+                if (DatabaseService.CurrentCourse.StartDate > Assessment.StartDate || DatabaseService.CurrentCourse.StartDate > Assessment.EndDate
+                    || DatabaseService.CurrentCourse.EndDate < Assessment.StartDate || DatabaseService.CurrentCourse.EndDate < Assessment.EndDate)
                 {
-                    MessagingCenter.Send(this, "AddAssessment", Assessment);
-                    //await DatabaseService.AddAssessment(Assessment, DatabaseService.CurrentCourse.Id);
-                    await Application.Current.MainPage.Navigation.PopAsync();
+                    //IsValidInput = false;
+                    await Application.Current.MainPage.DisplayAlert("Dates Out Of Range", $"assessment dates must be scheduled durring the " +
+                        $"course {DatabaseService.CurrentCourse.Name} starting on { DatabaseService.CurrentCourse.StartDate.ToShortDateString()} and ending " +
+                        $"on {DatabaseService.CurrentCourse.EndDate.ToShortDateString()}", "Ok");
                 }
+
                 else
                 {
-                    MessagingCenter.Send(this, "UpdateAssessment", Assessment);
-                    //await DatabaseService.UpdateAssessment(Assessment);
+                    if (DatabaseService.IsAdd) 
+                    { 
+                    MessagingCenter.Send(this, "AddAssessment", Assessment);
                     await Application.Current.MainPage.Navigation.PopAsync();
+                    }
+                    else
+                    {
+                        MessagingCenter.Send(this, "UpdateAssessment", Assessment);
+                        await Application.Current.MainPage.Navigation.PopAsync();
+                    }
                 }
+               
             }
         }
 
         private async Task CancelAssessment()
         {
             await Application.Current.MainPage.Navigation.PopAsync();
+        }
+
+        private async Task LoadAssessmentList()
+        {
+            MessagingCenter.Send(this, "Cancel");
+            AssessmentList = await DatabaseService.GetAssessmentsByCourse(DatabaseService.CurrentCourse.Id);
         }
     }
 }

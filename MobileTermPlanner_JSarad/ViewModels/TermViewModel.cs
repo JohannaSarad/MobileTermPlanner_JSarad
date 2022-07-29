@@ -58,6 +58,11 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 UpdateTerm(term);
             });
+
+            MessagingCenter.Subscribe<ModifyTermViewModel>(this, "Cancel", (sender) =>
+            {
+                LoadTerms();
+            });
         }
             
 

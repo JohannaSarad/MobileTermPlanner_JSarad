@@ -21,7 +21,7 @@
         <ScrollView BackgroundColor="#F2F6F8" Padding="20">
             <Frame  CornerRadius="10" Padding="10">
                 <StackLayout BackgroundColor="White" >
-                   <Grid Margin="10, 0, 10, 10" Padding="20" RowSpacing="1" ColumnSpacing="22" BackgroundColor="White">
+                    <Grid Margin="10, 0, 10, 10" Padding="20" RowSpacing="1" ColumnSpacing="22" BackgroundColor="White">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
 
@@ -40,10 +40,6 @@
                             <RowDefinition Height="0.5*"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
-                            
-                            <RowDefinition Height="0.5*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
 
                             <RowDefinition Height="0.5*"/>
                             <RowDefinition Height="*"/>
@@ -54,6 +50,11 @@
                             <RowDefinition Height="Auto"/>
 
                             <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
@@ -85,14 +86,14 @@
                                     Grid.Row="8" Grid.Column="0"  Grid.ColumnSpan="3" />
                         <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
                                Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" />
-                       
+
                         <Label Text="End Date : " FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
                                Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3"/>
                         <DatePicker Date="{Binding CourseEndDate, Mode=TwoWay}" MinimumDate="2020/01/01" MaximumDate="2030/01/01"
                                     Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="3"/>
                         <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
                                Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="3"/>
-                       
+
                         <Label Text="Instructor Name :" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
                                Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="3"/>
                         <Entry Text="{Binding InstructorName}" Placeholder="Instructor Name" VerticalTextAlignment="Center"
@@ -113,13 +114,14 @@
                                Grid.Row="20" Grid.Column="0" Grid.ColumnSpan="3"/>
                         <Label Text="{Binding EmailErrorMessage}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
                                Grid.Row="21" Grid.Column="0" Grid.ColumnSpan="3"/>
-                       
+
                         <Label Text="Course Notes :" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
                                Grid.Row="22" Grid.Column="0" Grid.ColumnSpan="3"/>
                         <Editor x:Name="Notes" Text="{Binding Notes}" Placeholder="Course Notes"  AutoSize="TextChanges"
                                Grid.Row="23" Grid.Column="0" Grid.ColumnSpan="3"/>
+                        <Label Text="{Binding CharacterErrorMessage]}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red" 
+                               Grid.Row="24" Grid.Column="0" Grid.ColumnSpan="3"/>
                     </Grid>
-
                 </StackLayout>
             </Frame>
         </ScrollView>

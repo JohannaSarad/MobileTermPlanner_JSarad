@@ -19,11 +19,11 @@ namespace MobileTermPlanner_JSarad.Services
 
         public string ValidationMessage { get; set; }
 
-        public bool ValidString(string str)
+        public bool ValidString(string str, string field)
         {
             if (string.IsNullOrEmpty(str))
             {
-                ValidationMessage = $"* field is required";
+                ValidationMessage = $"* {field} is required";
                 return false;
             }
             else
@@ -39,7 +39,7 @@ namespace MobileTermPlanner_JSarad.Services
 
             if (str == null || !EmailRegex.IsMatch(str))
             {
-                ValidationMessage = "* A valid Email is required";
+                ValidationMessage = "* valid email is required";
                 return false;
             }
             else
@@ -57,12 +57,12 @@ namespace MobileTermPlanner_JSarad.Services
                 string phone = str.Replace("-", string.Empty).Replace("(", string.Empty).Replace(")", string.Empty);
                 if (phone.Length > 10 || phone.Length < 7 || (!long.TryParse(phone, out long i)))
                 {
-                    ValidationMessage = "* Phone number must be between 7 and 10 digits";
+                    ValidationMessage = "* phone number must be between 7 and 10 digits";
                     return false;
                 }
                 else if (phone.Trim().StartsWith("0"))
                 {
-                    ValidationMessage = "* Phone number cannot start with zero";
+                    ValidationMessage = "* phone number cannot start with zero";
                     return false;
                 }
                 else
@@ -73,7 +73,7 @@ namespace MobileTermPlanner_JSarad.Services
             }
             else
             {
-                ValidationMessage = "* Phone number is required";
+                ValidationMessage = "* phone number is required";
                 return false;
             }
         }
@@ -83,7 +83,7 @@ namespace MobileTermPlanner_JSarad.Services
             if (startDate.Date > endDate.Date || startDate.Date == endDate.Date)
             {
                 
-                ValidationMessage = "* Start Date must come before End Date";
+                ValidationMessage = "* start date must come before end date";
                 return false;
             }
             else
@@ -97,12 +97,12 @@ namespace MobileTermPlanner_JSarad.Services
         {
             if (start.Date > end.Date)
             {
-                ValidationMessage = "Start Date must be before End Date";
+                ValidationMessage = "start date must be before end date";
                 return false;
             }
             else if (start.Date < compareStart.Date || end.Date > compareEnd.Date)
             {
-                ValidationMessage = $"The Assessment date must be set durring the Course {courseName} starting on {compareStart} and ending on" +
+                ValidationMessage = $"assessment dates must be set durring the Course {courseName} starting on {compareStart} and ending on" +
                     $"{compareEnd} ";
                 return false;
 
@@ -114,11 +114,11 @@ namespace MobileTermPlanner_JSarad.Services
             }
         }
 
-        public bool ValidSelection(string str1, string str2, string type)
+        public bool ValidSelection(string str1, string type)
         {
-            if(str1 == str2)
+            if(string.IsNullOrEmpty(str1))
             {
-                ValidationMessage = $"* Please select {type}";
+                ValidationMessage = $"* {type} is requred";
                 return false;
             }
             else
@@ -131,6 +131,20 @@ namespace MobileTermPlanner_JSarad.Services
         public void UpdateNotifyLabel(bool notificationOn, string str)
         {
             ValidationMessage = notificationOn ? $"Turn Off {str} Notifications" : $"Turn On {str} Notifications";
+        }
+
+        public bool ValidCharacters(string note)
+        {
+            if(note.Length >= 255)
+            {
+                ValidationMessage = "Notes cannot exceed 255 Characters";
+                return false;
+            }
+            else
+            {
+                ValidationMessage = "";
+                return true;
+            }
         }
     }
 }

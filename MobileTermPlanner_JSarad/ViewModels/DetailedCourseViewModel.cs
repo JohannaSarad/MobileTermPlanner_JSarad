@@ -129,6 +129,11 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 UpdateInstructor(instructor);
             });
+
+            MessagingCenter.Subscribe<ModifyAssessmentViewModel>(this, "Cancel", (sender) =>
+            {
+                LoadAssessments();
+            });
         }
 
         //Navigations from page
@@ -145,8 +150,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             AssessmentList = await DatabaseService.GetAssessmentsByCourse(DatabaseService.CurrentCourse.Id);
             if (AssessmentList.Count >= 2)
             {
-                await Application.Current.MainPage.DisplayAlert("A course may only have 2 assessments", "There are already 2 assessments for" +
-                    " this course", "Ok");
+                await Application.Current.MainPage.DisplayAlert("Assessment Limit Reached", "There can be no more than 2 assessments per course", "Ok");
             }
             else
             {
@@ -210,6 +214,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 Assessments = new ObservableCollection<Assessment>(await DatabaseService.GetAssessmentsByCourse(DatabaseService.CurrentCourse.Id));
                 
             }
+            //may need to be async
             AdjustHeight();
         }
 
@@ -218,7 +223,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             if (string.IsNullOrEmpty(_course.Notes))
             {
-                await Application.Current.MainPage.DisplayAlert("Cannot share empty notes", "There are no notes to share for this course", "Ok");
+                await Application.Current.MainPage.DisplayAlert("Notice", "There are no notes to share for this course", "Ok");
             }
             else
             {
@@ -255,24 +260,5 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 Filler = _course.Notes;
             }
         }
-
-        //private async void LoadCourse()
-
-        //private async void LoadNotes()
-        //{
-        //    //Fix ME!!! there is something totally messed up right here that's giving me a null reference error and/or not completing loop (async issue
-        //    //CourseNotes = await DatabaseService.GetNotesByCourse(DatabaseService.CurrentCourse.Id);
-        //    //if (CourseNotes == null || string.IsNullOrEmpty(CourseNotes.Note) )
-        //    //{
-        //    //    CourseNotes.Note = placeholder;
-        //    //    AddOrEdit = "Add Notes";
-        //    //}
-        //    //else
-        //    //{
-        //    //    AddOrEdit = "Edit Notes";
-        //    //}
-        //    //maybe add notes as a property of course. No need for it's own class make the empty message a validation message, make the validation message go away
-        //    //if there are any notes to show. And update the course when you refresh add or edit notes instead of refreshing notes. 
-        //}
     }
 }

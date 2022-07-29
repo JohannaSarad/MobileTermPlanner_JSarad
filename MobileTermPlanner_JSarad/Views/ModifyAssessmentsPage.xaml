@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MobileTermPlanner_JSarad.Views.ModifyAssessmentsPage"
-             xmlns:viewmodel="clr-namespace:MobileTermPlanner_JSarad.ViewModels">
+             xmlns:viewmodel="clr-namespace:MobileTermPlanner_JSarad.ViewModels"
+              Title="{Binding AddEdit}">
 
     <!--Binding Context-->
     <ContentPage.BindingContext>
@@ -63,7 +64,7 @@
                         <Label Text="{Binding EmptyErrorMessageOne}"  FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
                                Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3"/>
                         
-                        <Label Text="Start Date" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
+                        <Label Text="Start Date : " FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
                                Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"/>
                         <DatePicker Date="{Binding StartDate, Mode=TwoWay}" MinimumDate="2020/01/01" MaximumDate="2030/01/01" 
                                     Grid.Row="8" Grid.Column="0"  Grid.ColumnSpan="3" />

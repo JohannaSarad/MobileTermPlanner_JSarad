@@ -20,7 +20,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         public HomeViewModel()
         {
             //DatabaseService.IsBusy = true;
-            //Task.Run(async() => await DatabaseService.Init());
+            //Task.Run(async() => {await DatabaseService.Init()});
 
             //DisplayNotifications();
             NavToTermsCommand = new Command(async () => await NavToTerms());

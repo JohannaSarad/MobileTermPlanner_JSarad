@@ -42,7 +42,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 _term.Name = value;
                 OnPropertyChanged();
-                ValidString(TermName);
+                ValidString(TermName, "term name");
                 EmptyErrorMessageOne = ValidationMessage;
             }
         }
@@ -85,6 +85,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         
         public ModifyTermViewModel()
         {
+            
             if (DatabaseService.IsAdd)
             {
                 AddEdit = "Add Term";
@@ -100,54 +101,63 @@ namespace MobileTermPlanner_JSarad.ViewModels
           
             SaveCommand = new Command(async () => await SaveTerm());
             CancelCommand = new Command(async () => await CancelTerm());
+            Task.Run(async () => { await LoadTermList(); });
+
         }
 
         //methods Save/Cancel
         private async Task SaveTerm()
         {
-            TermList = await DatabaseService.GetTerms();
             IsValidInput = true;
 
             //validates unchanged properties and displays any errors to user on save attempt
-            ValidString(TermName);
+            ValidString(TermName, "term name");
             EmptyErrorMessageOne = ValidationMessage;
             //This seems like its missing the rest of the validations
 
-            //checks for overlapping Terms
-            if (TermList.Count > 0)
+            if (!String.IsNullOrEmpty(TermName) && ValidDates(StartDate, EndDate))
             {
-                for (int i = 0; i < TermList.Count; i++)
+
+                //checks for overlapping Terms
+                if (TermList.Count > 0)
                 {
-                    if (((TermList[i].StartDate <= Term.EndDate && TermList[i].StartDate >= Term.StartDate) ||
-                        (TermList[i].EndDate <= Term.EndDate && TermList[i].EndDate >= Term.StartDate)) && (TermList[i].Id != Term.Id))
+                    for (int i = 0; i < TermList.Count; i++)
                     {
-                        IsValidInput = false;
-                        await Application.Current.MainPage.DisplayAlert("Overlapping Course", $" * There is an overlapping term for these " +
-                            $"dates for Term { TermList[i].Name} from { TermList[i].StartDate.Date} to {TermList[i].EndDate.Date}", "Ok");
+                        if (((TermList[i].StartDate <= Term.EndDate && TermList[i].StartDate >= Term.StartDate) ||
+                            (TermList[i].EndDate <= Term.EndDate && TermList[i].EndDate >= Term.StartDate)) && (TermList[i].Id != Term.Id))
+                        {
+                            IsValidInput = false;
+                            await Application.Current.MainPage.DisplayAlert("Overlapping Course", $" * There is an overlapping term for these " +
+                                $"dates for Term { TermList[i].Name} from { TermList[i].StartDate.Date} to {TermList[i].EndDate.Date}", "Ok");
+                        }
                     }
                 }
-            }
-
-            //saves term if all validations return true
-            if (IsValidInput && ValidString(TermName) && ValidDates(StartDate, EndDate))
-            {
-                if (DatabaseService.IsAdd)
+                //saves term if all validations return true
+                if(IsValidInput)
                 {
-                    MessagingCenter.Send(this, "AddTerm", Term);
-                    await Application.Current.MainPage.Navigation.PopAsync();
-                }
-                else
-                {
-                    MessagingCenter.Send(this, "UpdateTerm", Term);
-                    await Application.Current.MainPage.Navigation.PopAsync();
+                    if (DatabaseService.IsAdd)
+                    {
+                        MessagingCenter.Send(this, "AddTerm", Term);
+                        await Application.Current.MainPage.Navigation.PopAsync();
+                    }
+                    else
+                    {
+                        MessagingCenter.Send(this, "UpdateTerm", Term);
+                        await Application.Current.MainPage.Navigation.PopAsync();
+                    }
                 }
             }
         }
 
         private async Task CancelTerm()
         {
-            //MessagingCenter.Send(this, "CancelChanges");
+            MessagingCenter.Send(this, "Cancel");
             await Application.Current.MainPage.Navigation.PopAsync();
+        }
+
+        private async Task LoadTermList()
+        {
+            TermList = await DatabaseService.GetTerms();
         }
     }
 }

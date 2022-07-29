@@ -47,7 +47,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 _course.Name = value;
                 OnPropertyChanged();
-                ValidString(CourseName);
+                ValidString(CourseName, "course name");
                 EmptyErrorMessageOne = ValidationMessage;
             }
         }
@@ -64,7 +64,6 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 OnPropertyChanged();
                 ValidDates(CourseStartDate, CourseEndDate);
                 DatesErrorMessageOne = ValidationMessage;
-                //ValidateDates(_modifyCourse.StartDate, _modifyCourse.EndDate);
             }
         }
 
@@ -93,8 +92,8 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 _course.Status = value;
                 OnPropertyChanged();
-                ValidSelection(Status, StatusTitle, "Course Status");
-                SelectionErrorMessage = ValidationMessage;
+                //ValidSelection(Status, "course status");
+                //SelectionErrorMessage = ValidationMessage;
             }
         }
 
@@ -108,7 +107,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 _course.Notes = value;
                 OnPropertyChanged();
-                //ValidCharacters(Notes);
+                ValidCharacters(Notes);
                 //CharacterErrorMessage = ValidationMessage;
             }
         }
@@ -154,7 +153,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 _instructor.Name = value;
                 OnPropertyChanged();
-                ValidString(InstructorName);
+                ValidString(InstructorName, "instructor name");
                 EmptyErrorMessageTwo = ValidationMessage;
             }
         }
@@ -196,6 +195,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         //constructor
         public ModifyCourseViewModel()
         {
+            Task.Run(async () => { await LoadCourseList(); });
             if (DatabaseService.IsAdd)
             {
                 AddEdit = "Add Course";
@@ -219,70 +219,82 @@ namespace MobileTermPlanner_JSarad.ViewModels
         //methods Save/Cancel
         private async Task SaveCourse()
         {
-            CourseList = await DatabaseService.GetCoursesByTerm(DatabaseService.CurrentTerm.Id);
-            IsValidInput = true;
+            
+            //IsValidInput = true;
 
             //validates unchanged properties and displays any errors to user on save attempt
-            ValidString(CourseName);
+            ValidString(CourseName, "course name");
             EmptyErrorMessageOne = ValidationMessage;
-            ValidString(InstructorName);
+            ValidString(InstructorName, "instructor name");
             EmptyErrorMessageTwo = ValidationMessage;
             ValidEmail(Email);
             EmailErrorMessage = ValidationMessage;
             ValidPhone(Phone);
             PhoneErrorMessage = ValidationMessage;
-            ValidSelection(Status, StatusTitle, "Course Status");
+            ValidSelection(Status, "course status");
             SelectionErrorMessage = ValidationMessage;
-            
-            //checks for overlapping courses Not nessecary yet
-            //if (CourseList.Count > 0)
-            //{
-            //    int i;
-            //    for (i = 0; i < CourseList.Count; i++)
-            //    {
-            //        if (((CourseList[i].StartDate <= Course.EndDate && CourseList[i].StartDate >= Course.StartDate) ||
-            //            (CourseList[i].EndDate <= Course.EndDate && CourseList[i].EndDate >= Course.StartDate)) && (CourseList[i].Id != Course.Id))
-            //        {
-            //            IsValidInput = false;
-            //            await Application.Current.MainPage.DisplayAlert("Overlapping Course", $" * There is an overlapping term for these dates for " +
-            //                $"Term { CourseList[i].Name} from { CourseList[i].StartDate.Date} to {CourseList[i].EndDate.Date}", "Ok");
-            //        }
-            //    }
-            //}
-
-            ////checks that new or edited Course dates are within the dates of the Term for future use
-            //if (DatabaseService.CurrentTerm.StartDate > Course.StartDate || DatabaseService.CurrentTerm.StartDate > Course.EndDate
-            //    || DatabaseService.CurrentTerm.EndDate < Course.StartDate || DatabaseService.CurrentTerm.EndDate < Course.EndDate)
-            //{
-            //    IsValidInput = false;
-            //    await Application.Current.MainPage.DisplayAlert("Course Dates Outside of Term", $"Term {DatabaseService.CurrentTerm.Name}" +
-            //                $" starts on { DatabaseService.CurrentTerm.StartDate.Date} and ends on {DatabaseService.CurrentTerm.EndDate.Date}" +
-            //                $" Courses within this term must be schedule within these dates", "Ok");
-            //}
 
             //saves course if all validations return true
-            if (IsValidInput && ValidString(CourseName) && ValidDates(CourseStartDate, CourseEndDate) && ValidString(InstructorName)
-                && ValidEmail(Email) && ValidPhone(Phone) && ValidSelection(Status, StatusTitle, "Course Status"))
-                //&&ValidCharacters
+            //if (IsValidInput && ValidString(CourseName, "course name") && ValidDates(CourseStartDate, CourseEndDate) && ValidString(InstructorName, "instructor name")
+            //    && ValidEmail(Email) && ValidPhone(Phone) && ValidSelection(Status, "course status") 
+            //    && (Notes == null || (Notes != null && ValidCharacters(Notes))))
+
+            if (!string.IsNullOrEmpty(CourseName) && !string.IsNullOrEmpty(InstructorName) && !string.IsNullOrEmpty(Status)
+                && ValidEmail(Email) && ValidPhone(Phone) && ValidDates(CourseStartDate, CourseEndDate)
+                && (Notes == null || Notes != null && ValidCharacters(Notes)))
             {
-                if (DatabaseService.IsAdd)
+                //checks for overlapping courses 
+                if(CourseList.Count > 0)
                 {
-                    await DatabaseService.AddCourse(Course, DatabaseService.CurrentTerm.Id);
-                    MessagingCenter.Send(this, "AddInstructor", Instructor);
-                    await Application.Current.MainPage.Navigation.PopAsync();
+                    foreach(Course course in CourseList)
+                    {
+                        if ((Course.StartDate <= course.StartDate && Course.EndDate >= course.StartDate)
+                            || (Course.StartDate <= course.EndDate && Course.EndDate >= course.EndDate)
+                            || (Course.StartDate >= course.StartDate && Course.EndDate <= course.EndDate))
+                        {
+                            await Application.Current.MainPage.DisplayAlert($"Overlapping Course", $"There is an overlapping course for " +
+                                $"course {course.Name} from {course.StartDate.ToShortDateString()} to {course.EndDate.ToShortDateString()}", "Ok");
+                        }
+                    }
+                }
+                /*checks that course dates are within the dates of the respective term (will not affect course dates if term dates are 
+                * altered, but will require dates of courses to be changed if an course is being edited which has become outside of term date 
+                * ranges after term modification)*/
+                if (DatabaseService.CurrentTerm.StartDate > Course.StartDate || DatabaseService.CurrentTerm.StartDate > Course.EndDate
+                    || DatabaseService.CurrentTerm.EndDate < Course.StartDate || DatabaseService.CurrentTerm.EndDate < Course.EndDate)
+                {
+                    //IsValidInput = false;
+                    await Application.Current.MainPage.DisplayAlert("Dates Out Of Range", $"course dates must be scheduled durring the" +
+                        $" term {DatabaseService.CurrentTerm.Name} starting on { DatabaseService.CurrentTerm.StartDate.ToShortDateString()} and ending " +
+                        $"on {DatabaseService.CurrentTerm.EndDate.ToShortDateString()}", "Ok");
                 }
                 else
                 {
-                    await DatabaseService.UpdateCourse(Course);
-                    MessagingCenter.Send(this, "UpdateInstructor", Instructor);
-                    await Application.Current.MainPage.Navigation.PopAsync();
+                    if (DatabaseService.IsAdd)
+                    {
+                        await DatabaseService.AddCourse(Course, DatabaseService.CurrentTerm.Id);
+                        MessagingCenter.Send(this, "AddInstructor", Instructor);
+                        await Application.Current.MainPage.Navigation.PopAsync();
+                    }
+                    else
+                    {
+                        await DatabaseService.UpdateCourse(Course);
+                        MessagingCenter.Send(this, "UpdateInstructor", Instructor);
+                        await Application.Current.MainPage.Navigation.PopAsync();
+                    }
                 }
             }
         }
 
         private async Task CancelCourse()
         {
+            MessagingCenter.Send(this, "Cancel");
             await Application.Current.MainPage.Navigation.PopAsync();
+        }
+
+        private async Task LoadCourseList()
+        {
+            CourseList = await DatabaseService.GetCoursesByTerm(DatabaseService.CurrentTerm.Id);
         }
     }
 }
