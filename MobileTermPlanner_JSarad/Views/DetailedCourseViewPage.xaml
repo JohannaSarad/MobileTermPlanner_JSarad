@@ -121,7 +121,7 @@
                     <!--Assessment Section-->
                     <CollectionView x:Name="cvAssessments" 
                                     ItemsSource="{Binding Assessments}" 
-                                    EmptyView="There are no Assessments for this Course" 
+                                    EmptyView="No Assessments to Display" 
                                     SelectionMode="Single" 
                                     HeightRequest="{Binding RowHeight}">
                         <CollectionView.ItemsLayout >

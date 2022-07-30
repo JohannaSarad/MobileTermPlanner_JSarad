@@ -25,7 +25,8 @@
                 <CollectionView x:Name="cvTerms" 
                                 ItemsSource="{Binding Terms}" 
                                 EmptyView="No Terms to Display" 
-                                SelectionMode="Single" Margin="20,0,20,0">
+                                SelectionMode="Single" Margin="20,0,20,0"
+                                HeightRequest="{Binding RowHeight}">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
                     </CollectionView.ItemsLayout>
@@ -47,7 +48,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <Label Text="{Binding Name}" TextColor="Black"  FontSize="Medium" FontAttributes="Bold" VerticalTextAlignment="Center"
-                                           Grid.Row="0" Grid.Column="0"/>
+                                           Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
                                     <Label FontSize="Small"  Grid.Row="1"  Grid.ColumnSpan="3" TextColor="Black" >
                                         <Label.FormattedText>
                                             <FormattedString>

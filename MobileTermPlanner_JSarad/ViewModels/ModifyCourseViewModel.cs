@@ -108,7 +108,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 _course.Notes = value;
                 OnPropertyChanged();
                 ValidCharacters(Notes);
-                //CharacterErrorMessage = ValidationMessage;
+                CharacterErrorMessage = ValidationMessage;
             }
         }
 
@@ -220,7 +220,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         private async Task SaveCourse()
         {
             
-            //IsValidInput = true;
+            IsValidInput = true;
 
             //validates unchanged properties and displays any errors to user on save attempt
             ValidString(CourseName, "course name");
@@ -246,14 +246,19 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 //checks for overlapping courses 
                 if(CourseList.Count > 0)
                 {
-                    foreach(Course course in CourseList)
+                    foreach (Course course in CourseList)
                     {
-                        if ((Course.StartDate <= course.StartDate && Course.EndDate >= course.StartDate)
+                        if (Course.Id != course.Id)
+                        {
+                            if ((Course.StartDate <= course.StartDate && Course.EndDate >= course.StartDate)
                             || (Course.StartDate <= course.EndDate && Course.EndDate >= course.EndDate)
                             || (Course.StartDate >= course.StartDate && Course.EndDate <= course.EndDate))
-                        {
-                            await Application.Current.MainPage.DisplayAlert($"Overlapping Course", $"There is an overlapping course for " +
-                                $"course {course.Name} from {course.StartDate.ToShortDateString()} to {course.EndDate.ToShortDateString()}", "Ok");
+                            {
+                                IsValidInput = false;
+                                await Application.Current.MainPage.DisplayAlert($"Overlapping Course", $"There is an overlapping course for " +
+                                    $"course {course.Name} from {course.StartDate.ToShortDateString()} to {course.EndDate.ToShortDateString()}", "Ok");
+
+                            }
                         }
                     }
                 }
@@ -263,12 +268,12 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 if (DatabaseService.CurrentTerm.StartDate > Course.StartDate || DatabaseService.CurrentTerm.StartDate > Course.EndDate
                     || DatabaseService.CurrentTerm.EndDate < Course.StartDate || DatabaseService.CurrentTerm.EndDate < Course.EndDate)
                 {
-                    //IsValidInput = false;
+                    IsValidInput = false;
                     await Application.Current.MainPage.DisplayAlert("Dates Out Of Range", $"course dates must be scheduled durring the" +
                         $" term {DatabaseService.CurrentTerm.Name} starting on { DatabaseService.CurrentTerm.StartDate.ToShortDateString()} and ending " +
                         $"on {DatabaseService.CurrentTerm.EndDate.ToShortDateString()}", "Ok");
                 }
-                else
+                if(IsValidInput)
                 {
                     if (DatabaseService.IsAdd)
                     {

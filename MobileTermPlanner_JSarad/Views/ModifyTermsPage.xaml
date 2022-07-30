@@ -49,14 +49,14 @@
                         
                         <Label Text="Start Date : " FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
                                Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
-                        <DatePicker Date="{Binding StartDate, Mode=TwoWay}" MinimumDate="2020/01/01" MaximumDate="2030/01/01" 
+                        <DatePicker Date="{Binding StartDate, Mode=TwoWay}" MinimumDate="2000/01/01" MaximumDate="2040/12/31" 
                                     Grid.Row="4" Grid.Column="0"  Grid.ColumnSpan="3" />
                         <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
                                Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" />
 
                         <Label Text ="End Date: " FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Black"
                                Grid.Row="6" Grid.Column="0" />
-                        <DatePicker Date="{Binding EndDate, Mode=TwoWay}" MinimumDate="2020/01/01" MaximumDate="2030/01/01" 
+                        <DatePicker Date="{Binding EndDate, Mode=TwoWay}" MinimumDate="2000/01/01" MaximumDate="2040/12/31" 
                                     Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3"/>
                         <Label Text="{Binding DatesErrorMessageOne}" FontSize="Small" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="Red"
                                Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" />

@@ -14,7 +14,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
     public class CourseViewModel : BaseViewModel
     {
         //properties
-
+        
         private ObservableCollection<Course> _courses;
         public ObservableCollection<Course> Courses
         {
@@ -39,6 +39,21 @@ namespace MobileTermPlanner_JSarad.ViewModels
             set
             {
                 _term = value;
+                OnPropertyChanged();
+            }
+        }
+
+        //adjusts height of ObservableCollection
+        private int _rowHeight;
+        public int RowHeight
+        {
+            get
+            {
+                return _rowHeight;
+            }
+            set
+            {
+                _rowHeight = value;
                 OnPropertyChanged();
             }
         }
@@ -142,6 +157,20 @@ namespace MobileTermPlanner_JSarad.ViewModels
             else
             {
                 Courses = new ObservableCollection<Course>(await DatabaseService.GetCoursesByTerm(Term.Id));
+            }
+            AdjustHeight();
+        }
+
+        //Adjusts height of Assessments Observable Collection when modified
+        public void AdjustHeight()
+        {
+            if (Courses.Count > 0)
+            {
+                RowHeight = Courses.Count * 120;
+            }
+            else
+            {
+                RowHeight = 100;
             }
         }
     }

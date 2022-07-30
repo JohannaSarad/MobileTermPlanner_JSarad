@@ -49,8 +49,9 @@
                 <!--CollectionView-->
                 <CollectionView x:Name="cvCourses" 
                                 ItemsSource="{Binding Courses}" 
-                                EmptyView="No Terms to Display" 
-                                SelectionMode="Single" Margin="20">
+                                EmptyView="No Courses to Display" 
+                                SelectionMode="Single" Margin="20"
+                                HeightRequest="{Binding RowHeight}">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
                     </CollectionView.ItemsLayout>

@@ -14,7 +14,6 @@ namespace MobileTermPlanner_JSarad.ViewModels
     public class ModifyTermViewModel : BaseViewModel
     {
         //properties
-
         public string AddEdit { get; set; }
         public List<Term> TermList { get; set; }
         
@@ -113,26 +112,28 @@ namespace MobileTermPlanner_JSarad.ViewModels
             //validates unchanged properties and displays any errors to user on save attempt
             ValidString(TermName, "term name");
             EmptyErrorMessageOne = ValidationMessage;
-            //This seems like its missing the rest of the validations
 
             if (!String.IsNullOrEmpty(TermName) && ValidDates(StartDate, EndDate))
             {
-
-                //checks for overlapping Terms
                 if (TermList.Count > 0)
                 {
-                    for (int i = 0; i < TermList.Count; i++)
+                    //checks for overlapping Terms
+                    foreach (Term term in TermList)
                     {
-                        if (((TermList[i].StartDate <= Term.EndDate && TermList[i].StartDate >= Term.StartDate) ||
-                            (TermList[i].EndDate <= Term.EndDate && TermList[i].EndDate >= Term.StartDate)) && (TermList[i].Id != Term.Id))
+                        if (Term.Id != term.Id)
                         {
-                            IsValidInput = false;
-                            await Application.Current.MainPage.DisplayAlert("Overlapping Course", $" * There is an overlapping term for these " +
-                                $"dates for Term { TermList[i].Name} from { TermList[i].StartDate.Date} to {TermList[i].EndDate.Date}", "Ok");
+                            if ((Term.StartDate <= term.StartDate && Term.EndDate >= term.StartDate) ||
+                                   (Term.StartDate <= term.EndDate && Term.EndDate >= term.EndDate)
+                                   || (Term.StartDate >= term.StartDate && Term.EndDate <= term.EndDate))
+                            {
+                                IsValidInput = false;
+                                await Application.Current.MainPage.DisplayAlert("Overlapping Course", $"There is an overlapping term for " +
+                                    $"term { term.Name} from { term.StartDate.ToShortDateString()} to {term.EndDate.ToShortDateString()}", "Ok");
+                            }
                         }
                     }
                 }
-                //saves term if all validations return true
+                //saves term if all validations pass
                 if(IsValidInput)
                 {
                     if (DatabaseService.IsAdd)

@@ -33,6 +33,21 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
+        //adjusts height of ObservableCollection
+        private int _rowHeight;
+        public int RowHeight
+        {
+            get
+            {
+                return _rowHeight;
+            }
+            set
+            {
+                _rowHeight = value;
+                OnPropertyChanged();
+            }
+        }
+
         //commands
         public ICommand NavToAddCommand { get; set; }
         public ICommand NavToEditCommand { get; set; }
@@ -123,6 +138,20 @@ namespace MobileTermPlanner_JSarad.ViewModels
             else
             {
                 Terms = new ObservableCollection<Term>(await DatabaseService.GetTerms());
+            }
+            AdjustHeight();
+        }
+        
+        //Adjusts height of Assessments Observable Collection when modified
+        public void AdjustHeight()
+        {
+            if (Terms.Count > 0)
+            {
+                RowHeight = Terms.Count * 120;
+            }
+            else
+            {
+                RowHeight = 100;
             }
         }
     }

@@ -15,43 +15,13 @@ namespace MobileTermPlanner_JSarad.ViewModels
     class DetailedCourseViewModel : BaseViewModel
     {
         //properties
+        public string Placeholder = "No Notes to Display";
+        
         /*checks Assessments in Database against Observable collection for one of each assessment type and no more than two assessments validation.
         Loads Assessments */
         private List<Assessment> AssessmentList {get; set;}
         
         private ObservableCollection<Assessment> _assessments;
-        public string Placeholder = "There are no notes for this course";
-        
-        //adjusts height of ObservableCollections Assessments
-        private int _rowHeight;
-        public int RowHeight
-        {
-            get
-            {
-                return _rowHeight;
-            }
-            set
-            {
-                _rowHeight = value;
-                OnPropertyChanged();
-            }
-        }
-
-        //sets text content for notes... if there are no notes text is Placeholder
-        private string _filler;
-        public string Filler
-        {
-            get
-            {
-                return _filler;
-            }
-            set
-            {
-                _filler = value;
-                OnPropertyChanged();
-            }
-        }
-
         public ObservableCollection<Assessment> Assessments
         {
             get
@@ -90,6 +60,36 @@ namespace MobileTermPlanner_JSarad.ViewModels
             set
             {
                 _instructor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        //adjusts height of ObservableCollection
+        private int _rowHeight;
+        public int RowHeight
+        {
+            get
+            {
+                return _rowHeight;
+            }
+            set
+            {
+                _rowHeight = value;
+                OnPropertyChanged();
+            }
+        }
+
+        //sets text content for notes... if there are no notes text is Placeholder
+        private string _filler;
+        public string Filler
+        {
+            get
+            {
+                return _filler;
+            }
+            set
+            {
+                _filler = value;
                 OnPropertyChanged();
             }
         }
@@ -229,9 +229,10 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 await Share.RequestAsync(new ShareTextRequest
                 {
+                    Subject = $"Notes for {Course.Name}",
                     Text = _course.Notes,
                     Title = $" Share Notes for {Course.Name}"
-                });
+                }); 
             }
         }
         
