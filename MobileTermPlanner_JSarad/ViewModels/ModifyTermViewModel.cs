@@ -14,6 +14,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
     public class ModifyTermViewModel : BaseViewModel
     {
         //properties
+        public bool IsValidInput;
         public string AddEdit { get; set; }
         public List<Term> TermList { get; set; }
         
@@ -76,12 +77,11 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
         
-        public bool IsValidInput;
-        
         //commands
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
         
+        //constructor
         public ModifyTermViewModel()
         {
             
@@ -156,6 +156,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             await Application.Current.MainPage.Navigation.PopAsync();
         }
 
+        //load methods
         private async Task LoadTermList()
         {
             TermList = await DatabaseService.GetTerms();

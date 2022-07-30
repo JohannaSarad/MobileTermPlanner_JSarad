@@ -92,8 +92,8 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 _course.Status = value;
                 OnPropertyChanged();
-                //ValidSelection(Status, "course status");
-                //SelectionErrorMessage = ValidationMessage;
+                ValidSelection(Status, "course status");
+                SelectionErrorMessage = ValidationMessage;
             }
         }
 
@@ -202,7 +202,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 Course = new Course();
                 CourseStartDate = DatabaseService.CurrentTerm.StartDate;
                 CourseEndDate = CourseStartDate.AddDays(30);
-                Notify = false;  //this should be setting the message (Don't know why it isn't working)
+                Notify = false;  
                 Instructor = new Instructor();
             }
             else
@@ -257,7 +257,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
                                 IsValidInput = false;
                                 await Application.Current.MainPage.DisplayAlert($"Overlapping Course", $"There is an overlapping course for " +
                                     $"course {course.Name} from {course.StartDate.ToShortDateString()} to {course.EndDate.ToShortDateString()}", "Ok");
-
+                                return;
                             }
                         }
                     }
@@ -272,6 +272,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
                     await Application.Current.MainPage.DisplayAlert("Dates Out Of Range", $"course dates must be scheduled durring the" +
                         $" term {DatabaseService.CurrentTerm.Name} starting on { DatabaseService.CurrentTerm.StartDate.ToShortDateString()} and ending " +
                         $"on {DatabaseService.CurrentTerm.EndDate.ToShortDateString()}", "Ok");
+                    return;
                 }
                 if(IsValidInput)
                 {
@@ -297,6 +298,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             await Application.Current.MainPage.Navigation.PopAsync();
         }
 
+        //load methods
         private async Task LoadCourseList()
         {
             CourseList = await DatabaseService.GetCoursesByTerm(DatabaseService.CurrentTerm.Id);

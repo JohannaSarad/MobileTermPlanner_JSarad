@@ -161,6 +161,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
                                 await Application.Current.MainPage.DisplayAlert($"Duplicate Assessment Type", $"There is already one {Type} Assessment for " +
                                     $"this course \n\n {assessment.Type} Assessment {assessment.Name} from {assessment.StartDate.ToShortDateString()} " +
                                     $"to {assessment.EndDate.ToShortDateString()} ", "Ok");
+                                return;
                             }
                             //checks for overlapping assessment dates
                             else if ((Assessment.StartDate <= assessment.StartDate && Assessment.EndDate >= assessment.StartDate) ||
@@ -170,6 +171,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
                                 IsValidInput = false;
                                 await Application.Current.MainPage.DisplayAlert($"Overlapping Assessment", $"There is an overlapping assessment for " +
                                     $"assessment {assessment.Name} from { assessment.StartDate.ToShortDateString()} to {assessment.EndDate.ToShortDateString()}", "Ok");
+                                return;
                             }
                         }
                     }
@@ -184,6 +186,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
                     await Application.Current.MainPage.DisplayAlert("Dates Out Of Range", $"assessment dates must be scheduled durring the " +
                         $"course {DatabaseService.CurrentCourse.Name} starting on { DatabaseService.CurrentCourse.StartDate.ToShortDateString()} and ending " +
                         $"on {DatabaseService.CurrentCourse.EndDate.ToShortDateString()}", "Ok");
+                    return;
                 }
 
                 if (IsValidInput)

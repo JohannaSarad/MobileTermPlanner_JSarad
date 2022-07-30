@@ -15,7 +15,7 @@ namespace MobileTermPlanner_JSarad.Services
     {
         public static SQLiteAsyncConnection db;
 
-        //static Database Helpers
+        //static properties
         public static Term CurrentTerm { get; set; }
         public static Course CurrentCourse { get; set; }
         public static Instructor CurrentInstructor { get; set; }
@@ -23,8 +23,7 @@ namespace MobileTermPlanner_JSarad.Services
         public static int LastAddedId { get; set; }
         public static bool IsBusy { get; set; }
         public static bool IsAdd { get; set; }
-
-
+        
         public static async Task Init()
         {
             if (db != null)
@@ -36,15 +35,12 @@ namespace MobileTermPlanner_JSarad.Services
             db = new SQLiteAsyncConnection(databasePath);
             await db.CreateTablesAsync<Term, Course, Instructor, Assessment>();
            
-            //await db.CreateTableAsync<Notifications>();
-
             await FillSampleData();
         }
 
-        //Term modifing methods
+        //term modifing methods
         public static async Task AddTerm(Term term)
         {
-            //await Init();
             Term termToAdd = new Term
             {
                 Name = term.Name,
@@ -56,7 +52,6 @@ namespace MobileTermPlanner_JSarad.Services
 
         public static async Task UpdateTerm(Term term)
         {
-            //await Init();
             var termQuery = await db.Table<Term>()
                 .Where(i => i.Id == term.Id)
                 .FirstOrDefaultAsync();
@@ -72,7 +67,6 @@ namespace MobileTermPlanner_JSarad.Services
 
         public static async Task DeleteTerm(int id)
         {
-            //await Init();
             await db.DeleteAsync<Term>(id);
 
             List<Course> associatedCourses = await GetCoursesByTerm(id);
@@ -86,10 +80,9 @@ namespace MobileTermPlanner_JSarad.Services
             }
         }
 
-        //Term get methods
+        //term get methods
         public static async Task<Term> GetTerm(int id)
         {
-            //await Init();
             Term term = await db.Table<Term>()
                 .Where(i => i.Id == id)
                 .FirstOrDefaultAsync();
@@ -103,10 +96,9 @@ namespace MobileTermPlanner_JSarad.Services
             return terms;
         }
 
-        //Course modifying methods
+        //course modifying methods
         public static async Task AddCourse(Course course, int id)
         {
-            //await Init();
             Course courseToAdd = new Course
             {
                 Name = course.Name,
@@ -123,7 +115,6 @@ namespace MobileTermPlanner_JSarad.Services
 
         public static async Task UpdateCourse(Course course)
         {
-            //await Init();
             var courseQuery = await db.Table<Course>()
                .Where(i => i.Id == course.Id)
                .FirstOrDefaultAsync();
@@ -142,7 +133,6 @@ namespace MobileTermPlanner_JSarad.Services
 
         public static async Task DeleteCourse(int id)
         {
-            //await Init();
             await db.DeleteAsync<Course>(id);
             Instructor associatedInstructor = await GetInstuctorByCourse(id);
             await db.DeleteAsync<Instructor>(associatedInstructor.Id);
@@ -157,10 +147,9 @@ namespace MobileTermPlanner_JSarad.Services
             }
         }
 
-        //Course get Methods
+        //course get Methods
         public static async Task<Course> GetCourse(int id)
         {
-            //await Init();
             Course course = await db.Table<Course>()
                 .Where(i => i.Id == id)
                 .FirstOrDefaultAsync();
@@ -169,24 +158,21 @@ namespace MobileTermPlanner_JSarad.Services
 
         public static async Task<List<Course>> GetCourses()
         {
-            //await Init();
             var courses = await db.Table<Course>().ToListAsync();
             return courses;
         }
 
         public static async Task<List<Course>> GetCoursesByTerm(int id)
         {
-            //await Init();
             var coursesByTerm = await db.Table<Course>()
                 .Where(i => i.TermId == id)
                 .ToListAsync();
             return coursesByTerm;
         }
 
-        //Assessment modifing methods
+        //assessment modifing methods
         public static async Task AddAssessment(Assessment assessment, int courseId)
         {
-            //await Init();
             Assessment assessmentToAdd = new Assessment
             {
                 Type = assessment.Type,
@@ -194,8 +180,6 @@ namespace MobileTermPlanner_JSarad.Services
                 StartDate = assessment.StartDate,
                 EndDate = assessment.EndDate,
                 Notify = assessment.Notify,
-                //NotifyStartDate = assessment.NotifyStartDate,
-                //NotifyEndDate = assessment.NotifyEndDate,
                 CourseId = courseId
             };
             await db.InsertAsync(assessmentToAdd);
@@ -203,7 +187,6 @@ namespace MobileTermPlanner_JSarad.Services
 
         public static async Task UpdateAssessment(Assessment assessment)
         {
-            //await Init();
             var assessmentQuery = await db.Table<Assessment>()
                 .Where(i => i.Id == assessment.Id)
                 .FirstOrDefaultAsync();
@@ -220,11 +203,10 @@ namespace MobileTermPlanner_JSarad.Services
         }
         public static async Task DeleteAssessment(int id)
         {
-            //await Init();
             await db.DeleteAsync<Assessment>(id);
         }
 
-        //Assessment get methods
+        //assessment get methods
         public static async Task<Assessment> GetAssessment(int id)
         {
             //await Init();
@@ -236,7 +218,6 @@ namespace MobileTermPlanner_JSarad.Services
         
         public static async Task<List<Assessment>> GetAssessmentsByCourse(int id)
         {
-            //await Init();
             var assessmentsByCourse = await db.Table<Assessment>()
                 .Where(i => i.CourseId == id)
                 .ToListAsync();
@@ -245,15 +226,13 @@ namespace MobileTermPlanner_JSarad.Services
 
         public static async Task<List<Assessment>> GetAssessments()
         {
-            //await Init();
             var assessments = await db.Table<Assessment>().ToListAsync();
             return assessments;
         }
 
-        //Instructor modifying methods
+        //instructor modifying methods
         public static async Task AddInstructor(Instructor instructor, int courseId)
         {
-            //await Init();
             Instructor instructorToAdd = new Instructor
             {
                 Name = instructor.Name,
@@ -266,7 +245,6 @@ namespace MobileTermPlanner_JSarad.Services
 
         public static async Task UpdateInstructor(Instructor instructor)
         {
-            //await Init();
             var instructorQuery = await db.Table<Instructor>()
                 .Where(i => i.Id == instructor.Id)
                 .FirstOrDefaultAsync();
@@ -282,14 +260,12 @@ namespace MobileTermPlanner_JSarad.Services
 
         public static async Task DeleteInstructor(int id)
         {
-            //await Init();
             await db.DeleteAsync<Instructor>(id);
         }
 
-        //Instructor get methods
+        //instructor get methods
         public static async Task<Instructor> GetInstructor(int id)
         {
-            //await Init();
             Instructor instructor = await db.Table<Instructor>()
                 .Where(i => i.Id == id)
                 .FirstOrDefaultAsync();
@@ -298,50 +274,17 @@ namespace MobileTermPlanner_JSarad.Services
 
         public static async Task<IEnumerable<Instructor>> GetInstructors()
         {
-            //await Init();
             var instructors = await db.Table<Instructor>().ToListAsync();
             return instructors;
         }
 
         public static async Task<Instructor> GetInstuctorByCourse(int id)
         {
-            //await Init();
             Instructor instructor = await db.Table<Instructor>()
                 .Where(i => i.CourseId == id)
                 .FirstOrDefaultAsync();
             return instructor;
         }
-        
-        
-        //public static async Task AddNotification(Notifications notification)
-        //{
-        //    Notifications notificationToAdd = new Notifications
-        //    {
-        //        Type = notification.Type,
-        //        TypeName = notification.TypeName,
-        //        Occurrence = notification.Occurrence,
-        //        NotifyDate = notification.NotifyDate
-        //    };
-        //    await db.InsertAsync(notificationToAdd);
-        //}
-
-        //public static async Task DeleteNotification(Notifications notification)
-        //{
-        //    var notificationQuery = await db.Table<Notifications>()
-        //       .Where(i => i.Id == notification.Id)
-        //       .FirstOrDefaultAsync();
-
-        //    if (notificationQuery != null)
-        //    {
-        //        await db.DeleteAsync<Notifications>(notification.Id);
-        //    }
-        //}
-
-        //public static async Task<List<Notifications>> GetNotifications()
-        //{
-        //    var notificationList = await db.Table<Notifications>().ToListAsync();
-        //    return notificationList;
-        //}
         
         //sample data
         public static async Task FillSampleData()

@@ -136,7 +136,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             });
         }
 
-        //Navigations from page
+        //navigation methods
         private async Task NavToEditCourse()
         {
             DatabaseService.IsAdd = false;
@@ -145,8 +145,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         }
         private async Task NavToAddAssessment()
         {
-            //verify there are 2 or fewer assessments associated with course before allowing the user to add
-            //this all needs to get moved to the new assessments page (List of assessments)
+            //verify there are 2 or fewer assessments associated with course
             AssessmentList = await DatabaseService.GetAssessmentsByCourse(DatabaseService.CurrentCourse.Id);
             if (AssessmentList.Count >= 2)
             {
@@ -166,7 +165,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             await Application.Current.MainPage.Navigation.PushAsync(new ModifyAssessmentsPage());
         }
 
-        //Modify Methods
+        //modify Methods
         private async void AddAssessment(Assessment assessment)
         {
             await DatabaseService.AddAssessment(assessment, DatabaseService.CurrentCourse.Id);
@@ -183,7 +182,6 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             Assessment assessment = o as Assessment;
             await DatabaseService.DeleteAssessment(assessment.Id);
-            //Refresh();
             LoadAssessments();
         }
 
@@ -214,11 +212,9 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 Assessments = new ObservableCollection<Assessment>(await DatabaseService.GetAssessmentsByCourse(DatabaseService.CurrentCourse.Id));
                 
             }
-            //may need to be async
             AdjustHeight();
         }
 
-        //FIX ME!!! Title not displaying or sharing in ShareNote
         private async Task ShareNote()
         {
             if (string.IsNullOrEmpty(_course.Notes))
@@ -241,7 +237,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             if (Assessments.Count > 0)
             {
-                RowHeight = Assessments.Count * 150;
+                RowHeight = Assessments.Count * 180;
             }
             else
             {
@@ -249,7 +245,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
-        //Displays no or placeholder "No notes to display" When Course is loded/modified
+        //Displays notes or placeholder "No notes to display" When Course is loded/modified
         private void CheckNotes()
         {
             if (string.IsNullOrEmpty(_course.Notes))
