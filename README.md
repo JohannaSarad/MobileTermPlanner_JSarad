@@ -30,3 +30,6 @@ Note: This application was designed and tested to run on Android mobile devices.
 * Click the down arrow to the right of the play button at the top of the Visual Studio Window to open a dropdowm
 * Select your device from the menu and press play
 * If your device does not immediately appear in the dropdown list, try unplugging the USB cable and plugging it back in or repeating the above steps
+
+## Medium Fidelity Wireframe
+![](/resources/images/AcedemicTermPlanner.png)
