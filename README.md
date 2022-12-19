@@ -32,4 +32,4 @@ Note: This application was designed and tested to run on Android mobile devices.
 * If your device does not immediately appear in the dropdown list, try unplugging the USB cable and plugging it back in or repeating the above steps
 
 ## Medium Fidelity Wireframe
-![](/resources/images/AcedemicTermPlannerWireframe.png)
+![](https://raw.githubusercontent.com/JohannaSarad/Xamarin_MVVM_AcedemicTermPlanner/master/AcedemicTermPlannerWireframe.png)
