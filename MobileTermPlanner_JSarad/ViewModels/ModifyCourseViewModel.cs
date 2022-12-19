@@ -269,7 +269,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
                     || DatabaseService.CurrentTerm.EndDate < Course.StartDate || DatabaseService.CurrentTerm.EndDate < Course.EndDate)
                 {
                     IsValidInput = false;
-                    await Application.Current.MainPage.DisplayAlert("Dates Out Of Range", $"course dates must be scheduled durring the" +
+                    await Application.Current.MainPage.DisplayAlert("Dates Out Of Range", $"course dates must be scheduled during the" +
                         $" term {DatabaseService.CurrentTerm.Name} starting on { DatabaseService.CurrentTerm.StartDate.ToShortDateString()} and ending " +
                         $"on {DatabaseService.CurrentTerm.EndDate.ToShortDateString()}", "Ok");
                     return;

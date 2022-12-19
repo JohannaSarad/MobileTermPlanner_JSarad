@@ -245,7 +245,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             }
         }
 
-        //Displays notes or placeholder "No notes to display" When Course is loded/modified
+        //Displays notes or placeholder "No notes to display" When Course is loaded/modified
         private void CheckNotes()
         {
             if (string.IsNullOrEmpty(_course.Notes))
