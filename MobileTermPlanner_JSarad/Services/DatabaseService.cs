@@ -206,7 +206,7 @@ namespace MobileTermPlanner_JSarad.Services
             await db.DeleteAsync<Assessment>(id);
         }
 
-        //assessment get methods
+        //assessment get methods...
         public static async Task<Assessment> GetAssessment(int id)
         {
             //await Init();
