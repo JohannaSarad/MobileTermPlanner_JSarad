@@ -20,7 +20,7 @@ This mobile application is intended to be used by students. The application allo
 ## Running the Application
 Note: This application was designed and tested to run on Android mobile devices. If you are not familiar with creating and running emulators in Visual Studio, I recommend that you run this application on a physical Android device. The correct emulator settings needed to run the application will vary depending on the system being used. You can reach any of the necessary settings to run the device on an emulator by selecting the “Tools” option  from the top toolbar, followed by the “Android” menu option you want to set.  
 
-### Steps to run application using your android device. 
+### Steps to run application using your Android device. 
 * In your Android mobile device, go to “Settings” > “About Phone”
 * Tap the “Build Number” seven times to enable developer mode
 * “Developer options” will now be visible inside of “Settings” . Click “Developer options”
