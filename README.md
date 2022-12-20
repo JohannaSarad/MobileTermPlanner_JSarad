@@ -1,4 +1,4 @@
-# Xamarin (MVVM) Acedemic Planner 
+# Xamarin (MVVM) Acedemic Term Planner 
 
 ## Description
 
