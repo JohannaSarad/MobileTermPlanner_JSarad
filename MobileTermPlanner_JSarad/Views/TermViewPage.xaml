@@ -5,6 +5,11 @@
              xmlns:viewmodel ="clr-namespace:MobileTermPlanner_JSarad.ViewModels" 
              Title="Terms">
 
+    <!--Resources-->
+    <ContentPage.Resources>
+        <StyleSheet Source="../Styles/main.css"/>
+    </ContentPage.Resources>
+    
     <!--Binding Context-->
     <ContentPage.BindingContext>
         <viewmodel:TermViewModel/>
@@ -18,48 +23,70 @@
     <!--layout-->
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout BackgroundColor="#F2F6F8">
+            <StackLayout StyleClass="list-view" Padding="20,0,20,0">
+                <!--BackgroundColor="#F2F6F8"-->
                 <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
                 
                 <!--CollectionView-->
                 <CollectionView x:Name="cvTerms" 
                                 ItemsSource="{Binding Terms}" 
                                 EmptyView="No Terms to Display" 
-                                SelectionMode="Single" Margin="20,0,20,0"
-                                HeightRequest="{Binding RowHeight}">
+                                SelectionMode="Single" 
+                                HeightRequest="{Binding RowHeight}"
+                                
+                                >
+                  
+                    
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Frame BorderColor="DimGray" HasShadow="true" CornerRadius="10" Padding="20, 10, 20, 10">
-                                <Grid ColumnSpacing="10" BackgroundColor="white">
+                            <Frame BackgroundColor="#0D29157E" Padding="2, 0, 2, 2" CornerRadius="10">
+                                <Frame OutlineColor="#29157E"  HasShadow="True"  Padding="10" BackgroundColor="#EEF1FC" Margin="5" CornerRadius="5">
+                                <!--BorderColor="DimGray"-->
+                                <!---->
+                                <!--CornerRadius="10"-->
+                                <Grid StyleClass="list-item">
+                                    <!--ColumnSpacing="10"-->
+                                    <!---->
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
+                                    <!--<Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="3*"/>
                                         <ColumnDefinition  Width="5*"/>
                                         <ColumnDefinition  Width="*"/>
                                         <ColumnDefinition  Width="*"/>
                                         <ColumnDefinition  Width="*"/>
-                                    </Grid.ColumnDefinitions>
+                                    </Grid.ColumnDefinitions>-->
+                                        <Grid.ColumnDefinitions>
+                                            <!--<ColumnDefinition Width="3*"/>
+                                            <ColumnDefinition  Width="5*"/>-->
+                                            <ColumnDefinition  Width="*"/>
+                                            <ColumnDefinition  Width="*"/>
+                                            <ColumnDefinition  Width="*"/>
+                                        </Grid.ColumnDefinitions>
 
-                                    <Label Text="{Binding Name}" TextColor="Black"  FontSize="Medium" FontAttributes="Bold" VerticalTextAlignment="Center"
+                                        <Label Text="{Binding Name}" TextColor="Black"  FontSize="Medium" FontAttributes="Bold" VerticalTextAlignment="Center"
                                            Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
                                     <Label FontSize="Small"  Grid.Row="1"  Grid.ColumnSpan="3" TextColor="Black" >
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <FormattedString.Spans>
-                                                    <Span  Text="Start Date : " FontAttributes="Bold"/>
-                                                    <Span  Text="{Binding StartDate, StringFormat='{0:MMMM dd, yyyy}'}" />
-                                                </FormattedString.Spans>
+                                                    <!--<Span  Text="Start Date : " FontAttributes="Bold"/>-->
+                                                        <Span  Text="{Binding StartDate, StringFormat='{0:MMMM dd, yyyy}'}" />
+                                                        <Span  Text=" - "/>
+                                                        <Span  Text="{Binding EndDate, StringFormat='{0:MMMM dd, yyyy}'}" />
+
+
+                                                    </FormattedString.Spans>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <Label FontSize="Small"  Grid.Row="2"  Grid.ColumnSpan="3" TextColor="Black">
+                                    <!--<Label FontSize="Small"  Grid.Row="2"  Grid.ColumnSpan="3" TextColor="Black">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <FormattedString.Spans>
@@ -68,8 +95,8 @@
                                                 </FormattedString.Spans>
                                             </FormattedString>
                                         </Label.FormattedText>
-                                    </Label>
-                                    <ImageButton Source="viewIcon31.png" VerticalOptions="Center"
+                                    </Label>-->
+                                    <!--<ImageButton Source="viewIcon31.png" VerticalOptions="Center"
                                                  Command ="{Binding Path=BindingContext.ViewTermCommand, Source={x:Reference cvTerms}}"
                                                  CommandParameter="{Binding .}" Grid.Column="2" Grid.RowSpan="3"/>
                                     <ImageButton Source="editIcon31.png" VerticalOptions="Center"
@@ -77,9 +104,21 @@
                                                  CommandParameter="{Binding .}" Grid.Column="3" Grid.RowSpan="3"/>
                                     <ImageButton Source="deleteIcon31.png" VerticalOptions="Center" 
                                                  Command="{Binding Path=BindingContext.DeleteTermCommand, Source={x:Reference cvTerms}}"
-                                                 CommandParameter="{Binding .}" Grid.Column="4" Grid.RowSpan="3"/>
-                                </Grid>
+                                                 CommandParameter="{Binding .}" Grid.Column="4" Grid.RowSpan="3"/>-->
+                                        <Button  Text="View" Grid.Row="3" Grid.Column="0" VerticalOptions="Center" FontSize="Micro" HeightRequest="35"
+                                                 Command ="{Binding Path=BindingContext.ViewTermCommand, Source={x:Reference cvTerms}}"
+                                                 CommandParameter="{Binding .}" />
+                                        <Button  Text="Edit" Grid.Row="3" Grid.Column="1" VerticalOptions="Center" FontSize="Micro" HeightRequest="35"
+                                                 BackgroundColor="#4424D6"
+                                                 Command="{Binding Path=BindingContext.NavToEditCommand, Source={x:Reference cvTerms}}"
+                                                 CommandParameter="{Binding .}" />
+                                        <Button  Text="Delete" Grid.Row="3" Grid.Column="2" VerticalOptions="Center" FontSize="Micro" HeightRequest="35"
+                                                 Command="{Binding Path=BindingContext.DeleteTermCommand, Source={x:Reference cvTerms}}"
+                                                 CommandParameter="{Binding .}" />
+                                    </Grid>
+                               
                             </Frame>
+                                </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

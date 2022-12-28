@@ -4,6 +4,10 @@
              x:Class="MobileTermPlanner_JSarad.Views.DetailedCourseViewPage"
              xmlns:viewmodel ="clr-namespace:MobileTermPlanner_JSarad.ViewModels" 
              Title="Course Details">
+    <!--Resources-->
+    <ContentPage.Resources>
+        <StyleSheet Source="../Styles/main.css"/>
+    </ContentPage.Resources>
     
     <!--Binding Context-->
     <ContentPage.BindingContext>

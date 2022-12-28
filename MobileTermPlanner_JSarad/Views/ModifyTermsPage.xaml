@@ -4,6 +4,11 @@
              xmlns:viewmodel="clr-namespace:MobileTermPlanner_JSarad.ViewModels"
              x:Class="MobileTermPlanner_JSarad.Views.ModifyTermsPage"
              Title="{Binding AddEdit}">
+
+    <!--Resources-->
+    <ContentPage.Resources>
+        <StyleSheet Source="../Styles/main.css"/>
+    </ContentPage.Resources>
     
     <!--Binding Context-->
     <ContentPage.BindingContext>

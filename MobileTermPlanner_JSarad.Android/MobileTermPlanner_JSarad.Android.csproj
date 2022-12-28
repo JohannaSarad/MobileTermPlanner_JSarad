@@ -92,7 +92,9 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\icon.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\logo_capAndWreath.png" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MobileTermPlanner_JSarad\MobileTermPlanner_JSarad.csproj">
       <Project>{E578A0CD-0432-4128-B705-8178E980598E}</Project>
@@ -107,6 +109,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\viewIcon31.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\OwlOnBook.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\logo_CapAndWreath2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

@@ -5,6 +5,11 @@
              xmlns:viewmodel ="clr-namespace:MobileTermPlanner_JSarad.ViewModels"
              Title="Home">
     
+    <!--Resources-->
+    <ContentPage.Resources>
+        <StyleSheet Source="../Styles/main.css"/>
+    </ContentPage.Resources>
+    
     <!--Binding Context-->
     <ContentPage.BindingContext>
         <viewmodel:HomeViewModel/>
@@ -17,8 +22,10 @@
     </ContentPage.ToolbarItems>
 
     <!--layout-->
-    <StackLayout Padding="30,50,30,20" BackgroundColor="#F2F6F8">
-        <Label Text="Welcome to WGU's Mobile Course Manager" FontSize="Title" TextColor="Black" FontAttributes="Bold" />
+    <StackLayout StyleClass="intro">
+        <!---->
+        <Label Text="Mobile Term Manager" FontSize="Title" TextColor="Black" FontAttributes="Bold" />
+        <Image Source="logo_CapAndWreath2.png" HorizontalOptions="Center" StyleId="logo"></Image>
         <Label Text="Manage Term, Course, Instructor, and Assessment infromation." FontSize="Medium"  TextColor="Black" Padding="0,20,0,0"/>
         <Label Text="Stay notified about important Course and Assessment dates." FontSize="Medium" TextColor="Black"/>
         <Label Text="Create and Share Course Notes." FontSize="Medium" TextColor="Black"/>
