@@ -22,7 +22,7 @@
     </ContentPage.ToolbarItems>
 
     <!--layout-->
-    <StackLayout StyleClass="intro">
+    <StackLayout StyleClass="intro" Padding="10,40,10,20">
         <!---->
         <Label Text="Mobile Term Manager" FontSize="Title" TextColor="Black" FontAttributes="Bold" />
         <Image Source="logo_CapAndWreath2.png" HorizontalOptions="Center" StyleId="logo"></Image>

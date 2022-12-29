@@ -180,9 +180,17 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
         private async Task DeleteAssessment(object o)
         {
-            Assessment assessment = o as Assessment;
-            await DatabaseService.DeleteAssessment(assessment.Id);
-            LoadAssessments();
+            bool answer = await Application.Current.MainPage.DisplayAlert("Confirm Delete", "Are you sure you want to delete this assessment?", "Yes", "No");
+            if (answer)
+            {
+                Assessment assessment = o as Assessment;
+                await DatabaseService.DeleteAssessment(assessment.Id);
+                LoadAssessments();
+            }
+            else
+            {
+                return;
+            }
         }
 
         private async void UpdateInstructor(Instructor instructor)

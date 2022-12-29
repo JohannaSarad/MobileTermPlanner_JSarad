@@ -136,9 +136,17 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
         private async Task DeleteCourse(object o)
         {
-            Course course = o as Course;
-            await DatabaseService.DeleteCourse(course.Id);
-            LoadCourses();
+            bool answer = await Application.Current.MainPage.DisplayAlert("Confirm Delete", "Are you sure you want to delete this course?", "Yes", "No");
+            if (answer)
+            {
+                Course course = o as Course;
+                await DatabaseService.DeleteCourse(course.Id);
+                LoadCourses();
+            }
+            else
+            {
+                return;
+            }
         }
 
         //load methods
@@ -166,7 +174,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             if (Courses.Count > 0)
             {
-                RowHeight = Courses.Count * 120;
+                RowHeight = Courses.Count * 170;
             }
             else
             {

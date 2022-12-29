@@ -33,7 +33,6 @@
                                 EmptyView="No Terms to Display" 
                                 SelectionMode="Single" 
                                 HeightRequest="{Binding RowHeight}"
-                                
                                 >
                   
                     
@@ -105,14 +104,16 @@
                                     <ImageButton Source="deleteIcon31.png" VerticalOptions="Center" 
                                                  Command="{Binding Path=BindingContext.DeleteTermCommand, Source={x:Reference cvTerms}}"
                                                  CommandParameter="{Binding .}" Grid.Column="4" Grid.RowSpan="3"/>-->
-                                        <Button  Text="View" Grid.Row="3" Grid.Column="0" VerticalOptions="Center" FontSize="Micro" HeightRequest="35"
+                                        <Button  Text="Courses" Grid.Row="3" Grid.Column="0" VerticalOptions="Center" FontSize="Micro" HeightRequest="35"
                                                  Command ="{Binding Path=BindingContext.ViewTermCommand, Source={x:Reference cvTerms}}"
+                                                 BackgroundColor="#6395F2" TextColor="#E5E0FA"
                                                  CommandParameter="{Binding .}" />
                                         <Button  Text="Edit" Grid.Row="3" Grid.Column="1" VerticalOptions="Center" FontSize="Micro" HeightRequest="35"
-                                                 BackgroundColor="#4424D6"
+                                                 BackgroundColor="#4424D6" TextColor="#E5E0FA"
                                                  Command="{Binding Path=BindingContext.NavToEditCommand, Source={x:Reference cvTerms}}"
                                                  CommandParameter="{Binding .}" />
                                         <Button  Text="Delete" Grid.Row="3" Grid.Column="2" VerticalOptions="Center" FontSize="Micro" HeightRequest="35"
+                                                 BackgroundColor="#29157E" TextColor="#E5E0FA"
                                                  Command="{Binding Path=BindingContext.DeleteTermCommand, Source={x:Reference cvTerms}}"
                                                  CommandParameter="{Binding .}" />
                                     </Grid>

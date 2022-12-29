@@ -116,9 +116,18 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
         private async Task DeleteTerm(object o)
         {
-            Term term = o as Term;
-            await DatabaseService.DeleteTerm(term.Id);
-            LoadTerms();
+            bool answer = await Application.Current.MainPage.DisplayAlert("Confirm Delete", "Are you sure you want to delete this term?", "Yes", "No");
+            if (answer)
+            {
+
+                Term term = o as Term;
+                await DatabaseService.DeleteTerm(term.Id);
+                LoadTerms();
+            }
+            else
+            {
+                return;
+            }
            
         }
 
@@ -147,7 +156,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             if (Terms.Count > 0)
             {
-                RowHeight = Terms.Count * 120;
+                RowHeight = Terms.Count * 140;
             }
             else
             {
