@@ -62,6 +62,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         public ICommand NavToAddCommand { get; set; }
         public ICommand NavToEditCommand { get; set; }
         public ICommand ViewCommand { get; set; }
+        public ICommand ViewAssessmentsCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
 
         //class constructor
@@ -72,7 +73,8 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
             NavToAddCommand = new Command(async () => await NavToAddCourse());
             NavToEditCommand = new Command(async (o) => await NavToEditCourse(o));
-            ViewCommand = new Command(async (o) => await ViewCourse(o));
+            ViewCommand = new Command(async (o) => await ViewCourseDetails(o));
+            ViewAssessmentsCommand = new Command(async (o) => await ViewAssessments(o));
             DeleteCommand = new Command(async (o) => await DeleteCourse(o));
 
             
@@ -115,11 +117,17 @@ namespace MobileTermPlanner_JSarad.ViewModels
         }
 
         //modify and view methods
-        private async Task ViewCourse(object o)
+        private async Task ViewCourseDetails(object o)
         {
             DatabaseService.CurrentCourse = o as Course;
             DatabaseService.CurrentInstructor = await DatabaseService.GetInstuctorByCourse(DatabaseService.CurrentCourse.Id);
             await Application.Current.MainPage.Navigation.PushAsync(new DetailedCourseViewPage());
+        }
+
+        private async Task ViewAssessments(object o)
+        {
+            DatabaseService.CurrentCourse = o as Course;
+            await Application.Current.MainPage.Navigation.PushAsync(new AssessmentViewPage());
         }
 
         private async void AddInstructor(Instructor instructor)

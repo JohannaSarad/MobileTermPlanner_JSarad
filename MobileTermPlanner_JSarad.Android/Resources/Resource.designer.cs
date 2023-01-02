@@ -19945,6 +19945,9 @@ namespace MobileTermPlanner_JSarad.Droid
 			// aapt resource value: 0x7F0F00F4
 			public const int MaterialAlertDialog_MaterialComponents_Title_Text_CenterStacked = 2131689716;
 			
+			// aapt resource value: 0x7F0F02F9
+			public const int myCustomMenuTextAppearance = 2131690233;
+			
 			// aapt resource value: 0x7F0F00F5
 			public const int Platform_AppCompat = 2131689717;
 			
@@ -20131,11 +20134,11 @@ namespace MobileTermPlanner_JSarad.Droid
 			// aapt resource value: 0x7F0F0132
 			public const int RtlUnderlay_Widget_AppCompat_ActionButton_Overflow = 2131689778;
 			
-			// aapt resource value: 0x7F0F02F9
-			public const int scrollViewScrollBars = 2131690233;
-			
 			// aapt resource value: 0x7F0F02FA
-			public const int scrollViewTheme = 2131690234;
+			public const int scrollViewScrollBars = 2131690234;
+			
+			// aapt resource value: 0x7F0F02FB
+			public const int scrollViewTheme = 2131690235;
 			
 			// aapt resource value: 0x7F0F0139
 			public const int ShapeAppearanceOverlay = 2131689785;

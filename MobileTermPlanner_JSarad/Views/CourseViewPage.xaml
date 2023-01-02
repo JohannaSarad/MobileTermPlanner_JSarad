@@ -113,7 +113,7 @@
                                                  Command="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference cvCourses}}"
                                                  CommandParameter="{Binding .}" Grid.Column="4"  Grid.RowSpan="3"/>-->
                                         <Button  Text="Exams" Grid.Row="2" Grid.Column="0" VerticalOptions="Center" FontSize="Micro" HeightRequest="35"
-                                                 Command ="{Binding Path=BindingContext.ViewCommand, Source={x:Reference cvCourses}}"
+                                                 Command ="{Binding Path=BindingContext.ViewAssessmentsCommand, Source={x:Reference cvCourses}}"
                                                  BackgroundColor="#6395F2" TextColor="#E5E0FA"
                                                  CommandParameter="{Binding .}" />
                                         <Button  Text="Edit" Grid.Row="2" Grid.Column="1" VerticalOptions="Center" FontSize="Micro" HeightRequest="35"

@@ -16,6 +16,13 @@
     <!-- colorAccent is used as the default value for colorControlActivated
          which is used to tint widgets -->
     <!--<item name="colorAccent">#FF4081</item>-->
-	<item name="android:actionMenuTextColor">#D4DDF7</item>
+	  <!--<item name="android:actionMenuTextColor">#D4DDF7</item>-->
+	  <!--<item name="android:textColor">#D4DDF7</item>-->
+	  
+	<item name="android:itemTextAppearance">@style/myCustomMenuTextAppearance</item>
+	  
   </style>
+	<style name="myCustomMenuTextAppearance" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
+		<item name="android:textColor">#D4DDF7</item>
+	</style>
 </resources>

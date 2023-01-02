@@ -191,10 +191,10 @@ namespace MobileTermPlanner_JSarad.ViewModels
 
                 if (IsValidInput)
                 {
-                    if (DatabaseService.IsAdd) 
-                    { 
-                    MessagingCenter.Send(this, "AddAssessment", Assessment);
-                    await Application.Current.MainPage.Navigation.PopAsync();
+                    if (DatabaseService.IsAdd)
+                    {
+                        MessagingCenter.Send(this, "AddAssessment", Assessment);
+                        await Application.Current.MainPage.Navigation.PopAsync();
                     }
                     else
                     {
@@ -204,6 +204,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 }
                
             }
+            return;
         }
 
         private async Task CancelAssessment()

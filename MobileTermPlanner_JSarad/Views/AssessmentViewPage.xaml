@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileTermPlanner_JSarad.Views.AssessmentViewPage"
+             xmlns:viewmodel ="clr-namespace:MobileTermPlanner_JSarad.ViewModels" 
+             Title="Assessments"
+             >
+
+    <!--Resources-->
+    <ContentPage.Resources>
+        <StyleSheet Source="../Styles/main.css"/>
+    </ContentPage.Resources>
+
+    <!--Binding Context-->
+    <ContentPage.BindingContext>
+        <viewmodel:AssessmentViewModel/>
+    </ContentPage.BindingContext>
+
+    <!--Toolbar-->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add Assessment" Command="{Binding NavToAddCommand}"/>
+    </ContentPage.ToolbarItems>
+
+    <!--layout-->
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout StyleClass="list-view" Padding="20,0,20,0">
+                <Grid  RowSpacing="1" ColumnSpacing="10" Margin="10, 20, 10, 20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Text="{Binding Course.Name}" TextColor="Black" FontSize="Title" FontAttributes="Bold"
+                               Grid.Row="0" Grid.ColumnSpan="2"/>
+                    <Label FontSize="Small"   Grid.Row="1" TextColor="Black">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <FormattedString.Spans>
+                                    <Span  Text="{Binding Course.StartDate, StringFormat='{0:MMMM, dd, yyyy}'}"/>
+                                    <Span Text=" - " />
+                                    <Span  Text="{Binding Course.EndDate, StringFormat='{0:MMMM, dd, yyyy}'}" />
+                                </FormattedString.Spans>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Grid>
+
+                <CollectionView x:Name="cvAssessments" 
+                                ItemsSource="{Binding Assessments}" 
+                                EmptyView="No Exams to Display" 
+                                SelectionMode="Single"
+                                HeightRequest="{Binding RowHeight}">
+
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BackgroundColor="#0D29157E" Padding="2, 0, 2, 2" CornerRadius="10">
+                                <Frame OutlineColor="#29157E"  HasShadow="True"  Padding="10" BackgroundColor="#EEF1FC" Margin="5" CornerRadius="5">
+                                    <Grid  StyleClass="list-item" >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Text="{Binding Name}" TextColor="Black" FontSize="Medium" VerticalTextAlignment="Center" FontAttributes="Bold"
+                                           Grid.ColumnSpan="3" Grid.Row="0" Grid.Column="0"  />
+                                        <Label FontSize="Small"  Grid.Row="1"  Grid.ColumnSpan="3" TextColor="Black" >
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <FormattedString.Spans>
+                                                        <Span  Text="( " TextColor="Black" FontAttributes="Bold"/>
+                                                        <Span  Text="{Binding Type}" FontAttributes="Bold"/>
+                                                        <Span  Text=" Assessment" TextColor="Black" FontAttributes="Bold"/>
+                                                        <Span  Text=" )" FontAttributes="Bold"/>
+                                                    </FormattedString.Spans>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+
+                                        <Label FontSize="Small"  Grid.Row="2"  Grid.ColumnSpan="3" TextColor="Black" >
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <FormattedString.Spans>
+                                                        <Span  Text="{Binding StartDate, StringFormat='{0:MMMM dd, yyyy}'}" />
+                                                        <Span  Text=" - "/>
+                                                        <Span  Text="{Binding EndDate, StringFormat='{0:MMMM dd, yyyy}'}" />
+                                                    </FormattedString.Spans>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        
+                                       
+                                        <Button  Text="Edit" Grid.Row="3" Grid.Column="1" VerticalOptions="Center" FontSize="Micro" HeightRequest="35"
+                                                 BackgroundColor="#4424D6" TextColor="#E5E0FA"
+                                                 Command="{Binding Path=BindingContext.NavToEditCommand, Source={x:Reference cvAssessments}}"
+                                                 CommandParameter="{Binding .}" />
+                                        <Button  Text="Delete" Grid.Row="3" Grid.Column="2" VerticalOptions="Center" FontSize="Micro" HeightRequest="35"
+                                                 BackgroundColor="#29157E" TextColor="#E5E0FA"
+                                                 Command="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference cvAssessments}}"
+                                                 CommandParameter="{Binding .}" />
+
+                                    </Grid>
+                                </Frame>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

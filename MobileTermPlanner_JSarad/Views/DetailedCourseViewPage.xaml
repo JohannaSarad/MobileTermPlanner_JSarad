@@ -28,29 +28,21 @@
                     <StackLayout StyleClass="list-item" Padding="10">
 
                         <Grid>
-                        <Grid.RowDefinitions>
-                            <!--<RowDefinition Height="Auto"/>-->
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
                         <Label Text="{Binding Course.Name}" TextColor="Black" FontSize="Title" FontAttributes="Bold"
-                               Grid.Row="0" />
-                        <Label FontSize="Small" Grid.Row="1" TextColor="Black" >
+                               Grid.Row="0" Margin="10,0,0,0"/>
+                            <Label FontSize="Small" Grid.Row="1" TextColor="Black" Margin="10,0,0,0">
                             <Label.FormattedText>
                                     <FormattedString>
                                         <FormattedString.Spans>
-                                            <!--<Span  Text="Start Date : " FontAttributes="Bold"/>-->
                                             <Span  Text="{Binding Course.StartDate, StringFormat='{0:MMMM dd, yyyy}'}" />
                                             <Span  Text=" - "/>
                                             <Span  Text="{Binding Course.EndDate, StringFormat='{0:MMMM dd, yyyy}'}" />
@@ -60,17 +52,8 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                        <!--<Label FontSize="Small" Grid.Row="2" TextColor="Black" Padding="10,0,0,0">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <FormattedString.Spans>
-                                        <Span  Text="End Date : " FontAttributes="Bold"/>
-                                        <Span  Text="{Binding Course.EndDate, StringFormat='{0:MMMM, dd, yyyy}'}" />
-                                    </FormattedString.Spans>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>-->
-                        <Label FontSize="Small"   Grid.Row="3" TextColor="Black" Padding="10,0,0,0">
+                      
+                        <Label FontSize="Small"   Grid.Row="3" TextColor="Black" Padding="20,0,0,0">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <FormattedString.Spans>
@@ -80,7 +63,7 @@
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                        <Label FontSize="Small"   Grid.Row="4" TextColor="Black" Padding="10,0,0,0">
+                        <Label FontSize="Small"   Grid.Row="4" TextColor="Black" Padding="20,0,0,0">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <FormattedString.Spans>
@@ -90,17 +73,39 @@
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                        <Label FontSize="Small"  Grid.Row="5" TextColor="Black" Padding="10,0,0,0">
+                            <Label Text="Notes : " FontSize="Small" FontAttributes="Bold" TextColor="Black" Padding="20,0,0,0"
+                               Grid.Row="5"/>
+                        </Grid>
+                        
+                        <Frame Margin="10">
+                            <Label Text="{Binding Filler}" LineBreakMode="WordWrap" FontSize="Small" TextColor="Black" 
+                               />
+                           
+                            </Frame>
+                            <Button Text="Share Notes" Command="{Binding ShareCommand}"  BackgroundColor="#4424D6" TextColor="#E5E0FA" Margin="10"/>
+                       
+                        
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Text="Instructor" TextColor="Black" FontSize="Title" FontAttributes="Bold"
+                               Grid.Row="0" Margin="10,0,0,0"/>
+                        <Label FontSize="Small"  Grid.Row="1" TextColor="Black" Padding="20,0,0,0">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <FormattedString.Spans>
-                                        <Span  Text="Instructor : " FontAttributes="Bold"/>
+                                        <Span  Text="Name : " FontAttributes="Bold"/>
                                         <Span  Text="{Binding Instructor.Name}" />
                                     </FormattedString.Spans>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                        <Label FontSize="Small"  Grid.Row="6" TextColor="Black" Padding="10,0,0,0">
+                        <Label FontSize="Small"  Grid.Row="2" TextColor="Black" Padding="20,0,0,0">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <FormattedString.Spans>
@@ -110,7 +115,7 @@
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                        <Label FontSize="Small"  Grid.Row="7" TextColor="Black" Padding="10,0,0,0">
+                        <Label FontSize="Small"  Grid.Row="3" TextColor="Black" Padding="20,0,0,0">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <FormattedString.Spans>
@@ -120,14 +125,10 @@
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                        <Label Text="Course Notes : " FontSize="Small" FontAttributes="Bold" TextColor="Black" Padding="10,0,0,0"
-                               Grid.Row="8"/>
-                        <Label Text="{Binding Filler}" LineBreakMode="WordWrap" FontSize="Small" TextColor="Black" Padding="10,0,10,0"
-                               Grid.Row="9"/>
-                            <Button Text="Share Notes" Command="{Binding ShareCommand}" Grid.Row="10" BackgroundColor="#4424D6" TextColor="#E5E0FA" Margin="10"/>
-                        <Label Text="Assessments " FontSize="Large" FontAttributes="Bold" TextColor="Black"
-                               Grid.Row="11"/>
-                    </Grid>
+                            <Label Text="Assessments " FontSize="Large" FontAttributes="Bold" TextColor="Black"
+                               Grid.Row="4" Padding="10,10,0,0"/>
+
+                        </Grid>
 
                     <!--Assessment Section-->
                     <StackLayout>
@@ -157,16 +158,7 @@
                                         </Grid.ColumnDefinitions>
                                         <Label Text="{Binding Name}" TextColor="Black" FontSize="Medium" FontAttributes="Bold"
                                            Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"/>
-                                        <!--<Label FontSize="Small"  Grid.Row="1"  Grid.ColumnSpan="3" TextColor="Black" >
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <FormattedString.Spans>
-                                                        <Span  Text="Assessment Type : " TextColor="Black" FontAttributes="Bold"/>
-                                                        <Span  Text="{Binding Type}" />
-                                                    </FormattedString.Spans>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>-->
+ 
                                             <Label FontSize="Small"  Grid.Row="1"  Grid.ColumnSpan="3" TextColor="Black" >
                                                 <Label.FormattedText>
                                                     <FormattedString>
@@ -183,7 +175,6 @@
                                                 <Label.FormattedText>
                                                     <FormattedString>
                                                         <FormattedString.Spans>
-                                                            <!--<Span  Text="Start Date : " FontAttributes="Bold"/>-->
                                                             <Span  Text="{Binding StartDate, StringFormat='{0:MMMM dd, yyyy}'}" />
                                                             <Span  Text=" - "/>
                                                             <Span  Text="{Binding EndDate, StringFormat='{0:MMMM dd, yyyy}'}" />
@@ -193,26 +184,7 @@
                                                     </FormattedString>
                                                 </Label.FormattedText>
                                             </Label>
-                                            <!--<Label FontSize="Small"  Grid.Row="2"  Grid.ColumnSpan="3" TextColor="Black" >
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <FormattedString.Spans>
-                                                        <Span  Text="Start Date : " FontAttributes="Bold"/>
-                                                        <Span  Text="{Binding StartDate, StringFormat='{0:MMMM dd, yyyy}'}" />
-                                                    </FormattedString.Spans>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
-                                        <Label FontSize="Small"  Grid.Row="3"  Grid.ColumnSpan="3" TextColor="Black">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <FormattedString.Spans>
-                                                        <Span  Text="End Date : " FontAttributes="Bold"/>
-                                                        <Span  Text="{Binding EndDate, StringFormat='{0:MMMM dd, yyyy}'}" />
-                                                    </FormattedString.Spans>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>-->
+                                           
                                         <Button Text="Edit" Grid.Row="4" Grid.Column="1" FontSize="Micro" FontAttributes="Bold" HeightRequest="35"
                                                  BackgroundColor="#6395F2" TextColor="#E5E0FA" Margin="0,10,0,0"
                                             Command="{Binding Path=BindingContext.NavToEditAssessmentCommand, Source={x:Reference cvAssessments}}"

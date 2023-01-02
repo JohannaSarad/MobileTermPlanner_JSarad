@@ -294,42 +294,122 @@ namespace MobileTermPlanner_JSarad.Services
             //int lastId = 0;
             if (terms.Count == 0)
             {
-                Term sampleTerm = new Term
+                Term sampleTerm1 = new Term
                 {
-                    Name = "Term 1",
-                    StartDate = new DateTime(2022, 01, 01),
-                    EndDate = new DateTime(2022, 05, 31),
+                    Name = "Term 1 (Spring)",
+                    StartDate = new DateTime(2023, 01, 18),
+                    EndDate = new DateTime(2023, 05, 25),
                 };
-                var term = await db.InsertAsync(sampleTerm);
-                int termId = sampleTerm.Id;
+                var term1 = await db.InsertAsync(sampleTerm1);
 
-                Course sampleCourse = new Course
+                Term sampleTerm2 = new Term
+                {
+                    Name = "Term 2 (Summer)",
+                    StartDate = new DateTime(2023, 05, 28),
+                    EndDate = new DateTime(2023, 08, 14),
+                };
+                var term2 = await db.InsertAsync(sampleTerm2);
+
+                Term sampleTerm3 = new Term
+                {
+                    Name = "Term 1 (Fall)",
+                    StartDate = new DateTime(2023, 08, 17),
+                    EndDate = new DateTime(2023, 12, 22),
+                };
+                var term3 = await db.InsertAsync(sampleTerm3);
+                int termId = sampleTerm1.Id;
+
+                Course sampleCourse1 = new Course
                 {
                     Status = "Plan to Take",
-                    Name = "Course 1",
-                    StartDate = new DateTime(2022, 01, 01),
-                    EndDate = new DateTime(2022, 01, 31),
+                    Name = "Mobile Application Developement Using C#",
+                    StartDate = new DateTime(2023, 01, 18),
+                    EndDate = new DateTime(2023, 05, 25),
                     Notify = true,
                     TermId = termId
                 };
-                var course = await db.InsertAsync(sampleCourse);
-                int courseId = sampleCourse.Id;
+                var course1 = await db.InsertAsync(sampleCourse1);
+                int courseId = sampleCourse1.Id;
 
-                Instructor sampleInstructor = new Instructor
+                Course sampleCourse2 = new Course
                 {
-                    Name = "Johanna Sarad",
-                    Phone = "6614444763",
-                    Email = "jsarad2@wgu.edu",
+                    Status = "Plan to Take",
+                    Name = "Scripting and Programming Applications",
+                    StartDate = new DateTime(2023, 01, 18),
+                    EndDate = new DateTime(2023, 05, 25),
+                    Notify = true,
+                    TermId = termId
+                };
+                var course2 = await db.InsertAsync(sampleCourse2);
+                int courseId2 = sampleCourse2.Id;
+
+                Course sampleCourse3 = new Course
+                {
+                    Status = "Plan to Take",
+                    Name = "Calculus II",
+                    StartDate = new DateTime(2023, 01, 18),
+                    EndDate = new DateTime(2023, 05, 25),
+                    Notify = true,
+                    TermId = termId
+                };
+                var course3 = await db.InsertAsync(sampleCourse3);
+                int courseId3 = sampleCourse3.Id;
+
+                Course sampleCourse4 = new Course
+                {
+                    Status = "Plan to Take",
+                    Name = "User Interface Design",
+                    StartDate = new DateTime(2023, 01, 18),
+                    EndDate = new DateTime(2023, 05, 25),
+                    Notify = true,
+                    TermId = termId
+                };
+                var course4 = await db.InsertAsync(sampleCourse4);
+                int courseId4 = sampleCourse4.Id;
+
+                Instructor sampleInstructor1 = new Instructor
+                {
+                    Name = "Edwin Miller",
+                    Phone = "5555555555",
+                    Email = "e@professor.edu",
                     CourseId = courseId
                 };
-                var instructor = await db.InsertAsync(sampleInstructor);
+
+                var instructor = await db.InsertAsync(sampleInstructor1);
+
+                Instructor sampleInstructor2 = new Instructor
+                {
+                    Name = "Rebecca Crocker",
+                    Phone = "4444444444",
+                    Email = "r@professor.edu",
+                    CourseId = courseId2
+                };
+                var instructor2 = await db.InsertAsync(sampleInstructor2);
+
+                Instructor sampleInstructor3 = new Instructor
+                {
+                    Name = "Abigail Ledford",
+                    Phone = "3333333333",
+                    Email = "a@professor.edu",
+                    CourseId = courseId3
+                };
+                var instructor3 = await db.InsertAsync(sampleInstructor3);
+
+                Instructor sampleInstructor4 = new Instructor
+                {
+                    Name = "John Doe",
+                    Phone = "2222222222",
+                    Email = "j@professor.edu",
+                    CourseId = courseId4
+                };
+                var instructor4 = await db.InsertAsync(sampleInstructor4);
 
                 Assessment sampleAssessment1 = new Assessment
                 {
                     Type = "Objective",
                     Name = "Assessment 1",
-                    StartDate = new DateTime(2022, 01, 25),
-                    EndDate = new DateTime(2022, 01, 31),
+                    StartDate = new DateTime(2023, 05, 23),
+                    EndDate = new DateTime(2023, 05, 24),
                     Notify = false,
                     CourseId = courseId
                 };
@@ -339,8 +419,8 @@ namespace MobileTermPlanner_JSarad.Services
                 {
                     Type = "Performance",
                     Name = "Assessment 2",
-                    StartDate = new DateTime(2022, 01, 25),
-                    EndDate = new DateTime(2022, 01, 31),
+                    StartDate = new DateTime(2023, 05, 21),
+                    EndDate = new DateTime(2023, 05, 22),
                     Notify = false,
                     CourseId = courseId
                 };
