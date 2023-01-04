@@ -23,6 +23,7 @@ namespace MobileTermPlanner_JSarad.Services
         public static int LastAddedId { get; set; }
         public static bool IsBusy { get; set; }
         public static bool IsAdd { get; set; }
+        public static bool IsDetailed { get; set; }
         
         public static async Task Init()
         {
@@ -92,7 +93,7 @@ namespace MobileTermPlanner_JSarad.Services
         public static async Task<List<Term>> GetTerms()
         {
             await Init();
-            List<Term> terms = await db.Table<Term>().ToListAsync();
+            List<Term> terms = await db.Table<Term>().OrderBy(x => x.StartDate).ToListAsync();
             return terms;
         }
 
@@ -158,7 +159,7 @@ namespace MobileTermPlanner_JSarad.Services
 
         public static async Task<List<Course>> GetCourses()
         {
-            var courses = await db.Table<Course>().ToListAsync();
+            var courses = await db.Table<Course>().OrderBy(x => x.StartDate).ToListAsync();
             return courses;
         }
 
@@ -166,6 +167,7 @@ namespace MobileTermPlanner_JSarad.Services
         {
             var coursesByTerm = await db.Table<Course>()
                 .Where(i => i.TermId == id)
+                .OrderBy(i => i.StartDate)
                 .ToListAsync();
             return coursesByTerm;
         }
@@ -220,6 +222,7 @@ namespace MobileTermPlanner_JSarad.Services
         {
             var assessmentsByCourse = await db.Table<Assessment>()
                 .Where(i => i.CourseId == id)
+                .OrderBy(i => i.StartDate)
                 .ToListAsync();
             return assessmentsByCourse;
         }
@@ -312,7 +315,7 @@ namespace MobileTermPlanner_JSarad.Services
 
                 Term sampleTerm3 = new Term
                 {
-                    Name = "Term 1 (Fall)",
+                    Name = "Term 3 (Fall)",
                     StartDate = new DateTime(2023, 08, 17),
                     EndDate = new DateTime(2023, 12, 22),
                 };
@@ -337,7 +340,7 @@ namespace MobileTermPlanner_JSarad.Services
                     Name = "Scripting and Programming Applications",
                     StartDate = new DateTime(2023, 01, 18),
                     EndDate = new DateTime(2023, 05, 25),
-                    Notify = true,
+                    Notify = false,
                     TermId = termId
                 };
                 var course2 = await db.InsertAsync(sampleCourse2);
@@ -361,7 +364,7 @@ namespace MobileTermPlanner_JSarad.Services
                     Name = "User Interface Design",
                     StartDate = new DateTime(2023, 01, 18),
                     EndDate = new DateTime(2023, 05, 25),
-                    Notify = true,
+                    Notify = false,
                     TermId = termId
                 };
                 var course4 = await db.InsertAsync(sampleCourse4);
@@ -410,7 +413,7 @@ namespace MobileTermPlanner_JSarad.Services
                     Name = "Assessment 1",
                     StartDate = new DateTime(2023, 05, 23),
                     EndDate = new DateTime(2023, 05, 24),
-                    Notify = false,
+                    Notify = true,
                     CourseId = courseId
                 };
                 var assessment1 = await db.InsertAsync(sampleAssessment1);

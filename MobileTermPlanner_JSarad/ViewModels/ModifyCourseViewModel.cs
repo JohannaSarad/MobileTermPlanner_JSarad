@@ -209,6 +209,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 AddEdit = "Edit Course";
                 Course = DatabaseService.CurrentCourse;
+                Notify = Course.Notify;
                 Instructor = DatabaseService.CurrentInstructor;
             }
 
@@ -244,24 +245,24 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 && (Notes == null || Notes != null && ValidCharacters(Notes)))
             {
                 //checks for overlapping courses 
-                if(CourseList.Count > 0)
-                {
-                    foreach (Course course in CourseList)
-                    {
-                        if (Course.Id != course.Id)
-                        {
-                            if ((Course.StartDate <= course.StartDate && Course.EndDate >= course.StartDate)
-                            || (Course.StartDate <= course.EndDate && Course.EndDate >= course.EndDate)
-                            || (Course.StartDate >= course.StartDate && Course.EndDate <= course.EndDate))
-                            {
-                                IsValidInput = false;
-                                await Application.Current.MainPage.DisplayAlert($"Overlapping Course", $"There is an overlapping course for " +
-                                    $"course {course.Name} from {course.StartDate.ToShortDateString()} to {course.EndDate.ToShortDateString()}", "Ok");
-                                return;
-                            }
-                        }
-                    }
-                }
+                //if(CourseList.Count > 0)
+                //{
+                //    foreach (Course course in CourseList)
+                //    {
+                //        if (Course.Id != course.Id)
+                //        {
+                //            if ((Course.StartDate <= course.StartDate && Course.EndDate >= course.StartDate)
+                //            || (Course.StartDate <= course.EndDate && Course.EndDate >= course.EndDate)
+                //            || (Course.StartDate >= course.StartDate && Course.EndDate <= course.EndDate))
+                //            {
+                //                IsValidInput = false;
+                //                await Application.Current.MainPage.DisplayAlert($"Overlapping Course", $"There is an overlapping course for " +
+                //                    $"course {course.Name} from {course.StartDate.ToShortDateString()} to {course.EndDate.ToShortDateString()}", "Ok");
+                //                return;
+                //            }
+                //        }
+                //    }
+                //}
                 /*checks that course dates are within the dates of the respective term (will not affect course dates if term dates are 
                 * altered, but will require dates of courses to be changed if an course is being edited which has become outside of term date 
                 * ranges after term modification)*/
@@ -278,10 +279,13 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 {
                     if (DatabaseService.IsAdd)
                     {
+                       
                         await DatabaseService.AddCourse(Course, DatabaseService.CurrentTerm.Id);
                         MessagingCenter.Send(this, "AddInstructor", Instructor);
                         await Application.Current.MainPage.Navigation.PopAsync();
+                        
                     }
+                    
                     else
                     {
                         await DatabaseService.UpdateCourse(Course);
@@ -290,6 +294,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
                     }
                 }
             }
+            return;
         }
 
         private async Task CancelCourse()

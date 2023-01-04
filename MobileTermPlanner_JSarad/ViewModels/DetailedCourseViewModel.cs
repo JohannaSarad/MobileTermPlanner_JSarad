@@ -104,6 +104,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         //constuctor
         public DetailedCourseViewModel()
         {
+            DatabaseService.IsDetailed = true;
             Course = DatabaseService.CurrentCourse;
             Instructor = DatabaseService.CurrentInstructor;
             LoadAssessments();
@@ -113,8 +114,9 @@ namespace MobileTermPlanner_JSarad.ViewModels
             NavToEditAssessmentCommand = new Command(async (o) => await NavToEditAssessment(o));
             DeleteAssessmentCommand = new Command(async (o) => await DeleteAssessment(o));
             ShareCommand = new Command(async () => await ShareNote());
-            
-            MessagingCenter.Subscribe<ModifyAssessmentViewModel, Assessment>(this, "AddAssessment", (sender, assessment) =>
+
+            MessagingCenter.Unsubscribe<ModifyAssessmentViewModel, Assessment>(this, "AddDetailAssessment");
+            MessagingCenter.Subscribe<ModifyAssessmentViewModel, Assessment>(this, "AddDetailAssessment", (sender, assessment) =>
             {
                 AddAssessment(assessment);
             });

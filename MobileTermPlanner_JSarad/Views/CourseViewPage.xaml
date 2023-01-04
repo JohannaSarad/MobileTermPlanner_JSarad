@@ -22,7 +22,7 @@
 
     <!--layout-->
     <ContentPage.Content>
-        <ScrollView>
+        <!--<ScrollView>-->
             <StackLayout StyleClass="list-view" Padding="20,0,20,0">
                 <!--<Frame BackgroundColor="#F2F6F8" >-->
                     <Grid  RowSpacing="1" ColumnSpacing="10" Margin="10, 20, 10, 20">
@@ -137,6 +137,6 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </StackLayout>
-        </ScrollView>
+        <!--</ScrollView>-->
     </ContentPage.Content>
 </ContentPage>

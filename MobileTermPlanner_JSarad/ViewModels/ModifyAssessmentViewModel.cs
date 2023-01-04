@@ -129,6 +129,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
             {
                 AddEdit = "Edit Assessment";
                 Assessment = DatabaseService.CurrentAssessment;
+                Notify = Assessment.Notify;
             }
 
             SaveCommand = new Command(async () => await SaveAssessment());
@@ -193,8 +194,16 @@ namespace MobileTermPlanner_JSarad.ViewModels
                 {
                     if (DatabaseService.IsAdd)
                     {
-                        MessagingCenter.Send(this, "AddAssessment", Assessment);
-                        await Application.Current.MainPage.Navigation.PopAsync();
+                        if (DatabaseService.IsDetailed)
+                        {
+                            MessagingCenter.Send(this, "AddDetailAssessment", Assessment);
+                            await Application.Current.MainPage.Navigation.PopAsync();
+                        }
+                        else
+                        {
+                            MessagingCenter.Send(this, "AddAssessment", Assessment);
+                            await Application.Current.MainPage.Navigation.PopAsync();
+                        }
                     }
                     else
                     {

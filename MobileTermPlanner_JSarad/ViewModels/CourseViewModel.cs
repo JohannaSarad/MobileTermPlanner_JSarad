@@ -77,7 +77,8 @@ namespace MobileTermPlanner_JSarad.ViewModels
             ViewAssessmentsCommand = new Command(async (o) => await ViewAssessments(o));
             DeleteCommand = new Command(async (o) => await DeleteCourse(o));
 
-            
+
+            MessagingCenter.Unsubscribe<ModifyCourseViewModel, Instructor>(this, "AddInstructor");
             MessagingCenter.Subscribe<ModifyCourseViewModel, Instructor>(this, "AddInstructor", (sender, instructor) =>
             {
                 AddInstructor(instructor);
@@ -133,6 +134,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         private async void AddInstructor(Instructor instructor)
         {
             await DatabaseService.AddInstructor(instructor, DatabaseService.LastAddedId);
+            //MessagingCenter.Unsubscribe<ModifyCourseViewModel, Instructor>(this, "AddInstructor");
             LoadCourses();
         }
 
@@ -182,7 +184,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         {
             if (Courses.Count > 0)
             {
-                RowHeight = Courses.Count * 170;
+                RowHeight = Courses.Count * 180;
             }
             else
             {

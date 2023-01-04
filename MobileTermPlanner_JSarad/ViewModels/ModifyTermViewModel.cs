@@ -129,6 +129,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
                                 IsValidInput = false;
                                 await Application.Current.MainPage.DisplayAlert("Overlapping Course", $"There is an overlapping term for " +
                                     $"term { term.Name} from { term.StartDate.ToShortDateString()} to {term.EndDate.ToShortDateString()}", "Ok");
+                                return;
                             }
                         }
                     }
@@ -148,6 +149,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
                     }
                 }
             }
+            return;
         }
 
         private async Task CancelTerm()

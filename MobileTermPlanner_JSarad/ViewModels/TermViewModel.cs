@@ -20,6 +20,8 @@ namespace MobileTermPlanner_JSarad.ViewModels
         //properties
 
         private ObservableCollection<Term> _terms;
+
+       
         public ObservableCollection<Term> Terms
         {
             get
@@ -29,7 +31,9 @@ namespace MobileTermPlanner_JSarad.ViewModels
             set
             {
                 _terms = value;
+                
                 OnPropertyChanged();
+               
             }
         }
 
@@ -63,6 +67,8 @@ namespace MobileTermPlanner_JSarad.ViewModels
             NavToEditCommand = new Command(async (o) => await NavToEditTerm(o));
             ViewTermCommand = new Command(async (o) => await ViewTerm(o));
             DeleteTermCommand = new Command(async (o) => await DeleteTerm(o));
+
+            MessagingCenter.Unsubscribe<ModifyTermViewModel, Term>(this, "AddTerm");
 
             MessagingCenter.Subscribe<ModifyTermViewModel, Term>(this, "AddTerm", (sender, term) =>
             {

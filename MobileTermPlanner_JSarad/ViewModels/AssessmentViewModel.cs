@@ -70,6 +70,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         //class constructor
         public AssessmentViewModel()
         {
+            DatabaseService.IsDetailed = false;
             Course = DatabaseService.CurrentCourse;
             LoadAssessments();
 
@@ -78,10 +79,11 @@ namespace MobileTermPlanner_JSarad.ViewModels
             //ViewCommand = new Command(async (o) => await ViewCourse(o));
             DeleteCommand = new Command(async (o) => await DeleteAssessment(o));
 
-
-            MessagingCenter.Subscribe<ModifyAssessmentViewModel, Assessment>(this, "AddAssessment", (sender, assessment) =>
+           MessagingCenter.Unsubscribe<ModifyAssessmentViewModel, Assessment>(this, "AddAssessment");
+           MessagingCenter.Subscribe<ModifyAssessmentViewModel, Assessment>(this, "AddAssessment", (sender, assessment) =>
             {
                 AddAssessment(assessment);
+                
             });
 
             MessagingCenter.Subscribe<ModifyAssessmentViewModel, Assessment>(this, "UpdateAssessment", (sender, assessment) =>
@@ -121,6 +123,7 @@ namespace MobileTermPlanner_JSarad.ViewModels
         private async void AddAssessment(Assessment assessment)
         {
             await DatabaseService.AddAssessment(assessment, DatabaseService.CurrentCourse.Id);
+            ///MessagingCenter.Unsubscribe<ModifyAssessmentViewModel, Assessment>(this, "AddAssessment");
             LoadAssessments();
         }
 
